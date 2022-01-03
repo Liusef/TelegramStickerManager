@@ -30,24 +30,22 @@ public class AuthHandler
         };
     }
 
-    private static void ThrowNotOk(Object obj, string? message = "")
-    {
-        if (!IsOkTd(obj)) throw new NotOkException(message);
-    }
-    
     public async Task SigninCLI(int milliTimout = 20000)
     {
-        while (CurrentState == null) await Task.Delay(100);
-        DateTimeOffset lastTime = DateTimeOffset.MinValue;
+        while (CurrentState == null) await Task.Delay(100); // Waiting for update to signify that client is initialized
+        
+        // This is to keep track of whether or not a new status has been received
+        DateTimeOffset lastRunStatusTime = DateTimeOffset.MinValue; 
+        
         while (CurrentState.GetType() != typeof(TdApi.AuthorizationState.AuthorizationStateReady))
         {
-            switch (GetState(CurrentState))
+            bool unsupported = false;
+            TdApi.Ok val = null;
+            switch (GetState(CurrentState)) 
+            // TODO add try catch blocks for entering an invalid entry (non-unsupported operations)
             {
-                case AuthState.Null:
-                    throw new NotSupportedException("TdLib returned unsupported state");
-                    break;
                 case AuthState.WaitTdLibParams:
-                    await Handle_WaitTdLibParameters(new TdApi.TdlibParameters
+                    val = await Handle_WaitTdLibParameters(new TdApi.TdlibParameters
                     {
                         ApiId = GlobalVars.ApiId,
                         ApiHash = GlobalVars.ApiHash,
@@ -58,71 +56,55 @@ public class AuthHandler
                     });
                     break;
                 case AuthState.WaitEncryptionKey:
-                    Handle_WaitEncryptionKey();
+                    val = await Handle_WaitEncryptionKey();
                     break;
                 case AuthState.WaitPhoneNumber:
-                    Console.Write("Enter Phone (include +): ");
-                    Handle_WaitPhoneNumber(Console.ReadLine());
+                    val = await Handle_WaitPhoneNumber(Prompt("Enter Phone (include country code): "));
                     break;
                 case AuthState.WaitCode:
-                    Console.Write("Enter code: ");
-                    Handle_WaitCode(Console.ReadLine());
-                    break;
-                case AuthState.WaitPassword:
-                    Handle_WaitPassword();
-                    break;
-                case AuthState.WaitRegistration:
-                    Handle_WaitRegistration();
+                    val = await Handle_WaitCode(Prompt("Enter Code: "));
                     break;
                 default:
-                    throw new NotSupportedException("TdLib returned an unsupported state");
+                    val = null;
+                    unsupported = true;
+                    break;
             }
+            
+            if (val == null) // If val is null, then the request was unsuccessful
+            {
+                Console.WriteLine("TdLib did not return Ok on the last request");
+                // Determines if the operation the user performed is unsupported
+                if (unsupported) throw new Exception("TdLib returned an unsupported state");
+                else lastRunStatusTime = DateTimeOffset.MinValue; // If it errors out, redoes the last operation
+            }
+
+            // This section waits for an updated status from telegram before continuing
             int i = 0;
-            while (stateTime.Equals(lastTime))
+            while (stateTime.Equals(lastRunStatusTime))
             {
                 i++;
                 Console.WriteLine($"Waiting for reply from Telegram for {i * 100}/{milliTimout} ms");
                 await Task.Delay(100);
                 if (i > milliTimout / 100) throw new Exception("TdLib did not get a reply from Telegram");
             }
-            lastTime = stateTime;
+            
+            // Used to keep track of whether a new status has arrived
+            lastRunStatusTime = stateTime;
         }
         Console.WriteLine("You should be all signed in and ready to go! " + CurrentState);
     }
 
-    public async Task Handle_WaitTdLibParameters(TdApi.TdlibParameters param)
-    {
-        var val = await Client.ExecuteAsync(new TdApi.SetTdlibParameters {Parameters = param});
-        ThrowNotOk(val);
-    }
+    public async Task<TdApi.Ok> Handle_WaitTdLibParameters(TdApi.TdlibParameters param) => 
+        await Client.ExecuteAsync(new TdApi.SetTdlibParameters {Parameters = param});
 
-    public async Task Handle_WaitEncryptionKey()
-    {
-        var val = await Client.ExecuteAsync(new TdApi.CheckDatabaseEncryptionKey());
-        ThrowNotOk(val);
-    }
+    public async Task<TdApi.Ok> Handle_WaitEncryptionKey() =>
+        await Client.ExecuteAsync(new TdApi.CheckDatabaseEncryptionKey());
 
-    public async Task Handle_WaitPhoneNumber(string phone)
-    {
-        var val = await Client.ExecuteAsync(new TdApi.SetAuthenticationPhoneNumber {PhoneNumber = phone});
-        ThrowNotOk(val);
-    }
+    public async Task<TdApi.Ok> Handle_WaitPhoneNumber(string phone) =>
+        await Client.ExecuteAsync(new TdApi.SetAuthenticationPhoneNumber {PhoneNumber = phone});
 
-    public async Task Handle_WaitCode(string code)
-    {
-        var val = await Client.ExecuteAsync(new TdApi.CheckAuthenticationCode {Code = code});
-        ThrowNotOk(val);
-    }
-
-    public async Task Handle_WaitPassword()
-    {
-        throw new NotImplementedException();
-    }
-    
-    public async Task Handle_WaitRegistration()
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<TdApi.Ok> Handle_WaitCode(string code) =>
+        await Client.ExecuteAsync(new TdApi.CheckAuthenticationCode {Code = code});
 
     public enum AuthState
     {
@@ -130,9 +112,7 @@ public class AuthHandler
         WaitTdLibParams = 1,
         WaitEncryptionKey = 2,
         WaitPhoneNumber = 3,
-        WaitCode = 4,
-        WaitPassword = 5,
-        WaitRegistration = 6
+        WaitCode = 4
     }
 
     public static AuthState GetState(TdApi.AuthorizationState state)
@@ -141,8 +121,6 @@ public class AuthHandler
         if (state.GetType() == typeof(AuthorizationStateWaitEncryptionKey)) return AuthState.WaitEncryptionKey;
         if (state.GetType() == typeof(AuthorizationStateWaitPhoneNumber)) return AuthState.WaitPhoneNumber;
         if (state.GetType() == typeof(AuthorizationStateWaitCode)) return AuthState.WaitCode;
-        if (state.GetType() == typeof(AuthorizationStateWaitPassword)) return AuthState.WaitPassword;
-        if (state.GetType() == typeof(AuthorizationStateWaitRegistration)) return AuthState.WaitRegistration;
         return 0;
     }
     

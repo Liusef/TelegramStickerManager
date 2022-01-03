@@ -55,4 +55,11 @@ public static class Utils
 	/// <param name="obj">The object to check</param>
 	/// <returns>Whether the object is of type TdLib.TdApi.Ok</returns>
 	public static bool IsOkTd(Object? obj) => obj != null && obj.GetType() == typeof(TdApi.Ok);
+	
+	// TODO XML Docs
+	public static string Prompt(string prompt)
+	{
+		Console.Write(prompt);
+		return Console.ReadLine();
+	}
 }
