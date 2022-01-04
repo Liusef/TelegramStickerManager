@@ -48,13 +48,7 @@ public static class Utils
 	/// <typeparam name="T">The type to deserialize to</typeparam>
 	/// <returns>The object deserialized from the json</returns>
 	public static T Deserialize<T>(string path) => JsonSerializer.Deserialize<T>(path);
-
-	/// <summary>
-	/// Checks if an object is a TdLib.TdApi.Ok object, which is returned upon completion of a successful request
-	/// </summary>
-	/// <param name="obj">The object to check</param>
-	/// <returns>Whether the object is of type TdLib.TdApi.Ok</returns>
-	public static bool IsOkTd(Object? obj) => obj != null && obj.GetType() == typeof(TdApi.Ok);
+	
 	
 	// TODO XML Docs
 	public static string Prompt(string prompt)

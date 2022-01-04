@@ -10,6 +10,7 @@ public class AuthHandler
     private TdClient client;
     private TdApi.AuthorizationState state;
     private DateTimeOffset stateTime;
+    private EventHandler<TdApi.Update> handlerDelegate;
 
     public TdApi.AuthorizationState CurrentState { get => state; }
     public TdClient Client { get => client; }
@@ -17,7 +18,7 @@ public class AuthHandler
     public AuthHandler(TdClient Client)
     {
         client = Client;
-        Client.UpdateReceived += (sender, update) =>
+        handlerDelegate = (object sender, TdApi.Update update) =>
         {
             if (update.GetType() == typeof(TdApi.Update.UpdateAuthorizationState))
             {
@@ -28,8 +29,17 @@ public class AuthHandler
                 stateTime = v2;
             }
         };
+        Client.UpdateReceived += handlerDelegate;
     }
 
+    public void Close()
+    {
+        Client.UpdateReceived -= handlerDelegate;
+        handlerDelegate = null;
+        state = null;
+        client = null;
+    }
+    
     public async Task SigninCLI(int milliTimout = 20000)
     {
         while (CurrentState == null) await Task.Delay(100); // Waiting for update to signify that client is initialized
@@ -49,20 +59,37 @@ public class AuthHandler
                     {
                         ApiId = GlobalVars.ApiId,
                         ApiHash = GlobalVars.ApiHash,
-                        ApplicationVersion = "1.3.0",
-                        DeviceModel = "PC",
+                        EnableStorageOptimizer = true,
                         SystemLanguageCode = "en",
-                        SystemVersion = "Win 10.0"
+                        DeviceModel = "Computer",
+                        ApplicationVersion = "0.0.1",
+                        DatabaseDirectory = "dbdir"
                     });
                     break;
                 case AuthState.WaitEncryptionKey:
                     val = await Handle_WaitEncryptionKey();
                     break;
                 case AuthState.WaitPhoneNumber:
-                    val = await Handle_WaitPhoneNumber(Prompt("Enter Phone (include country code): "));
+                    try
+                    {
+                        val = await Handle_WaitPhoneNumber(Prompt("Enter Phone (include country code): "));
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        val = null;
+                    }
                     break;
                 case AuthState.WaitCode:
-                    val = await Handle_WaitCode(Prompt("Enter Code: "));
+                    try
+                    {
+                        val = await Handle_WaitCode(Prompt("Enter Code: "));
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        val = null;
+                    }
                     break;
                 default:
                     val = null;
