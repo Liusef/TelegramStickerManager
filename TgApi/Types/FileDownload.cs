@@ -15,7 +15,7 @@ public class FileDownload
     public bool IsComplete => latestFile.Local is not null && latestFile.Local.IsDownloadingCompleted;
     
     
-    public static async Task<FileDownload> Download(TdClient client, int id, int priority = 1)
+    public static async Task<FileDownload> StartDownload(TdClient client, int id, int priority = 1)
     {
         FileDownload r = new FileDownload();
         r.client = client;

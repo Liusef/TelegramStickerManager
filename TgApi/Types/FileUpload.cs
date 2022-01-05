@@ -14,7 +14,7 @@ public class FileUpload
     public string RemoteId => latestFile.Remote.Id;
     public bool IsComplete => latestFile.Remote is not null && latestFile.Remote.IsUploadingCompleted;
 
-    public static async Task<FileUpload> Upload(TdClient client, string path, int priority = 1, TdApi.FileType? type = null)
+    public static async Task<FileUpload> StartUpload(TdClient client, string path, int priority = 1, TdApi.FileType? type = null)
     {
         if (type is null) type = new TdApi.FileType.FileTypeDocument();
         

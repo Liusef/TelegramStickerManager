@@ -20,7 +20,7 @@ var auth = new AuthHandler(client);
 await auth.SigninCLI();
 auth.Close();
 
-var u = await FileUpload.Upload(client, "C:\\Users\\josep\\Pictures\\100017500389_71978.jpg");
+var u = await FileUpload.StartUpload(client, "C:\\Users\\josep\\Pictures\\100017500389_71978.jpg");
 await u.WaitForCompletion();
 
 await client.SendBasicDocumentAsync("aRandomFox",new TdApi.InputFile.InputFileId {Id = u.LocalId});
