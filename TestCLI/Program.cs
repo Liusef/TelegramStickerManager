@@ -20,7 +20,14 @@ var auth = new AuthHandler(client);
 await auth.SigninCLI();
 auth.Close();
 
-var u = await FileUpload.StartUpload(client, "C:\\Users\\josep\\Pictures\\100017500389_71978.jpg");
-await u.WaitForCompletion();
+Console.WriteLine(JsonSerializer.Serialize<string[]>(await client.GetOwnedPacksAsync()));
 
-await client.SendBasicDocumentAsync("aRandomFox",new TdApi.InputFile.InputFileId {Id = u.LocalId});
+var sset = await client.SearchStickerSetAsync("TegraFoxStickers");
+
+var dls = new List<FileDownload>();
+foreach (var ssetSticker in sset.Stickers) dls.Add(await FileDownload.StartDownload(client, ssetSticker.Sticker_.Id));
+foreach (var fileDownload in dls)
+{
+    await fileDownload.WaitForCompletion();
+}
+
