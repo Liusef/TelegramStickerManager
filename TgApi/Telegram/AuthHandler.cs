@@ -18,9 +18,9 @@ public class AuthHandler
     public AuthHandler(TdClient Client)
     {
         client = Client;
-        handlerDelegate = (object sender, TdApi.Update update) =>
+        handlerDelegate = (object? sender, TdApi.Update update) =>
         {
-            if (update.GetType() == typeof(TdApi.Update.UpdateAuthorizationState))
+            if (update is TdApi.Update.UpdateAuthorizationState)
             {
                 var v1 = ((TdApi.Update.UpdateAuthorizationState) update).AuthorizationState;
                 var v2 = DateTimeOffset.Now;
@@ -63,7 +63,7 @@ public class AuthHandler
                         SystemLanguageCode = "en",
                         DeviceModel = "Computer",
                         ApplicationVersion = "0.0.1",
-                        DatabaseDirectory = "dbdir"
+                        DatabaseDirectory = GlobalVars.TdDir
                     });
                     break;
                 case AuthState.WaitEncryptionKey:

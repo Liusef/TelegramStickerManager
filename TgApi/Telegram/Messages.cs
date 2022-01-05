@@ -17,4 +17,11 @@ public static class Messages
         long id = await client.GetIdFromUsernameAsync(username);
         return await client.SendBasicMessageAsync(id, content);
     }
+
+    public static async Task<Message> SendBasicDocumentAsync(this Client client, string username, InputFile file)
+    {
+        long id = await client.GetIdFromUsernameAsync(username);
+        return await client.SendMessageAsync(chatId: id, inputMessageContent:new InputMessageDocument {Document = file});
+    }
+    
 }

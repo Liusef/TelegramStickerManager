@@ -1,22 +1,34 @@
-﻿using TdLib;
+﻿using System.Text;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using TdLib;
+using TDLib.Bindings;
+using TgApi;
 using TgApi.Telegram;
+using TgApi.Types;
 
-var client = new TdClient();
-client.Bindings.SetLogVerbosityLevel(4);
+Console.OutputEncoding = Encoding.Unicode;
+
+GlobalVars.EnsureDirectories();
+
+var client = GlobalVars.Client;
+client.Bindings.SetLogVerbosityLevel(0);
+client.Bindings.SetLogFilePath("what");
 
 var auth = new AuthHandler(client);
 
 await auth.SigninCLI();
 auth.Close();
 
-var sset = await client.SearchStickerSetAsync("TegraFoxStickers");
+string packname = "RichardYohan";
+string username = "Genericcanine";
 
-foreach (TdApi.Sticker s in sset.Stickers)
+var sset = await client.SearchStickerSetAsync(packname);
+await client.SendBasicMessageAsync(username, "testing code rn, sry for spam");
+
+for (int i = 0; i < sset.Stickers.Length; i++)
 {
-    Console.WriteLine($"Downloading Sticker | ID: {s.Sticker_.Id}, Emojis: {s.Emoji}");
-    var file = await client.DownloadFileAsync(fileId: s.Sticker_.Id, priority:16);
-    Console.WriteLine(file.Local.Path);
-    await Task.Delay(100);
+    await client.SendBasicDocumentAsync(username, new TdApi.InputFile.InputFileRemote{Id = sset.Stickers[i].Sticker_.Remote.Id});
+    await Task.Delay(20);
 }
-
-                  
+await Task.Delay(5000);
