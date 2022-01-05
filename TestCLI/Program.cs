@@ -20,15 +20,7 @@ var auth = new AuthHandler(client);
 await auth.SigninCLI();
 auth.Close();
 
-string packname = "RichardYohan";
-string username = "Genericcanine";
+var u = await FileUpload.Upload(client, "C:\\Users\\josep\\Pictures\\100017500389_71978.jpg");
+await u.WaitForCompletion();
 
-var sset = await client.SearchStickerSetAsync(packname);
-await client.SendBasicMessageAsync(username, "testing code rn, sry for spam");
-
-for (int i = 0; i < sset.Stickers.Length; i++)
-{
-    await client.SendBasicDocumentAsync(username, new TdApi.InputFile.InputFileRemote{Id = sset.Stickers[i].Sticker_.Remote.Id});
-    await Task.Delay(20);
-}
-await Task.Delay(5000);
+await client.SendBasicDocumentAsync("aRandomFox",new TdApi.InputFile.InputFileId {Id = u.LocalId});
