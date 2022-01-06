@@ -20,14 +20,19 @@ var auth = new AuthHandler(client);
 await auth.SigninCLI();
 auth.Close();
 
-Console.WriteLine(JsonSerializer.Serialize<string[]>(await client.GetOwnedPacksAsync()));
+// await client.OptimizeStorageAsync();
 
-var sset = await client.SearchStickerSetAsync("TegraFoxStickers");
-
-var dls = new List<FileDownload>();
-foreach (var ssetSticker in sset.Stickers) dls.Add(await FileDownload.StartDownload(client, ssetSticker.Sticker_.Id));
-foreach (var fileDownload in dls)
+void sdsTest<T>(T obj)
 {
-    await fileDownload.WaitForCompletion();
+    var start = DateTime.Now;
+    var path = "C:\\users\\josep\\Desktop\\test.json";
+    Utils.Serialize<T>(obj, path);
+    Utils.Deserialize<T>(path);
+    Console.WriteLine($"Serialization Benchmark took {(DateTime.Now - start).TotalMilliseconds}ms");
 }
 
+var sset = await StickerPack.GenerateFromName(client, "RichardYohan");
+
+sdsTest<StickerPack>(sset);
+sset.Stickers = null;
+sdsTest<StickerPack>(sset);

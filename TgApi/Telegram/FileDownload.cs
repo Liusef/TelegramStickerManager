@@ -13,7 +13,7 @@ public class FileDownload
     public int LocalId => latestFile.Id;
     public string RemoteId => latestFile.Remote.Id;
     public bool IsComplete => latestFile.Local is not null && latestFile.Local.IsDownloadingCompleted;
-    
+    public string LocalPath => latestFile.Local.Path;
     
     public static async Task<FileDownload> StartDownload(TdClient client, int id, int priority = 1)
     {
@@ -35,9 +35,13 @@ public class FileDownload
         return r;
     }
 
-    public async Task WaitForCompletion(int delay = 25)
+    public async Task<FileDownload> WaitForCompletion(int delay = 25)
     {
-        while (latestFile.Local is null || !latestFile.Local.IsDownloadingCompleted) await Task.Delay(delay);
+        while (latestFile.Local is null || !latestFile.Local.IsDownloadingCompleted)
+        {
+            await Task.Delay(delay);
+        }
+        return this;
     }
     
 }

@@ -19,22 +19,19 @@ public class GlobalVars
         DeviceModel = "Computer",
         ApplicationVersion = "0.0.1",
         DatabaseDirectory = TdDir,
-        UseFileDatabase = true,
-        UseMessageDatabase = false,
-        UseSecretChats = false
+        UseFileDatabase = true
     };
     
     public const string StickerBot = "Stickers";
-    
-    public static readonly string SaveDir = $"Tgsticker{Sep}";
-    public static readonly string TdDir = $"{SaveDir}Td{Sep}";
-    public static readonly string CacheDir = $"{SaveDir}Cache{Sep}";
+
+    public static readonly string TdDir = $"Td{Sep}";
+    public static readonly string PacksDir = $"{TdDir}packs{Sep}";
 
     public static readonly string PacksFileName = "packs.json";
     
     public static void EnsureDirectories()
     {
-        string[] dirs = {SaveDir, TdDir, CacheDir};
+        string[] dirs = {TdDir, PacksDir};
         foreach (string path in dirs)
         {
             Utils.EnsurePath(path);
