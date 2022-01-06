@@ -3,9 +3,18 @@ using TdLib;
 
 namespace TgApi.Types;
 
-public class StickerPack : BasicPack
+public class StickerPack
 {
+    public long Id { get; set; }
+    public string Title { get; set; }
+    public string Name { get; set; }
+    public bool IsAnimated { get; set; }
+    public StickerPackThumb? Thumb { get; set; }
+    
+    [JsonIgnore]
     public Sticker[] Stickers { get; set; }
+
+    public bool IsCachedCopy = false;
 
     [JsonIgnore]
     public int Count => Stickers.Length;
@@ -34,6 +43,7 @@ public class StickerPack : BasicPack
             slist.Add(await task);
         }
         s.Stickers = slist.ToArray();
+        s.Cache();
         return s;
     }
 
@@ -73,5 +83,20 @@ public class StickerPack : BasicPack
             rlist.Add(await task);
         }
         return rlist.ToArray();
+    }
+
+    public void Cache() => Utils.Serialize<StickerPack>(this, $"{GlobalVars.PacksDir}{Name}.json");
+
+    public static StickerPack ReadCache(string name)
+    {
+        var pack = Utils.Deserialize<StickerPack>($"{GlobalVars.PacksDir}{name}.json");
+        pack.IsCachedCopy = true;
+        return pack;
+    }
+
+    public static async Task<StickerPack> GetBasicPack(TdClient client, string name)
+    {
+        if (File.Exists($"{GlobalVars.PacksDir}{name}.json")) return ReadCache(name);
+        return await GenerateFromName(client, name);
     }
 }

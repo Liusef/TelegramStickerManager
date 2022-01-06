@@ -22,20 +22,14 @@ auth.Close();
 
 // await client.OptimizeStorageAsync();
 
-void sdsTest<T>(T obj)
+void sdsTest(TdClient client, string name)
 {
     var start = DateTime.Now;
-    var path = "C:\\users\\josep\\Desktop\\test.json";
-    Utils.Serialize<T>(obj, path);
-    var mid = DateTime.Now;
-    Console.WriteLine($"Serialization took {(mid - start).TotalMilliseconds}ms");
-    Utils.Deserialize<T>(path);
-    Console.WriteLine($"Deserialization took {(DateTime.Now - mid).TotalMilliseconds}ms");
-    Console.WriteLine($"Serialization Benchmark took {(DateTime.Now - start).TotalMilliseconds}ms");
+    var pack = Utils.Deserialize<StickerPack>($"{GlobalVars.PacksDir}{name}.json");
+    Console.WriteLine($"Deserialization Benchmark took {(DateTime.Now - start).TotalMilliseconds}ms, Name: {pack.Name}");
 }
 
-var sset = await StickerPack.GenerateFromName(client, "RichardYohan");
-
-sdsTest<StickerPack>(sset);
-sset.Stickers = null;
-sdsTest<StickerPack>(sset);
+foreach (string s in await client.GetOwnedPacksAsync())
+{
+    sdsTest(client, s);
+}
