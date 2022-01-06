@@ -27,7 +27,10 @@ void sdsTest<T>(T obj)
     var start = DateTime.Now;
     var path = "C:\\users\\josep\\Desktop\\test.json";
     Utils.Serialize<T>(obj, path);
+    var mid = DateTime.Now;
+    Console.WriteLine($"Serialization took {(mid - start).TotalMilliseconds}ms");
     Utils.Deserialize<T>(path);
+    Console.WriteLine($"Deserialization took {(DateTime.Now - mid).TotalMilliseconds}ms");
     Console.WriteLine($"Serialization Benchmark took {(DateTime.Now - start).TotalMilliseconds}ms");
 }
 
