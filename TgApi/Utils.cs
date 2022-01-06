@@ -47,7 +47,7 @@ public static class Utils
 	/// <param name="path">The path of the json file to read the json from</param>
 	/// <typeparam name="T">The type to deserialize to</typeparam>
 	/// <returns>The object deserialized from the json</returns>
-	public static T Deserialize<T>(string path) => JsonSerializer.Deserialize<T>(path);
+	public static T Deserialize<T>(string path) => JsonSerializer.Deserialize<T>(File.ReadAllText(EnsureFile(path)));
 	
 	
 	// TODO XML Docs
