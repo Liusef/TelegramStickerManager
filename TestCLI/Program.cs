@@ -20,16 +20,4 @@ var auth = new AuthHandler(client);
 await auth.SigninCLI();
 auth.Close();
 
-// await client.OptimizeStorageAsync();
-
-void sdsTest(TdClient client, string name)
-{
-    var start = DateTime.Now;
-    var pack = Utils.Deserialize<StickerPack>($"{GlobalVars.PacksDir}{name}.json");
-    Console.WriteLine($"Deserialization Benchmark took {(DateTime.Now - start).TotalMilliseconds}ms, Name: {pack.Name}");
-}
-
-foreach (string s in await client.GetOwnedPacksAsync())
-{
-    sdsTest(client, s);
-}
+await client.OptimizeStorageAsync();

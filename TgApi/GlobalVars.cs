@@ -25,7 +25,7 @@ public class GlobalVars
     public const string StickerBot = "Stickers";
 
     public static readonly string TdDir = $"Td{Sep}";
-    public static readonly string PacksDir = $"{TdDir}packs{Sep}";
+    public static readonly string PacksDir = $"{TdDir}documents{Sep}";
 
     public static readonly string PacksFileName = "packs.json";
     
