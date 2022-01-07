@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ReunionApp (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "ReunionApp (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
