@@ -14,39 +14,20 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Microsoft.UI;
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+using Windows.UI.Popups;
 
 namespace ReunionApp
 {
-	/// <summary>
-	/// An empty window that can be used on its own or navigated to within a Frame.
-	/// </summary>
 	public sealed partial class MainWindow : Window
 	{
+		public Frame ContentFrame => contentFrame;
+
 		public MainWindow()
 		{
 			this.InitializeComponent();
-			AppWindow a = GetAppWindow();
-			a.TitleBar.BackgroundColor = Windows.UI.Color.FromArgb(255, 22, 24, 30);
-		}
-
-		private void myButton_Click(object sender, RoutedEventArgs e)
-		{
-			myButton.Content = "Clicked!s";
-		}
-
-		public AppWindow GetAppWindow()
-		{
-			IntPtr windowHandle = WinRT.Interop.WindowNative.GetWindowHandle(this);
-			return GetAppWindowFromWindowHandle(windowHandle);
-		}
-
-		private static AppWindow GetAppWindowFromWindowHandle(IntPtr windowHandle)
-		{
-			WindowId windowId = Win32Interop.GetWindowIdFromWindow(windowHandle);
-			return AppWindow.GetFromWindowId(windowId);
+			ExtendsContentIntoTitleBar = true;
+			SetTitleBar(appTitleBar);
+			ContentFrame.Navigate(typeof(Pages.Loading), null);
 		}
 	}
 }

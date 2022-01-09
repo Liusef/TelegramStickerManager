@@ -12,8 +12,9 @@ public class AuthHandler
     private DateTimeOffset stateTime;
     private EventHandler<TdApi.Update> handlerDelegate;
 
-    public TdApi.AuthorizationState CurrentState { get => state; }
-    public TdClient Client { get => client; }
+    public TdApi.AuthorizationState CurrentState => state;
+    public DateTimeOffset LastRequestReceivedAt => stateTime;
+    public TdClient Client => client;
     
     public AuthHandler(TdClient Client)
     {
@@ -22,11 +23,9 @@ public class AuthHandler
         {
             if (update is TdApi.Update.UpdateAuthorizationState)
             {
-                var v1 = ((TdApi.Update.UpdateAuthorizationState) update).AuthorizationState;
-                var v2 = DateTimeOffset.Now;
-                Console.WriteLine($"State: {v1}, Time: {v2}");
-                state = v1;
-                stateTime = v2;
+                state = ((TdApi.Update.UpdateAuthorizationState) update).AuthorizationState;
+                stateTime = DateTimeOffset.Now;
+                Console.WriteLine($"State: {state}, Time: {stateTime}");
             }
         };
         Client.UpdateReceived += handlerDelegate;
@@ -139,15 +138,18 @@ public class AuthHandler
         WaitTdLibParams = 1,
         WaitEncryptionKey = 2,
         WaitPhoneNumber = 3,
-        WaitCode = 4
+        WaitCode = 4,
+        Ready = 5
     }
 
     public static AuthState GetState(TdApi.AuthorizationState state)
     {
+        if (state is null) return 0;
         if (state.GetType() == typeof(AuthorizationStateWaitTdlibParameters)) return AuthState.WaitTdLibParams;
         if (state.GetType() == typeof(AuthorizationStateWaitEncryptionKey)) return AuthState.WaitEncryptionKey;
         if (state.GetType() == typeof(AuthorizationStateWaitPhoneNumber)) return AuthState.WaitPhoneNumber;
         if (state.GetType() == typeof(AuthorizationStateWaitCode)) return AuthState.WaitCode;
+        if (state.GetType() == typeof(AuthorizationStateReady)) return AuthState.Ready;
         return 0;
     }
     
