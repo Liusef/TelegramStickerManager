@@ -1,6 +1,10 @@
 # TelegramStickerManager
 An app to deal with @Stickers so you don't have to
 
+### A small disclaimer
+
+I have no idea what i'm doing, don't expect anything to work yet oops.
+
 ## Capabilities of this application
 
 For the initial release version, the plan is to have this app be able to add, delete, edit, and reorder stickers with a (mostly) drag and drop GUI, as well as be able to create packs.
@@ -8,6 +12,10 @@ For the initial release version, the plan is to have this app be able to add, de
 Future versions of the app could be able to interface with different sticker bots instead of only with `@Stickers`, the official Telegram sticker bot, as well as other features.
 
 For feature suggestions, please make an issue thread on github.
+
+## Runtime Dependencies
+
+To run this application as an end user, you must have at least the [.NET 6 Desktop Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/6.0/runtime) and the [Windows App Runtime](https://aka.ms/windowsappsdk/1.0-stable/msix-installer) installed on your machine.
 
 ## Setting up the project
 To download the code and run on your local machine do the following:
