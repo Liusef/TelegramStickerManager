@@ -4,7 +4,8 @@
       "commandName": "MsixPackage"
     },
     "ReunionApp (Unpackaged)": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "nativeDebugging": false
     }
   }
 }

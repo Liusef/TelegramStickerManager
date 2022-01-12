@@ -49,19 +49,17 @@ public class AuthHandler
         while (CurrentState.GetType() != typeof(TdApi.AuthorizationState.AuthorizationStateReady))
         {
             bool unsupported = false;
-            TdApi.Ok val = null;
+            TdApi.Ok? val = null;
             switch (GetState(CurrentState)) 
-            // TODO add try catch blocks for entering an invalid entry (non-unsupported operations)
             {
                 case AuthState.WaitTdLibParams:
                     val = await Handle_WaitTdLibParameters(new TdApi.TdlibParameters
                     {
                         ApiId = GlobalVars.ApiId,
                         ApiHash = GlobalVars.ApiHash,
-                        EnableStorageOptimizer = true,
-                        SystemLanguageCode = "en",
-                        DeviceModel = "Computer",
-                        ApplicationVersion = "0.0.1",
+                        SystemLanguageCode = GlobalVars.SystemLanguageCode,
+                        DeviceModel = GlobalVars.DeviceModel,
+                        ApplicationVersion = GlobalVars.ApplicationVersion,
                         DatabaseDirectory = GlobalVars.TdDir
                     });
                     break;
@@ -120,16 +118,16 @@ public class AuthHandler
         Console.WriteLine("You should be all signed in and ready to go! " + CurrentState);
     }
 
-    public async Task<TdApi.Ok> Handle_WaitTdLibParameters(TdApi.TdlibParameters param) => 
+    public async Task<TdApi.Ok?> Handle_WaitTdLibParameters(TdApi.TdlibParameters param) => 
         await Client.ExecuteAsync(new TdApi.SetTdlibParameters {Parameters = param});
 
-    public async Task<TdApi.Ok> Handle_WaitEncryptionKey() =>
+    public async Task<TdApi.Ok?> Handle_WaitEncryptionKey() =>
         await Client.ExecuteAsync(new TdApi.CheckDatabaseEncryptionKey());
 
-    public async Task<TdApi.Ok> Handle_WaitPhoneNumber(string phone) =>
+    public async Task<TdApi.Ok?> Handle_WaitPhoneNumber(string phone) =>
         await Client.ExecuteAsync(new TdApi.SetAuthenticationPhoneNumber {PhoneNumber = phone});
 
-    public async Task<TdApi.Ok> Handle_WaitCode(string code) =>
+    public async Task<TdApi.Ok?> Handle_WaitCode(string code) =>
         await Client.ExecuteAsync(new TdApi.CheckAuthenticationCode {Code = code});
 
     public enum AuthState
@@ -139,7 +137,10 @@ public class AuthHandler
         WaitEncryptionKey = 2,
         WaitPhoneNumber = 3,
         WaitCode = 4,
-        Ready = 5
+        WaitPassword = 5,
+        WaitRegistration = 6,
+        WaitOtherDeviceConfirmation = 7,
+        Ready = 8
     }
 
     public static AuthState GetState(TdApi.AuthorizationState state)
@@ -149,6 +150,9 @@ public class AuthHandler
         if (state.GetType() == typeof(AuthorizationStateWaitEncryptionKey)) return AuthState.WaitEncryptionKey;
         if (state.GetType() == typeof(AuthorizationStateWaitPhoneNumber)) return AuthState.WaitPhoneNumber;
         if (state.GetType() == typeof(AuthorizationStateWaitCode)) return AuthState.WaitCode;
+        if (state.GetType() == typeof(AuthorizationStateWaitPassword)) return AuthState.WaitPassword;
+        if (state.GetType() == typeof(AuthorizationStateWaitRegistration)) return AuthState.WaitRegistration;
+        if (state.GetType() == typeof(AuthorizationStateWaitOtherDeviceConfirmation)) return AuthState.WaitOtherDeviceConfirmation;
         if (state.GetType() == typeof(AuthorizationStateReady)) return AuthState.Ready;
         return 0;
     }

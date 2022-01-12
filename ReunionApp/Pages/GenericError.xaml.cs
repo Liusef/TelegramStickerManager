@@ -10,25 +10,29 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
-using TgApi.Telegram;
-using Microsoft.UI.Xaml.Media.Animation;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
-namespace ReunionApp.Pages
+namespace ReunionApp.Pages;
+
+/// <summary>
+/// An empty page that can be used on its own or navigated to within a Frame.
+/// </summary>
+public sealed partial class GenericError : Page
 {
-	/// <summary>
-	/// An empty page that can be used on its own or navigated to within a Frame.
-	/// </summary>
-	public sealed partial class Loading : Page
+	public GenericError()
 	{
-		public Loading()
-		{
-			this.InitializeComponent();
-		}
+		this.InitializeComponent();
+	}
+
+	protected override void OnNavigatedTo(NavigationEventArgs e)
+	{
+		base.OnNavigatedTo(e);
+		var text = e.Parameter as string;
+		if (text != null) body.Text = text;
 	}
 }
+

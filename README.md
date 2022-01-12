@@ -1,6 +1,14 @@
 # TelegramStickerManager
 An app to deal with @Stickers so you don't have to
 
+## Capabilities of this application
+
+For the initial release version, the plan is to have this app be able to add, delete, edit, and reorder stickers with a (mostly) drag and drop GUI, as well as be able to create packs.
+
+Future versions of the app could be able to interface with different sticker bots instead of only with `@Stickers`, the official Telegram sticker bot, as well as other features.
+
+For feature suggestions, please make an issue thread on github.
+
 ## Setting up the project
 To download the code and run on your local machine do the following:
 

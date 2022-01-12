@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TgApi": {
+      "commandName": "Project",
+      "nativeDebugging": false
+    }
+  }
+}

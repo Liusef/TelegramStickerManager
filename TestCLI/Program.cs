@@ -10,14 +10,11 @@ using TgApi.Types;
 Console.OutputEncoding = Encoding.Unicode;
 
 GlobalVars.EnsureDirectories();
+GlobalVars.Client = new TdClient();
 
 var client = GlobalVars.Client;
 client.Bindings.SetLogVerbosityLevel(0);
-client.Bindings.SetLogFilePath("what");
 
 var auth = new AuthHandler(client);
 
 await auth.SigninCLI();
-auth.Close();
-
-await client.OptimizeStorageAsync();

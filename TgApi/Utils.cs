@@ -69,4 +69,24 @@ public static class Utils
 		int i = path.LastIndexOf(Path.DirectorySeparatorChar);
 		return path.Substring(0, i + 1);
 	}
+
+	public static bool IsValidPhone(string phone)
+	{
+		var parser = PhoneNumbers.PhoneNumberUtil.GetInstance();
+		try
+		{
+			var pn = parser.Parse(phone, "US");
+			return parser.IsValidNumber(pn);
+		}
+		catch (PhoneNumbers.NumberParseException)
+		{
+			return false;
+		}
+	}
+
+	public static string FormatPhone(string phone)
+	{
+		var parser = PhoneNumbers.PhoneNumberUtil.GetInstance();
+		return parser.Format(parser.Parse(phone, "GB"), PhoneNumbers.PhoneNumberFormat.INTERNATIONAL);
+	}
 }

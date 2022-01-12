@@ -46,6 +46,7 @@ public static class TdClientExt
         }
         await task;
         waiter.Close();
+        Utils.Serialize<string[]>(r, $"{GlobalVars.PacksDir}{GlobalVars.PacksFileName}");
         return r;
     }
 }
