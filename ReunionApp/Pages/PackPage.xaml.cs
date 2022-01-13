@@ -1,0 +1,68 @@
+﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls.Primitives;
+using Microsoft.UI.Xaml.Data;
+using Microsoft.UI.Xaml.Input;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Animation;
+using Microsoft.UI.Xaml.Media.Imaging;
+using Microsoft.UI.Xaml.Navigation;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
+using TgApi.Types;
+using Windows.Foundation;
+using Windows.Foundation.Collections;
+
+// To learn more about WinUI, the WinUI project structure,
+// and more about our project templates, see: http://aka.ms/winui-project-info.
+
+namespace ReunionApp.Pages;
+
+/// <summary>
+/// An empty page that can be used on its own or navigated to within a Frame.
+/// </summary>
+public sealed partial class PackPage : Page
+{
+
+	private StickerPack pack;
+	private ObservableCollection<Sticker> stickers = new ObservableCollection<Sticker>();
+
+	public PackPage()
+	{
+		this.InitializeComponent();
+	}
+
+	protected override void OnNavigatedTo(NavigationEventArgs e)
+	{
+		base.OnNavigatedTo(e);
+		pack = e.Parameter as StickerPack;
+		LoadStickers();
+	}
+
+	private async void LoadStickers()
+	{
+		foreach (Sticker s in pack.Stickers)
+		{
+			await s.GetPathEnsureDownloaded(App.GetInstance().Client);
+			stickers.Add(s);
+		}
+		Loading.Visibility = Visibility.Collapsed;
+		StickerGrid.Visibility = Visibility.Visible;
+	}
+
+	public static BitmapImage PackThumb(StickerPackThumb thumb) => App.GetBitmapFromPath(TgApi.GlobalVars.TdDir +
+							  (thumb.IsDesignatedThumb ? "thumbnails" : "stickers") +
+							  Path.DirectorySeparatorChar + thumb.Filename);
+
+	public static BitmapImage StickerImage(string filename) => 
+		App.GetBitmapFromPath($"{TgApi.GlobalVars.TdDir}stickers{Path.DirectorySeparatorChar}{filename}");
+
+	private void Button_Click(object sender, RoutedEventArgs e) =>
+		App.GetInstance().RootFrame.GoBack();
+	
+}
+

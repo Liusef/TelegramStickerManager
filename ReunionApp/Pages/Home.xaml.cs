@@ -14,7 +14,10 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using TgApi.Types;
 using System.Collections.ObjectModel;
-using static TdLib.TdApi;
+using Microsoft.UI.Xaml.Media.Imaging;
+using System.Threading.Tasks;
+using TdLib;
+using TgApi.Telegram;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -27,7 +30,7 @@ namespace ReunionApp.Pages;
 public sealed partial class Home : Page
 {
 
-	public ObservableCollection<StickerPack> packList { get; set; } = new ObservableCollection<StickerPack>();
+	private ObservableCollection<StickerPack> packList = new ObservableCollection<StickerPack>();
 
 	public Home()
 	{
@@ -35,12 +38,12 @@ public sealed partial class Home : Page
 		LoadStickers();
 	}
 
-	public async void LoadStickers()
+	public async Task LoadStickers(bool forceNew = false)
 	{
 		try
 		{
-			var c = App.GetInstance().Client;
-			var nameList = await PackList.GetOwnedPacks(c);
+			TdClient c = App.GetInstance().Client;
+			var nameList = forceNew ? await c.GetOwnedPacksAsync() : await PackList.GetOwnedPacks(c);
 			if (nameList is null || nameList.Length == 0)
 			{
 				None.Visibility = Visibility.Visible;
@@ -51,6 +54,10 @@ public sealed partial class Home : Page
 				{
 					packList.Add(await StickerPack.GetBasicPack(c, pack));
 				}
+				foreach (var pack in packList)
+				{
+					await pack.EnsuredThumb.GetPathEnsureDownloaded(c);
+				}
 				Packs.Visibility = Visibility.Visible;
 			}
 			Loading.Visibility = Visibility.Collapsed;
@@ -59,6 +66,31 @@ public sealed partial class Home : Page
 		{
 			App.GetInstance().ShowExceptionDialog(ex);
 		}
+	}
+
+	public static BitmapImage ThumbAbsolutePath(StickerPackThumb thumb) =>
+		App.GetBitmapFromPath(TgApi.GlobalVars.TdDir + 
+							  (thumb.IsDesignatedThumb ? "thumbnails" : "stickers") + 
+							  Path.DirectorySeparatorChar + thumb.Filename);
+
+
+	private async void Refresh(object sender, RoutedEventArgs e)
+	{
+		None.Visibility=Visibility.Collapsed;
+		Packs.Visibility = Visibility.Collapsed;
+		Loading.Visibility = Visibility.Visible;
+		packList.Clear();
+		await LoadStickers(true);
+	}
+
+	private async void Packs_ItemClick(object sender, ItemClickEventArgs e)
+	{
+		var basicPack = e.ClickedItem as StickerPack;
+		var packTask = StickerPack.GenerateFromName(App.GetInstance().Client, basicPack.Name);
+		Loading.Visibility = Visibility.Visible;
+		var pack = await packTask;
+		App.GetInstance().RootFrame.Navigate(typeof(PackPage), pack);
+		Loading.Visibility = Visibility.Collapsed;
 	}
 }
 

@@ -10,7 +10,7 @@ public class StickerPack
     public string Name { get; set; }
     public bool IsAnimated { get; set; }
     public StickerPackThumb? Thumb { get; set; }
-    
+
     [JsonIgnore]
     public Sticker[] Stickers { get; set; }
 
@@ -19,8 +19,11 @@ public class StickerPack
     [JsonIgnore]
     public int Count => Stickers.Length;
 
-    [JsonIgnore]
-    public StickerPackThumb EnsuredThumb => Thumb is null ? StickerPackThumb.FromSticker(Stickers[0]) : Thumb;
+    public StickerPackThumb EnsuredThumb 
+    { 
+        get => Thumb is null ? StickerPackThumb.FromSticker(Stickers[0]) : Thumb; 
+        set => Thumb = value;
+    }
 
     public static async Task<StickerPack> Generate(TdClient client, TdApi.StickerSet input)
     {

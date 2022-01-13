@@ -45,6 +45,7 @@
 	  <None Remove="Pages\Home.xaml" />
 	  <None Remove="Pages\LoginPages\LoginCode.xaml" />
 	  <None Remove="Pages\LoginPages\LoginPhone.xaml" />
+	  <None Remove="Pages\PackPage.xaml" />
   </ItemGroup>
 
 
@@ -65,6 +66,11 @@
     <ProjectReference Include="..\TgApi\TgApi.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Pages\PackPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="Pages\DialogBody.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -83,7 +89,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="Pages\Loading.xaml">
+    <Page Update="Pages\LoadingApp.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

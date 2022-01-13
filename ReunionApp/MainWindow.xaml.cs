@@ -27,7 +27,7 @@ namespace ReunionApp
 			this.InitializeComponent();
 			ExtendsContentIntoTitleBar = true;
 			SetTitleBar(appTitleBar);
-			ContentFrame.Navigate(typeof(Pages.Loading));
+			ContentFrame.Navigate(typeof(Pages.LoadingApp));
 		}
 	}
 }

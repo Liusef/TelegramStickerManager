@@ -20,6 +20,9 @@ using TgApi;
 using TgApi.Telegram;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml.Media.Animation;
+using System.Collections.ObjectModel;
+using TgApi.Types;
+using Microsoft.UI.Xaml.Media.Imaging;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -158,5 +161,7 @@ public partial class App : Application
 				break;
 		}
 	}
+
+	public static BitmapImage GetBitmapFromPath(string path) => new BitmapImage(new Uri(path));
 }
 
