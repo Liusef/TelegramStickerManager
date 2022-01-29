@@ -10,11 +10,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
-using TgApi.Telegram;
-using Microsoft.UI.Xaml.Media.Animation;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -24,10 +21,15 @@ namespace ReunionApp.Pages;
 /// <summary>
 /// An empty page that can be used on its own or navigated to within a Frame.
 /// </summary>
-public sealed partial class LoadingApp : Page
+public sealed partial class About : Page
 {
-	public LoadingApp()
+	public About()
 	{
 		this.InitializeComponent();
+	}
+
+	private void Back(object sender, RoutedEventArgs e)
+	{
+		App.GetInstance().RootFrame.GoBack();
 	}
 }

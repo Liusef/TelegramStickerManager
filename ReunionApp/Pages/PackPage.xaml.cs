@@ -13,6 +13,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using TgApi.Types;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -52,14 +53,18 @@ public sealed partial class PackPage : Page
 		}
 		Loading.Visibility = Visibility.Collapsed;
 		StickerGrid.Visibility = Visibility.Visible;
-	}
+        foreach (var item in StickerGrid.Items)
+        {
+            
+        }
+    }
 
 	public static BitmapImage PackThumb(StickerPackThumb thumb) => App.GetBitmapFromPath(TgApi.GlobalVars.TdDir +
 							  (thumb.IsDesignatedThumb ? "thumbnails" : "stickers") +
 							  Path.DirectorySeparatorChar + thumb.Filename);
 
-	public static BitmapImage StickerImage(string filename) => 
-		App.GetBitmapFromPath($"{TgApi.GlobalVars.TdDir}stickers{Path.DirectorySeparatorChar}{filename}");
+	public static string StickerPath(string filename) =>
+		$"{TgApi.GlobalVars.TdDir}stickers{Path.DirectorySeparatorChar}{filename}";
 
 	private void Button_Click(object sender, RoutedEventArgs e) =>
 		App.GetInstance().RootFrame.GoBack();

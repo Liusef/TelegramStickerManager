@@ -74,15 +74,6 @@ public sealed partial class Home : Page
 							  Path.DirectorySeparatorChar + thumb.Filename);
 
 
-	private async void Refresh(object sender, RoutedEventArgs e)
-	{
-		None.Visibility=Visibility.Collapsed;
-		Packs.Visibility = Visibility.Collapsed;
-		Loading.Visibility = Visibility.Visible;
-		packList.Clear();
-		await LoadStickers(true);
-	}
-
 	private async void Packs_ItemClick(object sender, ItemClickEventArgs e)
 	{
 		var basicPack = e.ClickedItem as StickerPack;
@@ -91,6 +82,41 @@ public sealed partial class Home : Page
 		var pack = await packTask;
 		App.GetInstance().RootFrame.Navigate(typeof(PackPage), pack);
 		Loading.Visibility = Visibility.Collapsed;
+	}
+
+	private async void Refresh(object sender, RoutedEventArgs e)
+	{
+		None.Visibility = Visibility.Collapsed;
+		Packs.Visibility = Visibility.Collapsed;
+		Loading.Visibility = Visibility.Visible;
+		packList.Clear();
+		await LoadStickers(true);
+	}
+
+	private async void NewPack(object sender, RoutedEventArgs e)
+	{
+		ContentDialog dialog = new ContentDialog();
+		dialog.Title = "Nope";
+		dialog.IsPrimaryButtonEnabled = false;
+		dialog.IsSecondaryButtonEnabled = false;
+		dialog.CloseButtonText = "Ok";
+		dialog.DefaultButton = ContentDialogButton.Close;
+		var db = new DialogBody();
+		db.Body.Text = "Not implemented yet oops";
+		dialog.Content = db;
+		dialog.XamlRoot = App.GetInstance().MainWindow.Content.XamlRoot;
+
+		var result = await dialog.ShowAsync();
+	}
+
+	private void Settings(object sender, RoutedEventArgs e)
+	{
+		App.GetInstance().RootFrame.Navigate(typeof(Settings));
+	}
+
+	private void About(object sender, RoutedEventArgs e)
+	{
+		App.GetInstance().RootFrame.Navigate(typeof(About));
 	}
 }
 

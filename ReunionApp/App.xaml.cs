@@ -82,7 +82,7 @@ public partial class App : Application
 
 	public async void ShowExceptionDialog(Exception exception)
 	{ 
-		if (isCdOpen || IsAnyContentDialogOpen()) return;
+		if (isCdOpen) return;
 		isCdOpen = true;
 		var cd = new ContentDialog();
 		cd.Title = $"Oops! The program hit a(n) {exception.GetType} Exception";
@@ -97,13 +97,6 @@ public partial class App : Application
 		cd.CloseButtonClick += (sender, args) => isCdOpen = false;
 
 		await cd.ShowAsync();
-	}
-
-	public bool IsAnyContentDialogOpen()
-	{
-		var open = VisualTreeHelper.GetOpenPopups(m_window);
-		foreach (var c in open) if (c.Child is ContentDialog) return true;
-		return false;
 	}
 
 	public async Task HandleAuth()
@@ -163,5 +156,6 @@ public partial class App : Application
 	}
 
 	public static BitmapImage GetBitmapFromPath(string path) => new BitmapImage(new Uri(path));
+
 }
 

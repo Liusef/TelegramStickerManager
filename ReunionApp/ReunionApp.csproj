@@ -40,12 +40,17 @@
 
 
   <ItemGroup>
+	  <None Remove="Controls\ImageAsync.xaml" />
 	  <None Remove="Images\AppIcon.png" />
+	  <None Remove="Pages\About.xaml" />
+	  <None Remove="Pages\CommandPages\AddSticker.xaml" />
+	  <None Remove="Pages\CommandPages\ProcessingCommand.xaml" />
 	  <None Remove="Pages\GenericError.xaml" />
 	  <None Remove="Pages\Home.xaml" />
 	  <None Remove="Pages\LoginPages\LoginCode.xaml" />
 	  <None Remove="Pages\LoginPages\LoginPhone.xaml" />
 	  <None Remove="Pages\PackPage.xaml" />
+	  <None Remove="Pages\Settings.xaml" />
   </ItemGroup>
 
 
@@ -64,6 +69,16 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TgApi\TgApi.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\Settings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\About.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Pages\PackPage.xaml">
@@ -95,6 +110,30 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="Pages\LoginPages\LoginPhone.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\Users\josep\Stuff\Projects\dotnet\TelegramSticker\ReunionApp\.editorconfig" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\josep\Stuff\Projects\dotnet\TelegramSticker\ReunionApp\.editorconfig" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\CommandPages\ProcessingCommand.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\ImageAsync.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\CommandPages\AddSticker.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>    
