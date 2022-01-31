@@ -11,9 +11,10 @@
     <StackPanel Margin="24">
         <Button Content="Back" Click="Back"/>
         <TextBlock FontWeight="Bold" FontSize="40" HorizontalAlignment="Center">
-            I actually do not exist
+            Telegram Sticker Manager
         </TextBlock>
-        <TextBlock FontWeight="Bold" FontSize="40" HorizontalAlignment="Center">
+        <Image Source="../Images/AppIcon.png" Width="200"/>
+        <TextBlock Margin="24" HorizontalAlignment="Center">
             I am not real :)
         </TextBlock>
     </StackPanel>

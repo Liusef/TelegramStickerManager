@@ -8,6 +8,9 @@
     mc:Ignorable="d">
 
     <StackPanel>
-        <TextBlock x:Name="body" TextWrapping="WrapWholeWords" IsTextSelectionEnabled="True"/>
+        <ScrollViewer MaxHeight="360" ZoomMode="Disabled" IsVerticalScrollChainingEnabled="True"
+            VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto">
+            <TextBlock x:Name="body" TextWrapping="WrapWholeWords" IsTextSelectionEnabled="True"/>
+        </ScrollViewer>
     </StackPanel>
 </Page>

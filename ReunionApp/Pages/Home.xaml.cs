@@ -10,8 +10,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using TgApi.Types;
 using System.Collections.ObjectModel;
 using Microsoft.UI.Xaml.Media.Imaging;
@@ -93,21 +91,8 @@ public sealed partial class Home : Page
 		await LoadStickers(true);
 	}
 
-	private async void NewPack(object sender, RoutedEventArgs e)
-	{
-		ContentDialog dialog = new ContentDialog();
-		dialog.Title = "Nope";
-		dialog.IsPrimaryButtonEnabled = false;
-		dialog.IsSecondaryButtonEnabled = false;
-		dialog.CloseButtonText = "Ok";
-		dialog.DefaultButton = ContentDialogButton.Close;
-		var db = new DialogBody();
-		db.Body.Text = "Not implemented yet oops";
-		dialog.Content = db;
-		dialog.XamlRoot = App.GetInstance().MainWindow.Content.XamlRoot;
-
-		var result = await dialog.ShowAsync();
-	}
+    private async void NewPack(object sender, RoutedEventArgs e) =>
+        await App.GetInstance().ShowBasicDialog("Oops!", "Not implemented yet");
 
 	private void Settings(object sender, RoutedEventArgs e)
 	{

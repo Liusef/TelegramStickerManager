@@ -5,10 +5,58 @@
     xmlns:local="using:ReunionApp.Pages.CommandPages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    xmlns:gemoji="using:GEmojiSharp"
+    mc:Ignorable="d">
 
     <Grid>
 
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="80"/>
+        </Grid.RowDefinitions>
+
+        <GridView x:Name="Grid"
+                  Grid.Row="1"
+                  ItemsSource="{x:Bind stickers}"
+                  CanReorderItems="True"
+                  AllowDrop="True"
+                  SelectionMode="Extended"
+                  TabNavigation="Local"
+                  IsTabStop="False">
+            <GridView.ItemTemplate>
+                <DataTemplate x:Name="StickerPackGridItem" x:DataType="local:NewSticker">
+                    <StackPanel Padding="24, 12, 24, 12" Spacing="10" MaxWidth="196"  IsTabStop="False">
+                        <Image Source="{x:Bind imgPath}" Width="150" VerticalAlignment="Center" Height="150" IsTabStop="False"/>
+                        <TextBox Text="{Binding Path=emojis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 IsTabStop="True" TextChanged="Emojis_TextChanged"/>
+                    </StackPanel>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+        </GridView>
+        
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <SplitButton Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="6" 
+                         Click="SplitButton_Click">
+                + Add Stickers
+                <SplitButton.Flyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem Text="+ Add Stickers" Click="Add"/>
+                        <MenuFlyoutItem Text="- Delete Stickers" Click="Delete"/>
+                    </MenuFlyout>
+                </SplitButton.Flyout>
+            </SplitButton>
+
+            <Button Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="6"
+                    Click="Finish">
+                Finish
+            </Button>
+
+        </Grid>
     </Grid>
 </Page>

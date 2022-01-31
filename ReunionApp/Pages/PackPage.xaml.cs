@@ -59,15 +59,15 @@ public sealed partial class PackPage : Page
         }
     }
 
-	public static BitmapImage PackThumb(StickerPackThumb thumb) => App.GetBitmapFromPath(TgApi.GlobalVars.TdDir +
-							  (thumb.IsDesignatedThumb ? "thumbnails" : "stickers") +
-							  Path.DirectorySeparatorChar + thumb.Filename);
-
-	public static string StickerPath(string filename) =>
-		$"{TgApi.GlobalVars.TdDir}stickers{Path.DirectorySeparatorChar}{filename}";
-
-	private void Button_Click(object sender, RoutedEventArgs e) =>
+	private void Back(object sender, RoutedEventArgs e) =>
 		App.GetInstance().RootFrame.GoBack();
 	
+    private void AddSticker(object sender, RoutedEventArgs e)
+    {
+        App.GetInstance().RootFrame.Navigate(typeof(BaseCommand), 
+            new BaseCommand.BaseCommandParams(pack, 
+            BaseCommand.CommandType.ADDSTICKER),
+            new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+    }
 }
 

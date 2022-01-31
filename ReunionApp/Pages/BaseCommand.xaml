@@ -1,0 +1,53 @@
+﻿<Page
+    x:Class="ReunionApp.Pages.BaseCommand"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ReunionApp.Pages"
+    xmlns:project="using:ReunionApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="260"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <StackPanel Grid.Row="0" Margin="24, 24, 0, 0"  Spacing="12">
+                <Button Content="Back" Click="Back"/>
+                <StackPanel Spacing="8">
+                    <Image Source="{x:Bind project:App.PackThumb(pack.EnsuredThumb)}" Width="100" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{x:Bind pack.Title}" FontSize="24" FontWeight="Bold" TextTrimming="CharacterEllipsis" TextWrapping="Wrap"/>
+                    <TextBlock Text="{x:Bind pack.Name}" FontWeight="Light" TextTrimming="CharacterEllipsis"/>
+                </StackPanel>
+               
+            </StackPanel>
+
+            <Button Grid.Row="1" Content="Info" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="24">
+                <Button.Flyout>
+                    <Flyout>
+                        <TextBlock x:Name="info" Width="300" HorizontalTextAlignment="Left" TextWrapping="WrapWholeWords" Margin="12"/>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+        </Grid>
+            
+        <Frame x:Name="Frame" 
+               Grid.Column="1"
+               Margin="24"
+               Padding="12"
+               CornerRadius="16"
+               Background="{ThemeResource SystemRevealListLowColor}"/>
+
+    </Grid>
+</Page>

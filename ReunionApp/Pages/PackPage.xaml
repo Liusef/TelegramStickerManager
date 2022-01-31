@@ -18,14 +18,14 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Column="0" Margin="24, 24, 0, 0"  Spacing="12">
-            <Button Content="Back" Click="Button_Click"/>
+            <Button Content="Back" Click="Back"/>
             <StackPanel Spacing="8">
-                <Image Source="{x:Bind local:PackPage.PackThumb(pack.EnsuredThumb)}" Width="100" HorizontalAlignment="Center"/>
+                <Image Source="{x:Bind project:App.PackThumb(pack.EnsuredThumb)}" Width="100" HorizontalAlignment="Center"/>
                 <TextBlock Text="{x:Bind pack.Title}" FontSize="24" FontWeight="Bold" TextTrimming="CharacterEllipsis" TextWrapping="Wrap"/>
                 <TextBlock Text="{x:Bind pack.Name}" FontWeight="Light" TextTrimming="CharacterEllipsis"/>
             </StackPanel>
             <StackPanel Margin="0, 24, 0, 0" HorizontalAlignment="Stretch">
-                <Button Content="Add Stickers" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"/>
+                <Button Content="Add Stickers" Click="AddSticker" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"/>
             </StackPanel>
         </StackPanel>
 
@@ -48,7 +48,7 @@
                 <DataTemplate x:DataType="types:Sticker">
                     <StackPanel Padding="12" Spacing="12" MinHeight="163">
                         <controls:ImageAsync x:Name="StickerImg" DecodeWidth="108" Width="108" Height="108" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                             Path="{x:Bind local:PackPage.StickerPath(Filename)}"/>
+                                             Path="{x:Bind project:App.StickerPath(Filename)}"/>
                         <TextBlock Text="{x:Bind Emojis}" HorizontalAlignment="Center" VerticalAlignment="Bottom" TextTrimming="CharacterEllipsis"/>
                     </StackPanel>
                 </DataTemplate>

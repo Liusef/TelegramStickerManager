@@ -80,24 +80,29 @@ public partial class App : Application
 		ShowExceptionDialog(e.Exception);
 	}
 
-	public async void ShowExceptionDialog(Exception exception)
-	{ 
-		if (isCdOpen) return;
-		isCdOpen = true;
-		var cd = new ContentDialog();
-		cd.Title = $"Oops! The program hit a(n) {exception.GetType} Exception";
-		cd.IsPrimaryButtonEnabled = false;
-		cd.IsSecondaryButtonEnabled = false;
-		cd.CloseButtonText = "Ok";
-		var b = new Pages.DialogBody();
-		b.Body.Text = exception.ToString();
-		cd.Content = b;
-		cd.XamlRoot = m_window.Content.XamlRoot;
-		
-		cd.CloseButtonClick += (sender, args) => isCdOpen = false;
+    public async Task ShowBasicDialog(string title, string body, string closeText = "Ok")
+    {
+        if (isCdOpen) return;
+        isCdOpen = true;
+        var cd = new ContentDialog();
+        cd.Title = title;
+        cd.IsPrimaryButtonEnabled = false;
+        cd.IsSecondaryButtonEnabled = false;
+        cd.CloseButtonText = closeText;
+        var b = new Pages.DialogBody();
+        b.Body.Text = body;
+        cd.Content = b;
+        cd.XamlRoot = m_window.Content.XamlRoot;
 
-		await cd.ShowAsync();
-	}
+        cd.CloseButtonClick += (sender, args) => isCdOpen = false;
+
+        await cd.ShowAsync();
+    }
+
+	public async Task ShowExceptionDialog(Exception exception)
+	{
+        await ShowBasicDialog($"Oops! The program hit a(n) {exception.GetType} Exception", exception.ToString());
+    }
 
 	public async Task HandleAuth()
 	{
@@ -156,6 +161,13 @@ public partial class App : Application
 	}
 
 	public static BitmapImage GetBitmapFromPath(string path) => new BitmapImage(new Uri(path));
+
+    public static BitmapImage PackThumb(StickerPackThumb thumb) => GetBitmapFromPath(TgApi.GlobalVars.TdDir +
+                          (thumb.IsDesignatedThumb ? "thumbnails" : "stickers") +
+                          System.IO.Path.DirectorySeparatorChar + thumb.Filename);
+
+    public static string StickerPath(string filename) =>
+        $"{TgApi.GlobalVars.TdDir}stickers{System.IO.Path.DirectorySeparatorChar}{filename}";
 
 }
 

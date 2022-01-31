@@ -43,6 +43,7 @@
 	  <None Remove="Controls\ImageAsync.xaml" />
 	  <None Remove="Images\AppIcon.png" />
 	  <None Remove="Pages\About.xaml" />
+	  <None Remove="Pages\BaseCommand.xaml" />
 	  <None Remove="Pages\CommandPages\AddSticker.xaml" />
 	  <None Remove="Pages\CommandPages\ProcessingCommand.xaml" />
 	  <None Remove="Pages\GenericError.xaml" />
@@ -56,8 +57,11 @@
 
 
   <ItemGroup>
+    <PackageReference Include="GEmojiSharp" Version="1.5.0" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.0" />
-    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22000.194" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22000.196" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.4" />
+    <PackageReference Include="Unicode.net" Version="2.0.0" />
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
 
@@ -121,6 +125,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="C:\Users\josep\Stuff\Projects\dotnet\TelegramSticker\ReunionApp\.editorconfig" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\BaseCommand.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Pages\CommandPages\ProcessingCommand.xaml">
