@@ -166,8 +166,8 @@ public partial class App : Application
                           (thumb.IsDesignatedThumb ? "thumbnails" : "stickers") +
                           System.IO.Path.DirectorySeparatorChar + thumb.Filename);
 
-    public static string StickerPath(string filename) =>
-        $"{TgApi.GlobalVars.TdDir}stickers{System.IO.Path.DirectorySeparatorChar}{filename}";
+    public static BitmapImage StickerFromFilename(string filename) =>
+        GetBitmapFromPath($"{TgApi.GlobalVars.TdDir}stickers{System.IO.Path.DirectorySeparatorChar}{filename}");
 
 }
 

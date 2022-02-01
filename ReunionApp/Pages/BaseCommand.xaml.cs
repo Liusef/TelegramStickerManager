@@ -67,6 +67,16 @@ public sealed partial class BaseCommand : Page
         App.GetInstance().RootFrame.GoBack();
 
 
-    public const string AddstickerInfo = "Haven't written instructions here yet.\n\nThis app uses Github emoji shortcodes " +
-        "which differ slightly from other platforms, like discord.";
+    public const string AddstickerInfo = @"Haven't written instructions here yet.
+
+This app will automatically downscale your images to meet the image size requirements of telegram.
+
+To move between text boxes, press tab 2 times!
+
+You can use emoji shortcodes here! Whle there aren't suggestions, typing :fox_face: will yield 🦊
+
+This app uses Github emoji shortcodes which differ slightly from other platforms, like discord.";
+
+
+
 }

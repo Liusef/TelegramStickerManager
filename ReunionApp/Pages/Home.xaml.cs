@@ -66,12 +66,6 @@ public sealed partial class Home : Page
 		}
 	}
 
-	public static BitmapImage ThumbAbsolutePath(StickerPackThumb thumb) =>
-		App.GetBitmapFromPath(TgApi.GlobalVars.TdDir + 
-							  (thumb.IsDesignatedThumb ? "thumbnails" : "stickers") + 
-							  Path.DirectorySeparatorChar + thumb.Filename);
-
-
 	private async void Packs_ItemClick(object sender, ItemClickEventArgs e)
 	{
 		var basicPack = e.ClickedItem as StickerPack;

@@ -20,7 +20,7 @@
         <StackPanel Grid.Column="0" Margin="24, 24, 0, 0"  Spacing="12">
             <Button Content="Back" Click="Back"/>
             <StackPanel Spacing="8">
-                <Image Source="{x:Bind project:App.PackThumb(pack.EnsuredThumb)}" Width="100" HorizontalAlignment="Center"/>
+                <Image Source="{x:Bind project:App.PackThumb(pack.EnsuredThumb)}" Width="100" Height="100" VerticalAlignment="Stretch" HorizontalAlignment="Center" CacheMode="BitmapCache"/>
                 <TextBlock Text="{x:Bind pack.Title}" FontSize="24" FontWeight="Bold" TextTrimming="CharacterEllipsis" TextWrapping="Wrap"/>
                 <TextBlock Text="{x:Bind pack.Name}" FontWeight="Light" TextTrimming="CharacterEllipsis"/>
             </StackPanel>
@@ -37,18 +37,18 @@
         <GridView 
             x:Name="StickerGrid" 
             Grid.Column="1" 
-            Visibility="Collapsed"
             ItemsSource="{x:Bind stickers}"
             HorizontalAlignment="Center"
             Margin="16"
             Padding="8"
             CornerRadius="16"
-            Background="{ThemeResource SystemRevealListLowColor}">
+            Background="{ThemeResource SystemRevealListLowColor}"
+            Visibility="Collapsed">
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="types:Sticker">
                     <StackPanel Padding="12" Spacing="12" MinHeight="163">
-                        <controls:ImageAsync x:Name="StickerImg" DecodeWidth="108" Width="108" Height="108" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                             Path="{x:Bind project:App.StickerPath(Filename)}"/>
+                        <Image x:Name="StickerImg" Width="108" Height="108" HorizontalAlignment="Center" VerticalAlignment="Stretch" 
+                                             Source="{x:Bind project:App.StickerFromFilename(Filename)}"/>
                         <TextBlock Text="{x:Bind Emojis}" HorizontalAlignment="Center" VerticalAlignment="Bottom" TextTrimming="CharacterEllipsis"/>
                     </StackPanel>
                 </DataTemplate>

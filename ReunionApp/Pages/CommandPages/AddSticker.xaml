@@ -18,6 +18,8 @@
 
         <GridView x:Name="Grid"
                   Grid.Row="1"
+                  HorizontalContentAlignment="Center"
+                  HorizontalAlignment="Center"
                   ItemsSource="{x:Bind stickers}"
                   CanReorderItems="True"
                   AllowDrop="True"
@@ -26,7 +28,7 @@
                   IsTabStop="False">
             <GridView.ItemTemplate>
                 <DataTemplate x:Name="StickerPackGridItem" x:DataType="local:NewSticker">
-                    <StackPanel Padding="24, 12, 24, 12" Spacing="10" MaxWidth="196"  IsTabStop="False">
+                    <StackPanel Padding="16" Spacing="10" MaxWidth="196"  IsTabStop="False">
                         <Image Source="{x:Bind imgPath}" Width="150" VerticalAlignment="Center" Height="150" IsTabStop="False"/>
                         <TextBox Text="{Binding Path=emojis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  IsTabStop="True" TextChanged="Emojis_TextChanged"/>

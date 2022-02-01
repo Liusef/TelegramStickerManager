@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:ReunionApp.Pages"
     xmlns:types="using:TgApi.Types"
+    xmlns:project="using:ReunionApp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -71,7 +72,7 @@
             <GridView.ItemTemplate>
                 <DataTemplate x:Name="StickerPackGridItem" x:DataType="types:StickerPack">
                     <StackPanel Padding="24, 12, 24, 12" Spacing="10">
-                        <Image Source="{x:Bind local:Home.ThumbAbsolutePath(EnsuredThumb)}" Width="100"/>
+                        <Image Source="{x:Bind project:App.PackThumb(EnsuredThumb)}" Width="100" Height="100" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
                         <TextBlock Text="{x:Bind Title}" HorizontalAlignment="Center" TextTrimming="CharacterEllipsis"/>
                     </StackPanel>
                 </DataTemplate>

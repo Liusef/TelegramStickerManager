@@ -31,33 +31,31 @@ public sealed partial class PackPage : Page
 
 	private StickerPack pack;
 	private ObservableCollection<Sticker> stickers = new ObservableCollection<Sticker>();
+    private bool stickersDownloading = true;
 
 	public PackPage()
 	{
 		this.InitializeComponent();
 	}
 
-	protected override void OnNavigatedTo(NavigationEventArgs e)
-	{
-		base.OnNavigatedTo(e);
-		pack = e.Parameter as StickerPack;
-		LoadStickers();
-	}
-
-	private async void LoadStickers()
-	{
-		foreach (Sticker s in pack.Stickers)
-		{
-			await s.GetPathEnsureDownloaded(App.GetInstance().Client);
-			stickers.Add(s);
-		}
-		Loading.Visibility = Visibility.Collapsed;
-		StickerGrid.Visibility = Visibility.Visible;
-        foreach (var item in StickerGrid.Items)
-        {
-            
-        }
+    protected async override void OnNavigatedTo(NavigationEventArgs e)
+    {
+        base.OnNavigatedTo(e);
+        pack = e.Parameter as StickerPack;
+        await LoadStickers();
     }
+
+    public async Task LoadStickers()
+    {
+        foreach (Sticker s in pack.Stickers)
+        {
+            await s.GetPathEnsureDownloaded(App.GetInstance().Client);
+            stickers.Add(s);
+        }
+        Loading.Visibility = Visibility.Collapsed;
+        StickerGrid.Visibility = Visibility.Visible;
+    }
+
 
 	private void Back(object sender, RoutedEventArgs e) =>
 		App.GetInstance().RootFrame.GoBack();
