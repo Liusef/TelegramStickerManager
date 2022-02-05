@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using TgApi.Types;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage.Streams;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -31,9 +32,9 @@ public sealed partial class PackPage : Page
 
 	private StickerPack pack;
 	private ObservableCollection<Sticker> stickers = new ObservableCollection<Sticker>();
-    private bool stickersDownloading = true;
 
-	public PackPage()
+
+    public PackPage()
 	{
 		this.InitializeComponent();
 	}
@@ -43,6 +44,8 @@ public sealed partial class PackPage : Page
         base.OnNavigatedTo(e);
         pack = e.Parameter as StickerPack;
         await LoadStickers();
+        StickerGrid.Visibility = Visibility.Visible;
+        Loading.Visibility = Visibility.Collapsed;
     }
 
     public async Task LoadStickers()
@@ -52,8 +55,6 @@ public sealed partial class PackPage : Page
             await s.GetPathEnsureDownloaded(App.GetInstance().Client);
             stickers.Add(s);
         }
-        Loading.Visibility = Visibility.Collapsed;
-        StickerGrid.Visibility = Visibility.Visible;
     }
 
 
@@ -68,4 +69,5 @@ public sealed partial class PackPage : Page
             new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
     }
 }
+
 

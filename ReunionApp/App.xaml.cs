@@ -101,7 +101,7 @@ public partial class App : Application
 
 	public async Task ShowExceptionDialog(Exception exception)
 	{
-        await ShowBasicDialog($"Oops! The program hit a(n) {exception.GetType} Exception", exception.ToString());
+        await ShowBasicDialog($"Oops! The program hit a(n) {exception.GetType()} Exception", exception.ToString());
     }
 
 	public async Task HandleAuth()
@@ -162,12 +162,18 @@ public partial class App : Application
 
 	public static BitmapImage GetBitmapFromPath(string path) => new BitmapImage(new Uri(path));
 
-    public static BitmapImage PackThumb(StickerPackThumb thumb) => GetBitmapFromPath(TgApi.GlobalVars.TdDir +
+    public static BitmapImage PackThumbImg(StickerPackThumb thumb) => GetBitmapFromPath(TgApi.GlobalVars.TdDir +
                           (thumb.IsDesignatedThumb ? "thumbnails" : "stickers") +
                           System.IO.Path.DirectorySeparatorChar + thumb.Filename);
 
     public static BitmapImage StickerFromFilename(string filename) =>
         GetBitmapFromPath($"{TgApi.GlobalVars.TdDir}stickers{System.IO.Path.DirectorySeparatorChar}{filename}");
+
+    public static BitmapImage PackThumb(StickerPackThumb thumb)
+    {
+        if (thumb.Type == StickerType.STANDARD) return PackThumbImg(thumb);
+        return new BitmapImage();
+    }
 
 }
 

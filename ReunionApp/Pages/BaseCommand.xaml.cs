@@ -47,14 +47,14 @@ public sealed partial class BaseCommand : Page
         pack = parameters.pack;
         SelectPage(parameters.commandType);
     }
-    
+
     private void SelectPage(CommandType type)
     {
         switch (type)
         {
             case CommandType.ADDSTICKER:
                 ContentFrame.Navigate(typeof(CommandPages.AddSticker));
-                info.Text = AddstickerInfo;
+                InfoFrame.Navigate(typeof(CommandPages.InfoPages.AddInfo));
                 break;
             default:
                 App.GetInstance().ShowBasicDialog("No command was selected",
@@ -65,18 +65,4 @@ public sealed partial class BaseCommand : Page
 
     private void Back(object sender, RoutedEventArgs e) =>
         App.GetInstance().RootFrame.GoBack();
-
-
-    public const string AddstickerInfo = @"Haven't written instructions here yet.
-
-This app will automatically downscale your images to meet the image size requirements of telegram.
-
-To move between text boxes, press tab 2 times!
-
-You can use emoji shortcodes here! Whle there aren't suggestions, typing :fox_face: will yield 🦊
-
-This app uses Github emoji shortcodes which differ slightly from other platforms, like discord.";
-
-
-
 }

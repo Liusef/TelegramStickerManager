@@ -44,6 +44,7 @@
 	  <None Remove="Pages\About.xaml" />
 	  <None Remove="Pages\BaseCommand.xaml" />
 	  <None Remove="Pages\CommandPages\AddSticker.xaml" />
+	  <None Remove="Pages\CommandPages\InfoPages\AddInfo.xaml" />
 	  <None Remove="Pages\CommandPages\ProcessingCommand.xaml" />
 	  <None Remove="Pages\GenericError.xaml" />
 	  <None Remove="Pages\Home.xaml" />
@@ -51,6 +52,7 @@
 	  <None Remove="Pages\LoginPages\LoginPhone.xaml" />
 	  <None Remove="Pages\PackPage.xaml" />
 	  <None Remove="Pages\Settings.xaml" />
+	  <None Remove="Pages\Unsupported.xaml" />
   </ItemGroup>
 
 
@@ -58,8 +60,8 @@
   <ItemGroup>
     <PackageReference Include="GEmojiSharp" Version="1.5.0" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.0" />
-    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22000.196" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="2.0.0-alpha.0.164" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22000.197" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="2.0.0-alpha.0.168" />
     <PackageReference Include="Unicode.net" Version="2.0.0" />
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
@@ -123,6 +125,11 @@
     <None Include="C:\Users\josep\Stuff\Projects\dotnet\TelegramSticker\ReunionApp\.editorconfig" />
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Pages\Unsupported.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="Pages\BaseCommand.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -134,6 +141,11 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="Pages\CommandPages\AddSticker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\CommandPages\InfoPages\AddInfo.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>    

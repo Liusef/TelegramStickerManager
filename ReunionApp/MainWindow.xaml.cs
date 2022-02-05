@@ -29,5 +29,10 @@ namespace ReunionApp
 			SetTitleBar(appTitleBar);
 			ContentFrame.Navigate(typeof(Pages.LoadingApp));
 		}
-	}
+
+        private void contentFrame_Navigated(object sender, NavigationEventArgs e)
+        {
+            ContentFrame.ForwardStack.Clear();
+        }
+    }
 }

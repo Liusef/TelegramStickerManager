@@ -1,0 +1,38 @@
+﻿<Page
+    x:Class="ReunionApp.Pages.CommandPages.InfoPages.AddInfo"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ReunionApp.Pages.CommandPages.InfoPages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <StackPanel VerticalAlignment="Bottom" Spacing="12">
+            <Button HorizontalAlignment="Stretch">
+                Info
+                <Button.Flyout>
+                    <Flyout>
+                        <TextBlock Width="400" TextWrapping="WrapWholeWords">
+                            Haven't written instructions here yet.
+                            <LineBreak/><LineBreak/>This app will automatically downscale your images to meet the image size requirements of telegram.
+                        </TextBlock>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+            <Button HorizontalAlignment="Stretch">
+                Features
+                <Button.Flyout>
+                    <Flyout>
+                        <TextBlock Width="400" TextWrapping="WrapWholeWords">
+                            To move between text boxes, press tab 2 times!   
+                            <LineBreak/><LineBreak/>You can use emoji shortcodes here! Whle there aren't suggestions, typing :fox_face: will yield 🦊
+                            <LineBreak/><LineBreak/>This app uses Github emoji shortcodes which differ slightly from other platforms, like discord.
+                        </TextBlock>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+        </StackPanel>
+    </Grid>
+</Page>

@@ -14,6 +14,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="80"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <GridView x:Name="Grid"
@@ -29,8 +30,12 @@
             <GridView.ItemTemplate>
                 <DataTemplate x:Name="StickerPackGridItem" x:DataType="local:NewSticker">
                     <StackPanel Padding="16" Spacing="10" MaxWidth="196"  IsTabStop="False">
-                        <Image Source="{x:Bind imgPath}" Width="150" VerticalAlignment="Center" Height="150" IsTabStop="False"/>
-                        <TextBox Text="{Binding Path=emojis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        <Image Width="150" VerticalAlignment="Center" Height="150" IsTabStop="False">
+                            <Image.Source>
+                                <BitmapImage UriSource="{x:Bind ImgPath}" DecodePixelWidth="150" />
+                            </Image.Source>
+                        </Image>
+                        <TextBox Text="{Binding Path=Emojis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  IsTabStop="True" TextChanged="Emojis_TextChanged"/>
                     </StackPanel>
                 </DataTemplate>
@@ -49,7 +54,7 @@
                 <SplitButton.Flyout>
                     <MenuFlyout>
                         <MenuFlyoutItem Text="+ Add Stickers" Click="Add"/>
-                        <MenuFlyoutItem Text="- Delete Stickers" Click="Delete"/>
+                        <MenuFlyoutItem Text="- UnAdd Stickers" Click="Delete"/>
                     </MenuFlyout>
                 </SplitButton.Flyout>
             </SplitButton>
@@ -58,7 +63,12 @@
                     Click="Finish">
                 Finish
             </Button>
-
         </Grid>
+
+        <ProgressBar x:Name="processing"
+                     Grid.Row="3"
+                     Visibility="Collapsed"
+                     IsIndeterminate="True"/>
+
     </Grid>
 </Page>

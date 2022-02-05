@@ -89,4 +89,13 @@ public static class Utils
 		var parser = PhoneNumbers.PhoneNumberUtil.GetInstance();
 		return parser.Format(parser.Parse(phone, "GB"), PhoneNumbers.PhoneNumberFormat.INTERNATIONAL);
 	}
+
+	public static void ClearTemp()
+	{
+		if (!Directory.Exists(GlobalVars.TempDir)) return;
+		foreach (FileInfo file in (new DirectoryInfo(GlobalVars.TempDir)).EnumerateFiles())
+		{
+			file.Delete();
+		}
+	}
 }

@@ -10,7 +10,7 @@ public class Sticker
     public int Height { get; set; }
     public string MainEmoji { get; set; }
     public string Emojis { get; set; }
-    public bool IsAnimated { get; set; }
+    public StickerType Type { get; set; }
     public string Filename { get; set; }
     public string RemoteFileId { get; set; }
     public int Size { get; set; }
@@ -21,6 +21,8 @@ public class Sticker
     [JsonIgnore]
     public bool IsDownloaded => File.Exists(LocalPath);
 
+    public Sticker() { }
+
     public static async Task<Sticker> Generate(TdClient client, TdApi.Sticker input)
     {
         var filenameTask = client.GetSuggestedFileNameAsync(input.Sticker_.Id);
@@ -30,7 +32,6 @@ public class Sticker
             ParentId = input.SetId,
             Width = input.Width,
             Height = input.Height,
-            IsAnimated = input.IsAnimated,
             RemoteFileId = input.Sticker_.Remote.Id,
             Size = input.Sticker_.ExpectedSize,
             MainEmoji = input.Emoji
@@ -40,6 +41,12 @@ public class Sticker
         emojis.Remove(input.Emoji);
         s.Emojis = input.Emoji + string.Join("", emojis);
         s.Filename = (await filenameTask).Text_;
+
+        if (input.IsMask) s.Type = StickerType.MASK;
+        else if (input.IsAnimated) s.Type = StickerType.ANIMATED;
+        else if (s.Filename.Substring(s.Filename.Length - 4).Equals("webm")) s.Type = StickerType.VIDEO;
+        else s.Type = StickerType.STANDARD;
+
         return s;
     }
 

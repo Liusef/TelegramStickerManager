@@ -36,7 +36,13 @@ public sealed partial class Home : Page
 		LoadStickers();
 	}
 
-	public async Task LoadStickers(bool forceNew = false)
+    protected override void OnNavigatedTo(NavigationEventArgs e)
+    {
+        base.OnNavigatedTo(e);
+        App.GetInstance().RootFrame.BackStack.Clear();
+    }
+
+    public async Task LoadStickers(bool forceNew = false)
 	{
 		try
 		{
@@ -69,6 +75,13 @@ public sealed partial class Home : Page
 	private async void Packs_ItemClick(object sender, ItemClickEventArgs e)
 	{
 		var basicPack = e.ClickedItem as StickerPack;
+
+        if (basicPack.Type != StickerType.STANDARD)
+		{
+            App.GetInstance().RootFrame.Navigate(typeof(Unsupported), $"Sticker packs of type {basicPack.Type} are not supported at this time.");
+            return;
+		}
+
 		var packTask = StickerPack.GenerateFromName(App.GetInstance().Client, basicPack.Name);
 		Loading.Visibility = Visibility.Visible;
 		var pack = await packTask;

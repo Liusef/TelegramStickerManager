@@ -8,7 +8,7 @@ public class StickerPack
     public long Id { get; set; }
     public string Title { get; set; }
     public string Name { get; set; }
-    public bool IsAnimated { get; set; }
+    public StickerType Type { get; set; }
     public StickerPackThumb? Thumb { get; set; }
 
     [JsonIgnore]
@@ -37,7 +37,6 @@ public class StickerPack
             Id = input.Id,
             Title = input.Title,
             Name = input.Name,
-            IsAnimated = input.IsAnimated,
             Thumb = await StickerPackThumb.Generate(client, input.Thumbnail, input.IsAnimated),
         };
         var slist = new List<Sticker>();
@@ -46,6 +45,12 @@ public class StickerPack
             slist.Add(await task);
         }
         s.Stickers = slist.ToArray();
+
+        if (input.IsMasks) s.Type = StickerType.MASK;
+        else if (input.IsAnimated) s.Type = StickerType.ANIMATED;
+        else if (s.Stickers[0].Filename.Substring(s.Stickers[0].Filename.Length - 4).Equals("webm")) s.Type = StickerType.VIDEO;
+        else s.Type = StickerType.STANDARD;
+
         s.Cache();
         return s;
     }

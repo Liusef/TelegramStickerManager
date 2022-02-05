@@ -10,7 +10,7 @@ public class StickerPackThumb
     public string RemoteFileId { get; set; }
     public string Filename { get; set; }
     public int Size { get; set; }
-    public bool IsAnimated { get; set; }
+    public StickerType Type { get; set; }
     public bool IsDesignatedThumb { get; set; }
 
 
@@ -33,10 +33,14 @@ public class StickerPackThumb
             Height = input.Height,
             RemoteFileId = input.File.Remote.Id,
             Size = input.File.ExpectedSize,
-            IsDesignatedThumb = true,
-            IsAnimated = isAnimated
+            IsDesignatedThumb = true
         };
         t.Filename = (await filenameTask).Text_;
+
+        if (isAnimated) t.Type = StickerType.ANIMATED;
+        else if (t.Filename.Substring(t.Filename.Length - 4).Equals("webm")) t.Type = StickerType.VIDEO;
+        else t.Type = StickerType.STANDARD;
+
         return t;
     }
 
@@ -49,7 +53,7 @@ public class StickerPackThumb
             RemoteFileId = input.RemoteFileId,
             Filename = input.Filename,
             Size = input.Size,
-            IsAnimated = input.IsAnimated,
+            Type = input.Type,
             IsDesignatedThumb = false
         };
     }
