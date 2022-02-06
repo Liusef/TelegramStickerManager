@@ -8,7 +8,7 @@ $packagedInstalled = $wasdk -like "*Microsoft.WindowsAppRuntime.*"
 if (!$runtimesInstalled) {
     ""
     "================================================================================"
-    "The .NET 6 Desktop Runtime is not installed. Please visit this link to download."
+    Write-Host "The .NET 6 Desktop Runtime is not installed. Please visit this link to download." -ForegroundColor Red
     "https://dotnet.microsoft.com/en-us/download/dotnet/6.0/runtime"
     ""
     "Please remember to download the Desktop Runtime."
@@ -19,7 +19,7 @@ if (!$runtimesInstalled) {
 if (!$packagedInstalled) {
     ""
     "================================================================================"
-    "The Windows App Runtime is not installed. Please visit this link to download."
+    Write-Host "The Windows App Runtime is not installed. Please visit this link to download." -ForegroundColor Red
     "https://aka.ms/windowsappsdk/1.0-stable/msix-installer"
     "================================================================================"
     ""
@@ -27,6 +27,6 @@ if (!$packagedInstalled) {
 
 if ($packagedInstalled -and $runtimesInstalled) {
     ""
-    "All dependencies should be installed! Happy stickering! 🐼"
+   Write-Host  "All dependencies should be installed! Happy stickering! 🐼" -ForegroundColor Green
     ""
 }
