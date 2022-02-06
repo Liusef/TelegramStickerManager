@@ -43,7 +43,9 @@
                Margin="24"
                Padding="12"
                CornerRadius="16"
-               Background="{ThemeResource SystemRevealListLowColor}"/>
+               Background="{ThemeResource SystemRevealListLowColor}"
+               IsNavigationStackEnabled="False"
+               CacheSize="0"/>
 
     </Grid>
 </Page>

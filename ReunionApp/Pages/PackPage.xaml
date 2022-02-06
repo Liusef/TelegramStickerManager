@@ -6,7 +6,7 @@
     xmlns:project="using:ReunionApp"
     xmlns:types="using:TgApi.Types"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:ReunionApp.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -20,7 +20,13 @@
         <StackPanel Grid.Column="0" Margin="24, 24, 0, 0"  Spacing="12">
             <Button Content="Back" Click="Back"/>
             <StackPanel Spacing="8">
-                <Image Source="{x:Bind project:App.PackThumb(pack.EnsuredThumb)}" Width="100" Height="100" VerticalAlignment="Stretch" HorizontalAlignment="Center" CacheMode="BitmapCache"/>
+                <!--Image Source="{x:Bind project:App.PackThumb(pack.EnsuredThumb)}" Width="100" Height="100" VerticalAlignment="Stretch" HorizontalAlignment="Center" /-->
+                <Image x:Name="PackThumb" Width="100" Height="100" VerticalAlignment="Stretch" HorizontalAlignment="Center">
+                    <Image.Source>
+                        <BitmapImage UriSource="{x:Bind project:App.ThumbPath(pack.EnsuredThumb.Filename, pack.EnsuredThumb.IsDesignatedThumb)}" 
+                                     DecodePixelWidth="100"/>
+                    </Image.Source>
+                </Image>
                 <TextBlock Text="{x:Bind pack.Title}" FontSize="24" FontWeight="Bold" TextTrimming="CharacterEllipsis" TextWrapping="Wrap"/>
                 <TextBlock Text="{x:Bind pack.Name}" FontWeight="Light" TextTrimming="CharacterEllipsis"/>
             </StackPanel>
@@ -47,8 +53,11 @@
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="types:Sticker">
                     <StackPanel Padding="12" Spacing="12" MinHeight="163">
-                        <Image x:Name="StickerImg" Width="108" Height="108" HorizontalAlignment="Center" VerticalAlignment="Stretch" 
-                                             Source="{x:Bind project:App.StickerFromFilename(Filename)}"/>
+                        <Image x:Name="StickerImg" Width="108" Height="108" HorizontalAlignment="Center" VerticalAlignment="Stretch" Unloaded="StickerImg_Unloaded">
+                            <Image.Source>
+                                <BitmapImage UriSource="{x:Bind project:App.StickerPath(Filename)}"/>
+                            </Image.Source>
+                        </Image>
                         <TextBlock Text="{x:Bind Emojis}" HorizontalAlignment="Center" VerticalAlignment="Bottom" TextTrimming="CharacterEllipsis"/>
                     </StackPanel>
                 </DataTemplate>

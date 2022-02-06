@@ -28,6 +28,8 @@ public class FileDownload
             {
                 r.latestFile = fileUpdate.File;
                 if (r.latestFile.Local.IsDownloadingCompleted) client.UpdateReceived -= r.handler;
+                r.client = null;
+                r.handler = null;
             }
         };
 

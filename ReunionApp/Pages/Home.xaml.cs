@@ -42,6 +42,14 @@ public sealed partial class Home : Page
         App.GetInstance().RootFrame.BackStack.Clear();
     }
 
+    protected override void OnNavigatedFrom(NavigationEventArgs e)
+    {
+        packList = new ObservableCollection<StickerPack>();
+        Packs.ItemsSource = null;
+        Bindings.StopTracking();
+        base.OnNavigatedFrom(e);
+    }
+
     public async Task LoadStickers(bool forceNew = false)
 	{
 		try

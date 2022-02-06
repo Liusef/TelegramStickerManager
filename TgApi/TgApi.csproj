@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="libphonenumber-csharp" Version="8.12.38" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="TDLib" Version="1.7.9" />
     <PackageReference Include="tdlib.native" Version="1.7.9.1" />
   </ItemGroup>

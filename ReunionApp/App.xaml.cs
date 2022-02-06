@@ -56,7 +56,7 @@ public partial class App : Application
 	public App()
 	{
 		auth = new AuthHandler(Client);
-		Client.Bindings.SetLogVerbosityLevel(2);
+		Client.Bindings.SetLogVerbosityLevel(0);
 		GlobalVars.EnsureDirectories();
 		HandleAuth();
 		this.InitializeComponent();
@@ -127,7 +127,10 @@ public partial class App : Application
 						SystemLanguageCode = GlobalVars.SystemLanguageCode,
 						DeviceModel = GlobalVars.DeviceModel,
 						ApplicationVersion = GlobalVars.ApplicationVersion,
-						DatabaseDirectory = GlobalVars.TdDir
+						DatabaseDirectory = GlobalVars.TdDir,
+                        UseChatInfoDatabase = false,
+                        UseFileDatabase = false,
+                        UseMessageDatabase = false
 					});
 					break;
 				case AuthHandler.AuthState.WaitEncryptionKey:
@@ -175,5 +178,12 @@ public partial class App : Application
         return new BitmapImage();
     }
 
-}
+    public static Uri StickerPath(string filename) =>
+        new Uri($"{TgApi.GlobalVars.TdDir}stickers{System.IO.Path.DirectorySeparatorChar}{filename}");
 
+    public static Uri ThumbPath(string filename, bool isDesignated) =>
+        new Uri(TgApi.GlobalVars.TdDir +
+        (isDesignated ? "thumbnails" : "stickers") +
+        System.IO.Path.DirectorySeparatorChar + filename);
+
+}

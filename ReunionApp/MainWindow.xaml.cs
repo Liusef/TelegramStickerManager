@@ -15,6 +15,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Microsoft.UI;
 using Windows.UI.Popups;
+using System.Runtime;
 
 namespace ReunionApp
 {
@@ -27,12 +28,13 @@ namespace ReunionApp
 			this.InitializeComponent();
 			ExtendsContentIntoTitleBar = true;
 			SetTitleBar(appTitleBar);
-			ContentFrame.Navigate(typeof(Pages.LoadingApp));
+			contentFrame.Navigate(typeof(Pages.LoadingApp));
 		}
 
         private void contentFrame_Navigated(object sender, NavigationEventArgs e)
         {
-            ContentFrame.ForwardStack.Clear();
+            contentFrame.ForwardStack.Clear();
+            GC.Collect();
         }
     }
 }

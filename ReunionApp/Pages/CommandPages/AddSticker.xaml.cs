@@ -39,6 +39,18 @@ public sealed partial class AddSticker : Page
         this.InitializeComponent();
     }
 
+    protected override void OnNavigatedFrom(NavigationEventArgs e)
+    {
+        foreach (var ns in stickers) ns.Img = null;
+        NavigationCacheMode = NavigationCacheMode.Disabled;
+        Grid.ItemsSource = new ObservableCollection<NewSticker>();
+        stickers = new ObservableCollection<NewSticker>();
+        Grid.ItemsSource = null;
+        UnloadObject(Grid);
+        Bindings.StopTracking();
+        base.OnNavigatedFrom(e);
+    }
+
     private async void Add(object sender, RoutedEventArgs e)
     {
         var picker = new FileOpenPicker();
@@ -55,7 +67,14 @@ public sealed partial class AddSticker : Page
         if (files.Count == 0) return;
         foreach (var file in files)
         {
-            stickers.Add(new NewSticker { ImgPath = file.Path });
+            var bmp = new BitmapImage(new Uri(file.Path));
+            bmp.DecodePixelWidth = 150;
+            var ns = new NewSticker
+            {
+                ImgPath = file.Path,
+                Img = bmp
+            };
+            stickers.Add(ns);
         }
     }
     
@@ -63,10 +82,15 @@ public sealed partial class AddSticker : Page
     {
         var selected = Grid.SelectedItems;
         if (selected.Count == 0) return;
-        foreach (var item in selected.Reverse())
+        for (int i = selected.Count - 1; i >= 0; i--)
         {
-            stickers.Remove(item as NewSticker);
+            var ns = (NewSticker) selected[i];
+            ns.Img = null;
+            stickers.Remove(ns);
         }
+        selected = null;
+        stickers = new ObservableCollection<NewSticker>(stickers);
+        Grid.ItemsSource = stickers;
     }
 
     private async void Finish(object sender, RoutedEventArgs e)
@@ -182,8 +206,6 @@ public sealed partial class AddSticker : Page
         send.Text = GEmojiSharp.Emoji.Emojify(send.Text);
         send.Select(send.Text.Length, send.Text.Length);
     }
-
-    
 }
 
 public class NewSticker
@@ -191,6 +213,7 @@ public class NewSticker
     public string ImgPath { get; set; }
     public string TempPath { get; set; }
     public string Emojis { get; set; } = "";
+    public BitmapImage Img {get; set;}
 
     public string EnsuredPath => File.Exists(TempPath) ? TempPath : ImgPath;
 }

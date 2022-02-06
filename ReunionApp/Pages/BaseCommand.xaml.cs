@@ -48,6 +48,14 @@ public sealed partial class BaseCommand : Page
         SelectPage(parameters.commandType);
     }
 
+    protected override void OnNavigatedFrom(NavigationEventArgs e)
+    {
+        ContentFrame.Navigate(typeof(Page));
+        UnloadObject(ContentFrame);
+        UnloadObject(InfoFrame);
+        base.OnNavigatedFrom(e);
+    }
+
     private void SelectPage(CommandType type)
     {
         switch (type)

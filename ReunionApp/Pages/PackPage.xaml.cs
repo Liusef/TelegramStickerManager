@@ -42,10 +42,20 @@ public sealed partial class PackPage : Page
     protected async override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        pack = e.Parameter as StickerPack;
-        await LoadStickers();
+        if (pack is null) pack = e.Parameter as StickerPack;
+        if (stickers.Count == 0) await LoadStickers();
         StickerGrid.Visibility = Visibility.Visible;
         Loading.Visibility = Visibility.Collapsed;
+        //App.GetInstance().Client as TdLib.TdClient 
+    }
+
+    protected override void OnNavigatedFrom(NavigationEventArgs e)
+    {
+        stickers = new ObservableCollection<Sticker>();
+        StickerGrid.ItemsSource = null;
+        UnloadObject(StickerGrid);
+        Bindings.StopTracking();
+        base.OnNavigatedFrom(e);
     }
 
     public async Task LoadStickers()
@@ -67,6 +77,11 @@ public sealed partial class PackPage : Page
             new BaseCommand.BaseCommandParams(pack, 
             BaseCommand.CommandType.ADDSTICKER),
             new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+    }
+
+    private void StickerImg_Unloaded(object sender, RoutedEventArgs e)
+    {
+        //if (sender is Image img) img.Source = null;
     }
 }
 
