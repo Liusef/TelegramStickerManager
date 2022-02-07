@@ -46,11 +46,13 @@ public sealed partial class PackPage : Page
         if (stickers.Count == 0) await LoadStickers();
         StickerGrid.Visibility = Visibility.Visible;
         Loading.Visibility = Visibility.Collapsed;
-        //App.GetInstance().Client as TdLib.TdClient 
     }
 
     protected override void OnNavigatedFrom(NavigationEventArgs e)
     {
+        // This block is to ensure that bitmaps and other large objects are garbage collected, as pages aren't disposed by the garbage collector
+        // NOTE: Lots of objects that need to be garbage collected are RefCounted from Unmanaged memory
+        // TODO This is not a good solution for memory management. Find a way to dispose of pages instead.
         stickers = new ObservableCollection<Sticker>();
         StickerGrid.ItemsSource = null;
         UnloadObject(StickerGrid);
@@ -77,11 +79,6 @@ public sealed partial class PackPage : Page
             new BaseCommand.BaseCommandParams(pack, 
             BaseCommand.CommandType.ADDSTICKER),
             new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
-    }
-
-    private void StickerImg_Unloaded(object sender, RoutedEventArgs e)
-    {
-        //if (sender is Image img) img.Source = null;
     }
 }
 

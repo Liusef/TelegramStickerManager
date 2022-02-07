@@ -53,7 +53,7 @@
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="types:Sticker">
                     <StackPanel Padding="12" Spacing="12" MinHeight="163">
-                        <Image x:Name="StickerImg" Width="108" Height="108" HorizontalAlignment="Center" VerticalAlignment="Stretch" Unloaded="StickerImg_Unloaded">
+                        <Image x:Name="StickerImg" Width="108" Height="108" HorizontalAlignment="Center" VerticalAlignment="Stretch">
                             <Image.Source>
                                 <BitmapImage UriSource="{x:Bind project:App.StickerPath(Filename)}"/>
                             </Image.Source>
