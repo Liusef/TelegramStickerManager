@@ -8,6 +8,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    NavigationCacheMode="Enabled"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
@@ -21,14 +22,9 @@
             <Button Content="Back" Click="Back"/>
             <StackPanel Spacing="8">
                 <!--Image Source="{x:Bind project:App.PackThumb(pack.EnsuredThumb)}" Width="100" Height="100" VerticalAlignment="Stretch" HorizontalAlignment="Center" /-->
-                <Image x:Name="PackThumb" Width="100" Height="100" VerticalAlignment="Stretch" HorizontalAlignment="Center">
-                    <Image.Source>
-                        <BitmapImage UriSource="{x:Bind project:App.ThumbPath(pack.EnsuredThumb.Filename, pack.EnsuredThumb.IsDesignatedThumb)}" 
-                                     DecodePixelWidth="100"/>
-                    </Image.Source>
-                </Image>
-                <TextBlock Text="{x:Bind pack.Title}" FontSize="24" FontWeight="Bold" TextTrimming="CharacterEllipsis" TextWrapping="Wrap"/>
-                <TextBlock Text="{x:Bind pack.Name}" FontWeight="Light" TextTrimming="CharacterEllipsis"/>
+                <Image x:Name="PackThumb" Width="100" Height="100" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+                <TextBlock x:Name="Title" FontSize="24" FontWeight="Bold" TextTrimming="CharacterEllipsis" TextWrapping="Wrap"/>
+                <TextBlock x:Name="Name" FontWeight="Light" TextTrimming="CharacterEllipsis"/>
             </StackPanel>
             <StackPanel Margin="0, 24, 0, 0" HorizontalAlignment="Stretch">
                 <Button Content="Add Stickers" Click="AddSticker" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"/>

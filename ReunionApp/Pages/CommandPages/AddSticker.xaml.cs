@@ -47,7 +47,7 @@ public sealed partial class AddSticker : Page
         foreach (var ns in stickers) ns.Img = null;
         NavigationCacheMode = NavigationCacheMode.Disabled;
         Grid.ItemsSource = new ObservableCollection<NewSticker>();
-        stickers = new ObservableCollection<NewSticker>();
+        //stickers = new ObservableCollection<NewSticker>();
         Grid.ItemsSource = null;
         UnloadObject(Grid);
         Bindings.StopTracking();

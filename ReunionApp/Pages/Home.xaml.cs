@@ -42,17 +42,6 @@ public sealed partial class Home : Page
         App.GetInstance().RootFrame.BackStack.Clear();
     }
 
-    protected override void OnNavigatedFrom(NavigationEventArgs e)
-    {
-        // This block is to ensure that bitmaps and other large objects are garbage collected, as pages aren't disposed by the garbage collector
-        // NOTE: Lots of objects that need to be garbage collected are RefCounted from Unmanaged memory
-        // TODO This is not a good solution for memory management. Find a way to dispose of pages instead.
-        packList = new ObservableCollection<StickerPack>();
-        Packs.ItemsSource = null;
-        Bindings.StopTracking();
-        base.OnNavigatedFrom(e);
-    }
-
     public async Task LoadStickers(bool forceNew = false)
 	{
 		try
@@ -85,17 +74,22 @@ public sealed partial class Home : Page
 
 	private async void Packs_ItemClick(object sender, ItemClickEventArgs e)
 	{
-		var basicPack = e.ClickedItem as StickerPack;
+		var pack = e.ClickedItem as StickerPack;
 
-        if (basicPack.Type != StickerType.STANDARD)
+        if (pack.Type != StickerType.STANDARD)
 		{
-            App.GetInstance().RootFrame.Navigate(typeof(Unsupported), $"Sticker packs of type {basicPack.Type} are not supported at this time.");
+            App.GetInstance().RootFrame.Navigate(typeof(Unsupported), $"Sticker packs of type {pack.Type} are not supported at this time.");
             return;
 		}
+        Loading.Visibility = Visibility.Visible;
 
-		var packTask = StickerPack.GenerateFromName(App.GetInstance().Client, basicPack.Name);
-		Loading.Visibility = Visibility.Visible;
-		var pack = await packTask;
+        if (pack.IsCachedCopy)
+		{
+            var oldpack = pack;
+            pack = await Task.Run(async() => await StickerPack.GenerateFromName(App.GetInstance().Client, pack.Name));
+            oldpack.InjectCompleteInfo(pack);
+        }
+
 		App.GetInstance().RootFrame.Navigate(typeof(PackPage), pack);
 		Loading.Visibility = Visibility.Collapsed;
 	}

@@ -184,4 +184,15 @@ public class StickerPack
         if (File.Exists($"{GlobalVars.PacksDir}{name}.json")) return ReadCache(name);
         return await GenerateFromName(client, name);
     }
+
+    /// <summary>
+    /// Adds complete information from fully detailed stickerpack to basic version
+    /// </summary>
+    /// <param name="full"></param>
+    public void InjectCompleteInfo(StickerPack full)
+	{
+        if (!IsCachedCopy) return;
+        Stickers = full.Stickers;
+        IsCachedCopy = false;
+	}
 }

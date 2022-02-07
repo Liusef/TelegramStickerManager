@@ -31,6 +31,7 @@ public sealed partial class PackPage : Page
 {
 
 	private StickerPack pack;
+    private BitmapImage thumb;
 	private ObservableCollection<Sticker> stickers = new ObservableCollection<Sticker>();
 
 
@@ -41,32 +42,57 @@ public sealed partial class PackPage : Page
 
     protected async override void OnNavigatedTo(NavigationEventArgs e)
     {
+        bool update = pack == null || (e.Parameter != null && (e.Parameter as StickerPack).Id != pack.Id);
+
+        if (update)
+        {
+            pack = e.Parameter as StickerPack;
+            PackThumb.Source = new BitmapImage(App.ThumbPath(pack.EnsuredThumb.Filename, pack.EnsuredThumb.IsDesignatedThumb));
+            Title.Text = pack.Title;
+            Name.Text = pack.Name;
+            CleanUp();
+        }
+
+        await Task.Run(async () => await Task.Delay(30)); // This allows the thumbnail to load in on page navigate
+
+        if (update)
+		{
+            var newcol = await Task.Run(async() => await LoadStickers());
+            stickers = newcol;
+            StickerGrid.ItemsSource = stickers;
+        }
+
         base.OnNavigatedTo(e);
-        if (pack is null) pack = e.Parameter as StickerPack;
-        if (stickers.Count == 0) await LoadStickers();
         StickerGrid.Visibility = Visibility.Visible;
         Loading.Visibility = Visibility.Collapsed;
     }
 
     protected override void OnNavigatedFrom(NavigationEventArgs e)
     {
+        //thumb = null;
+        base.OnNavigatedFrom(e);
+    }
+
+    private void CleanUp()
+    {
         // This block is to ensure that bitmaps and other large objects are garbage collected, as pages aren't disposed by the garbage collector
         // NOTE: Lots of objects that need to be garbage collected are RefCounted from Unmanaged memory
         // TODO This is not a good solution for memory management. Find a way to dispose of pages instead.
         stickers = new ObservableCollection<Sticker>();
-        StickerGrid.ItemsSource = null;
+        StickerGrid.ItemsSource = stickers;
         UnloadObject(StickerGrid);
         Bindings.StopTracking();
-        base.OnNavigatedFrom(e);
     }
 
-    public async Task LoadStickers()
+    public async Task<ObservableCollection<Sticker>> LoadStickers()
     {
+        var obscol = new ObservableCollection<Sticker>();
         foreach (Sticker s in pack.Stickers)
         {
             await Task.Run(async () => await s.GetPathEnsureDownloaded(App.GetInstance().Client));
-            stickers.Add(s);
+            obscol.Add(s);
         }
+        return obscol;
     }
 
 
