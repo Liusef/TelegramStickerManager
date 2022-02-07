@@ -55,7 +55,7 @@
                     <StackPanel Padding="12" Spacing="12" MinHeight="163">
                         <Image x:Name="StickerImg" Width="108" Height="108" HorizontalAlignment="Center" VerticalAlignment="Stretch">
                             <Image.Source>
-                                <BitmapImage UriSource="{x:Bind project:App.StickerPath(Filename)}"/>
+                                <BitmapImage UriSource="{x:Bind project:App.StickerPath(Filename)}" DecodePixelWidth="108"/>
                             </Image.Source>
                         </Image>
                         <TextBlock Text="{x:Bind Emojis}" HorizontalAlignment="Center" VerticalAlignment="Bottom" TextTrimming="CharacterEllipsis"/>

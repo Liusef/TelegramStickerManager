@@ -64,7 +64,7 @@ public sealed partial class PackPage : Page
     {
         foreach (Sticker s in pack.Stickers)
         {
-            await s.GetPathEnsureDownloaded(App.GetInstance().Client);
+            await Task.Run(async () => await s.GetPathEnsureDownloaded(App.GetInstance().Client));
             stickers.Add(s);
         }
     }
