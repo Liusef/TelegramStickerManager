@@ -94,6 +94,7 @@ public sealed partial class AddSticker : Page
         selected = null;
         stickers = new ObservableCollection<NewSticker>(stickers);
         Grid.ItemsSource = stickers;
+        // TODO This code doesn't free memory after deleting
     }
 
     private async void Finish(object sender, RoutedEventArgs e)
@@ -108,6 +109,7 @@ public sealed partial class AddSticker : Page
         await Task.Run( async () => ProcessImgs());
 
         processing.Visibility = Visibility.Collapsed;
+        App.GetInstance().RootFrame.Navigate(typeof(Unsupported), "This isn't actually unsupported, its just a generic page transition");
         return;
     }
 
@@ -154,9 +156,10 @@ public sealed partial class AddSticker : Page
                 await App.GetInstance().ShowExceptionDialog(ex);
             }
         }
+        Configuration.Default.MemoryAllocator.ReleaseRetainedResources();
     }
 
-    private async Task<bool> FindErrors()
+    private async Task<bool> FindErrors() //TODO Make sure this method checks if you have too many items added (max sticker count is 120?)
     {
         if (stickers.Count == 0)
         {
@@ -215,7 +218,7 @@ public class NewSticker
 {
     public string ImgPath { get; set; }
     public string TempPath { get; set; }
-    public string Emojis { get; set; } = "";
+    public string Emojis { get; set; } = "😳"; // TODO Clear this default value, this is only so i can quickly test things
     public BitmapImage Img {get; set;}
 
     public string EnsuredPath => File.Exists(TempPath) ? TempPath : ImgPath;

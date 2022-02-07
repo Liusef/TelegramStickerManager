@@ -16,6 +16,7 @@ using Windows.Foundation.Collections;
 using Microsoft.UI;
 using Windows.UI.Popups;
 using System.Runtime;
+using System.Threading.Tasks;
 
 namespace ReunionApp
 {
@@ -34,6 +35,13 @@ namespace ReunionApp
         private void contentFrame_Navigated(object sender, NavigationEventArgs e)
         {
             contentFrame.ForwardStack.Clear();
+            //GC.AddMemoryPressure(10000000);
+            CollectLater();
+        }
+
+        private async void CollectLater(int delay = 100)
+        {
+            await Task.Delay(delay);
             GC.Collect();
         }
     }

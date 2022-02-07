@@ -52,7 +52,11 @@
                 <SplitButton.Flyout>
                     <MenuFlyout>
                         <MenuFlyoutItem Text="+ Add Stickers" Click="Add"/>
-                        <MenuFlyoutItem Text="- UnAdd Stickers" Click="Delete"/>
+                        <MenuFlyoutItem Text="- UnAdd Stickers" Click="Delete">
+                            <MenuFlyoutItem.KeyboardAccelerators>
+                                <KeyboardAccelerator Key="Delete"/>
+                            </MenuFlyoutItem.KeyboardAccelerators>
+                        </MenuFlyoutItem>
                     </MenuFlyout>
                 </SplitButton.Flyout>
             </SplitButton>
