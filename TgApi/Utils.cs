@@ -51,25 +51,44 @@ public static class Utils
 	public static T Deserialize<T>(string path) => JsonSerializer.Deserialize<T>(File.ReadAllText(EnsureFile(path)));
 	
 	
-	// TODO XML Docs
+	/// <summary>
+	/// Prompts the user for an input
+	/// </summary>
+	/// <param name="prompt">The text to prompt the user with</param>
+	/// <returns> The User input </returns>
 	public static string Prompt(string prompt)
 	{
 		Console.Write(prompt);
 		return Console.ReadLine();
 	}
 
+	/// <summary>
+	/// Gets the filename of a path
+	/// </summary>
+	/// <param name="path">The path in question</param>
+	/// <returns>The name of the file in the path</returns>
 	public static string GetPathFilename(string path)
 	{
 		int i = path.LastIndexOf(Path.DirectorySeparatorChar);
 		return path.Substring(i + 1);
 	}
 
+	/// <summary>
+	/// Gets the directory in a path
+	/// </summary>
+	/// <param name="path">The path in question</param>
+	/// <returns>The directory in the path</returns>
 	public static string GetPathDirectory(string path)
 	{
 		int i = path.LastIndexOf(Path.DirectorySeparatorChar);
 		return path.Substring(0, i + 1);
 	}
 
+	/// <summary>
+	/// Checks if a phone number is valid in any region
+	/// </summary>
+	/// <param name="phone">String containing the phone number in question</param>
+	/// <returns>Whether or not the phone number is valid</returns>
 	public static bool IsValidPhone(string phone)
 	{
 		var parser = PhoneNumbers.PhoneNumberUtil.GetInstance();
@@ -82,18 +101,30 @@ public static class Utils
 		{
 			return false;
 		}
+		finally
+		{
+			parser = null;
+		}
 	}
 
+	/// <summary>
+	/// Formats a phone number to the International number format
+	/// </summary>
+	/// <param name="phone">The phone number in question</param>
+	/// <returns>The formatted version of the number as a string</returns>
 	public static string FormatPhone(string phone)
 	{
 		var parser = PhoneNumbers.PhoneNumberUtil.GetInstance();
 		return parser.Format(parser.Parse(phone, "GB"), PhoneNumbers.PhoneNumberFormat.INTERNATIONAL);
 	}
 
+	/// <summary>
+	/// Clears the temp directory of the program
+	/// </summary>
 	public static void ClearTemp()
 	{
 		if (!Directory.Exists(GlobalVars.TempDir)) return;
-		foreach (FileInfo file in (new DirectoryInfo(GlobalVars.TempDir)).EnumerateFiles())
+		foreach (FileInfo file in new DirectoryInfo(GlobalVars.TempDir).EnumerateFiles())
 		{
 			file.Delete();
 		}

@@ -4,9 +4,8 @@ namespace TgApi;
 
 public class GlobalVars
 {
-    public static TdClient Client;
-
-    public static char Sep = Path.DirectorySeparatorChar;
+    
+    private static char Sep = Path.DirectorySeparatorChar;
 
     public static readonly int ApiId = ApiKeys.ApiId;
     public static readonly string ApiHash = ApiKeys.ApiHash;
@@ -23,6 +22,9 @@ public class GlobalVars
 
     public static string PacksFileName = "packs.json";
     
+    /// <summary>
+    /// Ensures that all needed directories are created
+    /// </summary>
     public static void EnsureDirectories()
     {
         Console.WriteLine(TdDir);

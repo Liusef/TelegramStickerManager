@@ -12,10 +12,25 @@ public class AuthHandler
     private DateTimeOffset stateTime;
     private EventHandler<TdApi.Update> handlerDelegate;
 
+    /// <summary>
+    /// The current state of the authorization process
+    /// </summary>
     public TdApi.AuthorizationState CurrentState => state;
+    
+    /// <summary>
+    /// The time the last authentication update was received at
+    /// </summary>
     public DateTimeOffset LastRequestReceivedAt => stateTime;
+    
+    /// <summary>
+    /// The TdClient associated with this AuthHandler instance
+    /// </summary>
     public TdClient Client => client;
     
+    /// <summary>
+    /// Instantiates an AuthHandler object
+    /// </summary>
+    /// <param name="Client">An active TdClient</param>
     public AuthHandler(TdClient Client)
     {
         client = Client;
@@ -31,6 +46,9 @@ public class AuthHandler
         Client.UpdateReceived += handlerDelegate;
     }
 
+    /// <summary>
+    /// Sets fields to null so the garbage collector hopefully gets rid of it
+    /// </summary>
     public void Close()
     {
         Client.UpdateReceived -= handlerDelegate;
@@ -39,6 +57,11 @@ public class AuthHandler
         client = null;
     }
     
+    /// <summary>
+    /// Sign in process through the Command Line
+    /// </summary>
+    /// <param name="milliTimout">How long to wait between requests before timing out and failing</param>
+    /// <exception cref="Exception">Throws an exception when the AuthHandler reaches an unsupported state</exception>
     public async Task SigninCLI(int milliTimout = 20000)
     {
         while (CurrentState == null) await Task.Delay(100); // Waiting for update to signify that client is initialized
@@ -118,18 +141,40 @@ public class AuthHandler
         Console.WriteLine("You should be all signed in and ready to go! " + CurrentState);
     }
 
+    /// <summary>
+    /// Handles state WaitTdLibParameters
+    /// </summary>
+    /// <param name="param">The TdLibParameters to pass to the client</param>
+    /// <returns>A TdApi.Ok object if the request was successful</returns>
     public async Task<TdApi.Ok?> Handle_WaitTdLibParameters(TdApi.TdlibParameters param) => 
         await Client.ExecuteAsync(new TdApi.SetTdlibParameters {Parameters = param});
 
+    /// <summary>
+    /// Handles state WaitEncryptionKey
+    /// </summary>
+    /// <returns>A TdApi.Ok object if the request was successful</returns>
     public async Task<TdApi.Ok?> Handle_WaitEncryptionKey() =>
         await Client.ExecuteAsync(new TdApi.CheckDatabaseEncryptionKey());
 
+    /// <summary>
+    /// Handles state WaitPhoneNumber
+    /// </summary>
+    /// <param name="phone">The phone number to associate the client with</param>
+    /// <returns>A TdApi.Ok object if the request was successful</returns>
     public async Task<TdApi.Ok?> Handle_WaitPhoneNumber(string phone) =>
         await Client.ExecuteAsync(new TdApi.SetAuthenticationPhoneNumber {PhoneNumber = phone});
 
+    /// <summary>
+    /// Handles state WaitCode
+    /// </summary>
+    /// <param name="code">The code that was sent to the user</param>
+    /// <returns>A TdApi.Ok object if the request was successful</returns>
     public async Task<TdApi.Ok?> Handle_WaitCode(string code) =>
         await Client.ExecuteAsync(new TdApi.CheckAuthenticationCode {Code = code});
 
+    /// <summary>
+    /// The current state of authentication
+    /// </summary>
     public enum AuthState
     {
         Null = 0,
@@ -143,6 +188,11 @@ public class AuthHandler
         Ready = 8
     }
 
+    /// <summary>
+    /// Converts the TdApi.AuthorizationState to an AuthState enum
+    /// </summary>
+    /// <param name="state"></param>
+    /// <returns></returns>
     public static AuthState GetState(TdApi.AuthorizationState state)
     {
         if (state is null) return 0;

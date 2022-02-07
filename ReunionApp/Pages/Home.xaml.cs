@@ -102,8 +102,9 @@ public sealed partial class Home : Page
 		None.Visibility = Visibility.Collapsed;
 		Packs.Visibility = Visibility.Collapsed;
 		Loading.Visibility = Visibility.Visible;
-		packList.Clear();
-		await LoadStickers(true);
+		packList = new ObservableCollection<StickerPack>();
+        Packs.ItemsSource = packList;
+        await LoadStickers(true);
 	}
 
     private async void NewPack(object sender, RoutedEventArgs e) =>
