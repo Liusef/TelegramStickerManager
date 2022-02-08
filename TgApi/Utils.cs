@@ -63,6 +63,29 @@ public static class Utils
 	}
 
 	/// <summary>
+	/// Gets the extension of a filename or path
+	/// </summary>
+	/// <param name="input">The input string to extract the extension from</param>
+	/// <returns>The extension from the file</returns>
+	public static string GetExtension(string input)
+	{
+		int i = input.LastIndexOf('.');
+		if (i < input.Length - 1) return input.Substring(i + 1);
+		return "";
+	}
+
+	/// <summary>
+	/// Removes the file extension from a filename or path
+	/// </summary>
+	/// <param name="input">The input string to remove the extension from</param>
+	/// <returns>The filename without the extension</returns>
+	public static string RemoveExtension(string input)
+	{
+		int i = input.LastIndexOf('.');
+		return input.Substring(0, i);
+	}
+
+	/// <summary>
 	/// Gets the filename of a path
 	/// </summary>
 	/// <param name="path">The path in question</param>

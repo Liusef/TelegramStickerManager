@@ -157,6 +157,23 @@ public class StickerPack
     }
 
     /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="client"></param>
+    /// <param name="priority"></param>
+    /// <param name="delay"></param>
+    /// <returns></returns>
+    public async Task<string[]> EnsureAllDecodedDownloaded(TdClient client, int priority = 1, int delay = 25)
+	{
+        var r = new List<string>();
+        foreach (var s in Stickers)
+		{
+            r.Add(await s.GetDecodedPathEnsureDownloaded(client, priority, delay));
+		}
+        return r.ToArray();
+	}
+
+    /// <summary>
     /// Caches the pack to the system
     /// </summary>
     public void Cache() => Utils.Serialize<StickerPack>(this, $"{GlobalVars.PacksDir}{Name}.json");

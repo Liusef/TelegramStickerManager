@@ -32,7 +32,11 @@
             <GridView.ItemTemplate>
                 <DataTemplate x:Name="StickerPackGridItem" x:DataType="local:NewSticker">
                     <StackPanel Padding="16" Spacing="10" MaxWidth="196"  IsTabStop="False">
-                        <Image Width="150" Source ="{x:Bind Img}" VerticalAlignment="Center" Height="150" IsTabStop="False"/>
+                        <Image Width="150" VerticalAlignment="Center" Height="150" IsTabStop="False">
+                            <Image.Source>
+                                <BitmapImage UriSource="{x:Bind ImgPath}" DecodePixelWidth="150" DecodePixelType="Logical"/>
+                            </Image.Source>
+                        </Image>
                         <TextBox Text="{Binding Path=Emojis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  IsTabStop="True" TextChanged="Emojis_TextChanged"/>
                     </StackPanel>

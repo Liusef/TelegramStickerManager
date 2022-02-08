@@ -1,5 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using TdLib;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp;
 
 namespace TgApi.Types;
 
@@ -46,13 +48,32 @@ public class Sticker
     /// The local path of the sticker on the system
     /// </summary>
     [JsonIgnore]
-    private string LocalPath => $"{GlobalVars.TdDir}stickers{Path.DirectorySeparatorChar}{Filename}";
-    
+    public string LocalPath => $"{GlobalVars.StickersDir}{Filename}";
+
     /// <summary>
     /// Whether or not the sticker is downloaded to the system
     /// </summary>
     [JsonIgnore]
-    public bool IsDownloaded => File.Exists(LocalPath);
+    public bool LocalCopySaved => File.Exists(LocalPath);
+    
+    /// <summary>
+    /// Gets the path of the pre-decoded PNG version of the sticer
+    /// </summary>
+    [JsonIgnore]
+    public string DecodedPath => $"{GlobalVars.DecodedDir}{Utils.RemoveExtension(Filename)}.png";
+
+    /// <summary>
+    /// Whether or not the decoded version of the sticker is downloaded to the system
+    /// </summary>
+    [JsonIgnore]
+    public bool DecodedCopySaved => File.Exists(DecodedPath);
+
+    /// <summary>
+    /// Gets the path of the best available local copy on the system.
+    /// Assumes that at least one copy is downloaded on the system.
+    /// </summary>
+    [JsonIgnore]
+    public string BestPath => DecodedCopySaved ? DecodedPath : LocalPath;
 
     /// <summary>
     /// Generates a Sticker object from a TdApi.Sticker object from telegram
@@ -118,8 +139,29 @@ public class Sticker
     /// <returns>The local path of the image</returns>
     public async Task<string> GetPathEnsureDownloaded(TdClient client, int priority = 1, int delay = 25)
     {
-        if (IsDownloaded) return LocalPath;
+        if (LocalCopySaved) return LocalPath;
         return (await CompleteDownload(client, priority, delay)).LocalPath;
+    }
+
+    /// <summary>
+    /// Ensures that the sticker image is downloaded and decoded to the proper path
+    /// </summary>
+    /// <param name="client">An active TdClient</param>
+    /// <param name="priority">The download priority from 1 to 32</param>
+    /// <param name="delay">The delay between polls to check if the download is complete</param>
+    /// <returns>The local path of the decoded image</returns>
+    public async Task<string> GetDecodedPathEnsureDownloaded(TdClient client, int priority = 1, int delay = 25)
+	{
+        if (DecodedCopySaved) return DecodedPath;
+        var path = await GetPathEnsureDownloaded(client, priority, delay);
+
+        using (var img = await Image.LoadAsync(path))
+		{
+            await img.SaveAsync(DecodedPath);
+            img.Dispose();
+		}
+        Configuration.Default.MemoryAllocator.ReleaseRetainedResources();
+        return DecodedPath;
     }
 
 }

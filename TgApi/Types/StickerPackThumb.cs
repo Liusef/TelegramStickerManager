@@ -39,16 +39,31 @@ public class StickerPackThumb
     /// The local path of the thumb on the system
     /// </summary>
     [JsonIgnore]
-    private string LocalPath => $"{GlobalVars.TdDir}" +
-                                $@"{(IsDesignatedThumb ? "thumbnails" : "stickers")}" +
-                                $"{Path.DirectorySeparatorChar}" +
-                                $"{Filename}";
-    
+    public string LocalPath => (IsDesignatedThumb ? GlobalVars.ThumbsDir : GlobalVars.StickersDir) + Filename;
+
     /// <summary>
     /// Whether or not the thumb is downloaded to the system
     /// </summary>
     [JsonIgnore]
     public bool IsDownloaded => File.Exists(LocalPath);
+
+    /// <summary>
+    /// Returns the path of the best image to use. Checks the decoded images folder.
+    /// </summary>
+    [JsonIgnore]
+    public string BestPath
+    {
+        get
+        {
+            if (IsDesignatedThumb) return LocalPath;
+            else 
+            {
+                var decPath = $"{GlobalVars.DecodedDir}{Utils.RemoveExtension(Filename)}.png";
+                if (File.Exists(decPath)) return decPath;
+            }
+            return LocalPath;
+        }
+    }
 
     /// <summary>
     /// Generates a StickerPackThumb object from a TdApi.Thumbnail object from telegram

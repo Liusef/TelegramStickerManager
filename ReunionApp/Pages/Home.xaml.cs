@@ -56,11 +56,11 @@ public sealed partial class Home : Page
 			{
 				foreach (string pack in nameList)
 				{
-					packList.Add(await StickerPack.GetBasicPack(c, pack));
+					packList.Add(await Task.Run(async()=>await StickerPack.GetBasicPack(c, pack)));
 				}
 				foreach (var pack in packList)
 				{
-					await pack.EnsuredThumb.GetPathEnsureDownloaded(c);
+					await Task.Run(async()=>await pack.EnsuredThumb.GetPathEnsureDownloaded(c));
 				}
 				Packs.Visibility = Visibility.Visible;
 			}
@@ -68,7 +68,7 @@ public sealed partial class Home : Page
 		}
 		catch (Exception ex)
 		{
-			App.GetInstance().ShowExceptionDialog(ex);
+			await App.GetInstance().ShowExceptionDialog(ex);
 		}
 	}
 
@@ -83,12 +83,7 @@ public sealed partial class Home : Page
 		}
         Loading.Visibility = Visibility.Visible;
 
-        if (pack.IsCachedCopy)
-		{
-            var oldpack = pack;
-            pack = await Task.Run(async() => await StickerPack.GenerateFromName(App.GetInstance().Client, pack.Name));
-            oldpack.InjectCompleteInfo(pack);
-        }
+        if (pack.IsCachedCopy) await Task.Run(async () => pack.InjectCompleteInfo(await StickerPack.GenerateFromName(App.GetInstance().Client, pack.Name)));
 
 		App.GetInstance().RootFrame.Navigate(typeof(PackPage), pack);
 		Loading.Visibility = Visibility.Collapsed;

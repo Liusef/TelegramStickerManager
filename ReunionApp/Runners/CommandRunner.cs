@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ReunionApp.Controllers;
+namespace ReunionApp.Runners;
 
-public abstract class CommandController
+public abstract class CommandRunner
 {
     public List<CommandOutput> Outputs { get; set; }
 

@@ -165,25 +165,6 @@ public partial class App : Application
 
 	public static BitmapImage GetBitmapFromPath(string path) => new BitmapImage(new Uri(path));
 
-    public static BitmapImage PackThumbImg(StickerPackThumb thumb) => GetBitmapFromPath(TgApi.GlobalVars.TdDir +
-                          (thumb.IsDesignatedThumb ? "thumbnails" : "stickers") +
-                          System.IO.Path.DirectorySeparatorChar + thumb.Filename);
-
-    public static BitmapImage StickerFromFilename(string filename) =>
-        GetBitmapFromPath($"{TgApi.GlobalVars.TdDir}stickers{System.IO.Path.DirectorySeparatorChar}{filename}");
-
-    public static BitmapImage PackThumb(StickerPackThumb thumb)
-    {
-        if (thumb.Type == StickerType.STANDARD) return PackThumbImg(thumb);
-        return new BitmapImage();
-    }
-
-    public static Uri StickerPath(string filename) =>
-        new Uri($"{TgApi.GlobalVars.TdDir}stickers{System.IO.Path.DirectorySeparatorChar}{filename}");
-
-    public static Uri ThumbPath(string filename, bool isDesignated) =>
-        new Uri(TgApi.GlobalVars.TdDir +
-        (isDesignated ? "thumbnails" : "stickers") +
-        System.IO.Path.DirectorySeparatorChar + filename);
+    public static Uri GetUriFromString(string str) => new Uri(str);
 
 }

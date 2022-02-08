@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ReunionApp.Controllers;
+namespace ReunionApp.Runners;
 
 public class CommandOutput
 {

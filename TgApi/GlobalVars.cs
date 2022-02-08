@@ -18,6 +18,9 @@ public class GlobalVars
 
     public static string TdDir = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}{Sep}TgStickers{Sep}";
     public static string PacksDir = $"{TdDir}documents{Sep}";
+    public static string StickersDir = $"{TdDir}stickers{Sep}";
+    public static string DecodedDir = $"{StickersDir}decoded{Sep}";
+    public static string ThumbsDir = $"{TdDir}thumbnails{Sep}";
     public static string TempDir = $"{TdDir}temp{Sep}";
 
     public static string PacksFileName = "packs.json";
@@ -28,7 +31,7 @@ public class GlobalVars
     public static void EnsureDirectories()
     {
         Console.WriteLine(TdDir);
-        string[] dirs = {TdDir, PacksDir, TempDir};
+        string[] dirs = {TdDir, PacksDir, StickersDir, DecodedDir, ThumbsDir, TempDir};
         foreach (string path in dirs)
         {
             Utils.EnsurePath(path);

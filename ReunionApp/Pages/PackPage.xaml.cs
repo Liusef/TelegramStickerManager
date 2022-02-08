@@ -18,6 +18,8 @@ using TgApi.Types;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage.Streams;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -31,9 +33,7 @@ public sealed partial class PackPage : Page
 {
 
 	private StickerPack pack;
-    private BitmapImage thumb;
 	private ObservableCollection<Sticker> stickers = new ObservableCollection<Sticker>();
-
 
     public PackPage()
 	{
@@ -44,25 +44,37 @@ public sealed partial class PackPage : Page
     {
         bool update = pack == null || (e.Parameter != null && (e.Parameter as StickerPack).Id != pack.Id);
 
+        bool missingFiles = false;
+
         if (update)
         {
+            StickerGrid.Visibility = Visibility.Collapsed;
+            Loading.Visibility = Visibility.Visible;
+            
             pack = e.Parameter as StickerPack;
-            PackThumb.Source = new BitmapImage(App.ThumbPath(pack.EnsuredThumb.Filename, pack.EnsuredThumb.IsDesignatedThumb));
+            PackThumb.Source = new BitmapImage(App.GetUriFromString(pack.EnsuredThumb.BestPath));
             Title.Text = pack.Title;
             Name.Text = pack.Name;
             CleanUp();
         }
 
-        await Task.Run(async () => await Task.Delay(30)); // This allows the thumbnail to load in on page navigate
+        if (update) missingFiles = !pack.Stickers.All(x => x.DecodedCopySaved);
 
-        if (update)
+        if (update || missingFiles)
 		{
-            var newcol = await Task.Run(async() => await LoadStickers());
-            stickers = newcol;
+            await Task.Run(async () =>
+            {
+                foreach (var sticker in pack.Stickers) await sticker.GetDecodedPathEnsureDownloaded(App.GetInstance().Client);
+                Configuration.Default.MemoryAllocator.ReleaseRetainedResources();
+            });
+            stickers = new ObservableCollection<Sticker>(pack.Stickers);
             StickerGrid.ItemsSource = stickers;
         }
 
         base.OnNavigatedTo(e);
+
+        await Task.Run(async () => await Task.Delay(30)); //TODO is this necessary
+
         StickerGrid.Visibility = Visibility.Visible;
         Loading.Visibility = Visibility.Collapsed;
     }
@@ -84,17 +96,6 @@ public sealed partial class PackPage : Page
         Bindings.StopTracking();
     }
 
-    public async Task<ObservableCollection<Sticker>> LoadStickers()
-    {
-        var obscol = new ObservableCollection<Sticker>();
-        foreach (Sticker s in pack.Stickers)
-        {
-            await Task.Run(async () => await s.GetPathEnsureDownloaded(App.GetInstance().Client));
-            obscol.Add(s);
-        }
-        return obscol;
-    }
-
 
 	private void Back(object sender, RoutedEventArgs e) =>
 		App.GetInstance().RootFrame.GoBack();
@@ -107,5 +108,7 @@ public sealed partial class PackPage : Page
             new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
     }
 }
+
+
 
 

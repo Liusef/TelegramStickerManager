@@ -44,7 +44,7 @@ public sealed partial class AddSticker : Page
         // This block is to ensure that bitmaps and other large objects are garbage collected, as pages aren't disposed by the garbage collector
         // NOTE: Lots of objects that need to be garbage collected are RefCounted from Unmanaged memory
         // TODO This is not a good solution for memory management. Find a way to dispose of pages instead.
-        foreach (var ns in stickers) ns.Img = null;
+        //foreach (var ns in stickers) ns.Img = null;
         NavigationCacheMode = NavigationCacheMode.Disabled;
         Grid.ItemsSource = new ObservableCollection<NewSticker>();
         //stickers = new ObservableCollection<NewSticker>();
@@ -70,14 +70,7 @@ public sealed partial class AddSticker : Page
         if (files.Count == 0) return;
         foreach (var file in files)
         {
-            var bmp = new BitmapImage(new Uri(file.Path));
-            bmp.DecodePixelWidth = 150;
-            var ns = new NewSticker
-            {
-                ImgPath = file.Path,
-                Img = bmp
-            };
-            stickers.Add(ns);
+            stickers.Add(new NewSticker { ImgPath = file.Path });
         }
     }
     
@@ -88,13 +81,14 @@ public sealed partial class AddSticker : Page
         for (int i = selected.Count - 1; i >= 0; i--)
         {
             var ns = (NewSticker) selected[i];
-            ns.Img = null;
+            //ns.Img = null;
             stickers.Remove(ns);
         }
         selected = null;
         stickers = new ObservableCollection<NewSticker>(stickers);
         Grid.ItemsSource = stickers;
-        // TODO This code doesn't free memory after deleting
+        Task.Run(async () => { await Task.Delay(5000); GC.Collect(); });
+        // TODO Memory is only freed after navigating off the page
     }
 
     private async void Finish(object sender, RoutedEventArgs e)
@@ -109,7 +103,7 @@ public sealed partial class AddSticker : Page
         await Task.Run( async () => ProcessImgs());
 
         processing.Visibility = Visibility.Collapsed;
-        App.GetInstance().RootFrame.Navigate(typeof(Unsupported), "This isn't actually unsupported, its just a generic page transition");
+        App.GetInstance().RootFrame.Navigate(typeof(Unsupported), "Adding stickers to packs is currently unsupported.");
         return;
     }
 
@@ -219,7 +213,7 @@ public class NewSticker
     public string ImgPath { get; set; }
     public string TempPath { get; set; }
     public string Emojis { get; set; } = "😳"; // TODO Clear this default value, this is only so i can quickly test things
-    public BitmapImage Img {get; set;}
+    //public BitmapImage Img {get; set;}
 
     public string EnsuredPath => File.Exists(TempPath) ? TempPath : ImgPath;
 }
