@@ -143,6 +143,18 @@ public class Sticker
         return (await CompleteDownload(client, priority, delay)).LocalPath;
     }
 
+    public async Task<string> DecodeSticker()
+	{
+        if (!LocalCopySaved) throw new FileNotFoundException("The local copy was not downloaded before attempting to decode");
+        using (var img = await Image.LoadAsync(LocalPath))
+        {
+            await img.SaveAsync(DecodedPath);
+            img.Dispose();
+        }
+        Configuration.Default.MemoryAllocator.ReleaseRetainedResources();
+        return DecodedPath;
+    }
+
     /// <summary>
     /// Ensures that the sticker image is downloaded and decoded to the proper path
     /// </summary>
@@ -153,15 +165,8 @@ public class Sticker
     public async Task<string> GetDecodedPathEnsureDownloaded(TdClient client, int priority = 1, int delay = 25)
 	{
         if (DecodedCopySaved) return DecodedPath;
-        var path = await GetPathEnsureDownloaded(client, priority, delay);
-
-        using (var img = await Image.LoadAsync(path))
-		{
-            await img.SaveAsync(DecodedPath);
-            img.Dispose();
-		}
-        Configuration.Default.MemoryAllocator.ReleaseRetainedResources();
-        return DecodedPath;
+        await GetPathEnsureDownloaded(client, priority, delay);
+        return await DecodeSticker();
     }
 
 }

@@ -34,6 +34,8 @@ namespace ReunionApp;
 /// </summary>
 public partial class App : Application
 {
+    public static int Threads { get; } = Environment.ProcessorCount < 6 ? Environment.ProcessorCount : 6;
+
 	private MainWindow m_window;
 	
 	public MainWindow MainWindow => m_window;

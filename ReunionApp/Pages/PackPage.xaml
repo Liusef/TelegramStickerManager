@@ -54,11 +54,7 @@
                     <StackPanel Padding="12" Spacing="12" MinHeight="163">
                         <!--Image x:Name="StickerImg" Width="124" Height="160" HorizontalAlignment="Center" VerticalAlignment="Stretch"
                                Source="{x:Bind project:App.StickerImg(Filename)}"/-->
-                        <Image x:Name="StickerImg" Width="124" Height="160" HorizontalAlignment="Center" VerticalAlignment="Stretch">
-                            <Image.Source>
-                                <BitmapImage UriSource="{x:Bind project:App.GetUriFromString(BestPath)}" DecodePixelWidth="124" DecodePixelType="Logical"/>
-                            </Image.Source>
-                        </Image>
+                        <Image x:Name="StickerImg" Source="{x:Bind BestPath}" Width="124" Height="160" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
                         <TextBlock Text="{x:Bind Emojis}" HorizontalAlignment="Center" VerticalAlignment="Bottom" TextTrimming="CharacterEllipsis"/>
                     </StackPanel>
                 </DataTemplate>

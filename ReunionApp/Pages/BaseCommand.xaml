@@ -26,13 +26,7 @@
             <StackPanel Grid.Row="0" Margin="24, 24, 0, 0"  Spacing="12">
                 <Button Content="Back" Click="Back"/>
                 <StackPanel Spacing="8">
-                    <Image Width="100" HorizontalAlignment="Center">
-                        <Image.Source>
-                            <BitmapImage UriSource="{x:Bind project:App.GetUriFromString(pack.EnsuredThumb.BestPath)}" 
-                                         DecodePixelWidth="100" 
-                                         DecodePixelType="Logical"/>
-                        </Image.Source>
-                    </Image>
+                    <Image Source="{x:Bind pack.EnsuredThumb.BestPath}" Width="100" HorizontalAlignment="Center"/>
                     <TextBlock Text="{x:Bind pack.Title}" FontSize="24" FontWeight="Bold" TextTrimming="CharacterEllipsis" TextWrapping="Wrap"/>
                     <TextBlock Text="{x:Bind pack.Name}" FontWeight="Light" TextTrimming="CharacterEllipsis"/>
                 </StackPanel>

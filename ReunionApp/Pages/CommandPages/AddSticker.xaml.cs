@@ -100,7 +100,7 @@ public sealed partial class AddSticker : Page
 
         processing.Visibility = Visibility.Visible;
 
-        await Task.Run( async () => ProcessImgs());
+        await Task.Run( async () => await ProcessImgs());
 
         processing.Visibility = Visibility.Collapsed;
         App.GetInstance().RootFrame.Navigate(typeof(Unsupported), "Adding stickers to packs is currently unsupported.");
@@ -109,9 +109,8 @@ public sealed partial class AddSticker : Page
 
     private async Task ProcessImgs()
     {
-        foreach (var sticker in stickers)
+        await Parallel.ForEachAsync(stickers, new ParallelOptions { MaxDegreeOfParallelism = App.Threads }, async (sticker, ct) =>
         {
-
             try
             {
                 string temp = TgApi.GlobalVars.TempDir;
@@ -149,9 +148,9 @@ public sealed partial class AddSticker : Page
                     $"We'll show the exception dialog so you can make sure.", "Continue");
                 await App.GetInstance().ShowExceptionDialog(ex);
             }
+        });
+        Task.Run(async () => { await Task.Delay(5000); Configuration.Default.MemoryAllocator.ReleaseRetainedResources(); });
         }
-        Configuration.Default.MemoryAllocator.ReleaseRetainedResources();
-    }
 
     private async Task<bool> FindErrors() //TODO Make sure this method checks if you have too many items added (max sticker count is 120?)
     {

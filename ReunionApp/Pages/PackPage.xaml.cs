@@ -44,8 +44,6 @@ public sealed partial class PackPage : Page
     {
         bool update = pack == null || (e.Parameter != null && (e.Parameter as StickerPack).Id != pack.Id);
 
-        bool missingFiles = false;
-
         if (update)
         {
             StickerGrid.Visibility = Visibility.Collapsed;
@@ -56,24 +54,17 @@ public sealed partial class PackPage : Page
             Title.Text = pack.Title;
             Name.Text = pack.Name;
             CleanUp();
-        }
 
-        if (update) missingFiles = !pack.Stickers.All(x => x.DecodedCopySaved);
-
-        if (update || missingFiles)
-		{
-            await Task.Run(async () =>
-            {
-                foreach (var sticker in pack.Stickers) await sticker.GetDecodedPathEnsureDownloaded(App.GetInstance().Client);
-                Configuration.Default.MemoryAllocator.ReleaseRetainedResources();
-            });
+            await pack.EnsureAllDecodedDownloadedParallel(App.GetInstance().Client, App.Threads);
             stickers = new ObservableCollection<Sticker>(pack.Stickers);
             StickerGrid.ItemsSource = stickers;
+            Configuration.Default.MemoryAllocator.ReleaseRetainedResources();
+            GC.Collect();
         }
 
         base.OnNavigatedTo(e);
 
-        await Task.Run(async () => await Task.Delay(30)); //TODO is this necessary
+        //await Task.Run(async () => await Task.Delay(30)); //TODO is this necessary
 
         StickerGrid.Visibility = Visibility.Visible;
         Loading.Visibility = Visibility.Collapsed;
@@ -94,6 +85,7 @@ public sealed partial class PackPage : Page
         StickerGrid.ItemsSource = stickers;
         UnloadObject(StickerGrid);
         Bindings.StopTracking();
+        GC.Collect();
     }
 
 

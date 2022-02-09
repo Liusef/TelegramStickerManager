@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using SixLabors.ImageSharp;
+using System.Text.Json.Serialization;
 using TdLib;
 
 namespace TgApi.Types;
@@ -140,6 +141,7 @@ public class StickerPack
     /// </summary>
     /// <param name="client">An active TdClient</param>
     /// <param name="priority">The priority of the download from 1 to 32</param>
+    /// <param name="delay">The delay between polling to check if downloaded</param>
     /// <returns>An array of paths</returns>
     public async Task<string[]> EnsureAllDownloaded(TdClient client, int priority = 1, int delay = 25)
     {
@@ -157,12 +159,12 @@ public class StickerPack
     }
 
     /// <summary>
-    /// 
+    /// Ensures all stickers are downloaded and decoded on the system
     /// </summary>
-    /// <param name="client"></param>
-    /// <param name="priority"></param>
-    /// <param name="delay"></param>
-    /// <returns></returns>
+    /// <param name="client">An active TdClient</param>
+    /// <param name="priority">The priority of the download from 1 to 32</param>
+    /// <param name="delay">The delay between polling to check if downloaded</param>
+    /// <returns>The local paths of all decoded stickers</returns>
     public async Task<string[]> EnsureAllDecodedDownloaded(TdClient client, int priority = 1, int delay = 25)
 	{
         var r = new List<string>();
@@ -171,6 +173,27 @@ public class StickerPack
             r.Add(await s.GetDecodedPathEnsureDownloaded(client, priority, delay));
 		}
         return r.ToArray();
+	}
+
+    /// <summary>
+    /// Ensures all stickers are downloaded and decoded on the system using parallelization
+    /// </summary>
+    /// <param name="client">An active TdClient</param>
+    /// <param name="threads">The amount of threads to use for decoding</param>
+    /// <param name="priority">The priority of the download from 1 to 32</param>
+    /// <param name="delay">The delay between polling to check if downloaded</param>
+    /// <returns>The local paths of all decoded stickers</returns>
+    public async Task<string[]> EnsureAllDecodedDownloadedParallel(TdClient client, int threads, int priority = 1, int delay = 25)
+	{
+        await EnsureAllDownloaded(client, priority, delay);
+        await Parallel.ForEachAsync(Stickers, new ParallelOptions { MaxDegreeOfParallelism = threads }, async (sticker, ct) =>
+        {
+            if (!sticker.DecodedCopySaved) await sticker.DecodeSticker();
+            ct.ThrowIfCancellationRequested();
+        });
+        Configuration.Default.MemoryAllocator.ReleaseRetainedResources();
+        //GC.Collect();
+        return Stickers.Select(x => x.DecodedPath).ToArray();
 	}
 
     /// <summary>

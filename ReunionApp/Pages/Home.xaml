@@ -73,7 +73,7 @@
             <GridView.ItemTemplate>
                 <DataTemplate x:Name="StickerPackGridItem" x:DataType="types:StickerPack">
                     <StackPanel Padding="24, 12, 24, 12" Spacing="10">
-                        <Image Source="{x:Bind project:App.GetBitmapFromPath(EnsuredThumb.BestPath)}" Width="100" Height="100" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
+                        <Image Source="{x:Bind EnsuredThumb.BestPath}" Width="100" Height="100" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
                         <!--Image Width="100" Height="100" HorizontalAlignment="Center" VerticalAlignment="Stretch">
                             <Image.Source>
                                 <BitmapImage UriSource="{x:Bind project:App.ThumbUri(EnsuredThumb.Filename, EnsuredThumb.IsDesignatedThumb)}"
