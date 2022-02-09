@@ -53,11 +53,11 @@
 
             <SplitButton Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="6" 
                          Click="SplitButton_Click">
-                + Add Stickers
+                + Add Files
                 <SplitButton.Flyout>
                     <MenuFlyout>
-                        <MenuFlyoutItem Text="+ Add Stickers" Click="Add"/>
-                        <MenuFlyoutItem Text="- UnAdd Stickers" Click="Delete"/>
+                        <MenuFlyoutItem Text="+ Add Files" Click="Add"/>
+                        <MenuFlyoutItem Text="- Delete Files" Click="Delete"/>
                     </MenuFlyout>
                 </SplitButton.Flyout>
             </SplitButton>

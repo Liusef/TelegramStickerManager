@@ -11,7 +11,22 @@
     <StackPanel Margin="24">
         <Button Content="Back" Click="Back"/>
         <TextBlock FontWeight="Bold" FontSize="40" HorizontalAlignment="Center">
-            Settings are not real :)
+            Settings
         </TextBlock>
+
+        <StackPanel Margin="32" Spacing="12">
+            <TextBlock FontWeight="SemiBold" FontSize="20">
+            Local storage usage
+            </TextBlock>
+            <Button x:Name="Clear" Content="Clear Old Files" Click="Clear_Click"/>
+        </StackPanel>
+
+        <StackPanel Margin="32" Spacing="12">
+            <TextBlock FontWeight="SemiBold" FontSize="20">
+            Clear locally cached info and Logout
+            </TextBlock>
+            <Button x:Name="Logout" Content="Logout" Click="Logout_Click"/>
+        </StackPanel>
+
     </StackPanel>
 </Page>

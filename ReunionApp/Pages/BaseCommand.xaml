@@ -27,8 +27,7 @@
                 <Button Content="Back" Click="Back"/>
                 <StackPanel Spacing="8">
                     <Image Source="{x:Bind pack.EnsuredThumb.BestPath}" Width="100" HorizontalAlignment="Center"/>
-                    <TextBlock Text="{x:Bind pack.Title}" FontSize="24" FontWeight="Bold" TextTrimming="CharacterEllipsis" TextWrapping="Wrap"/>
-                    <TextBlock Text="{x:Bind pack.Name}" FontWeight="Light" TextTrimming="CharacterEllipsis"/>
+                    <TextBlock x:Name="Op" FontSize="30" FontWeight="Bold" TextWrapping="Wrap" HorizontalAlignment="Center" HorizontalTextAlignment="Center"/>
                 </StackPanel>
             </StackPanel>
 

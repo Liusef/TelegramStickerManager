@@ -74,6 +74,7 @@ public sealed partial class BaseCommand : Page
             case CommandType.ADDSTICKER:
                 ContentFrame.Navigate(typeof(CommandPages.AddSticker));
                 InfoFrame.Navigate(typeof(CommandPages.InfoPages.AddInfo));
+                Op.Text = "Add New Stickers";
                 break;
             default:
                 App.GetInstance().ShowBasicDialog("No command was selected",

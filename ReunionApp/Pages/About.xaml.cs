@@ -28,8 +28,6 @@ public sealed partial class About : Page
 		this.InitializeComponent();
 	}
 
-	private void Back(object sender, RoutedEventArgs e)
-	{
+	private void Back(object sender, RoutedEventArgs e) =>
 		App.GetInstance().RootFrame.GoBack();
-	}
 }
