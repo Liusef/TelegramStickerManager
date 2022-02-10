@@ -26,7 +26,7 @@
                 Text="{x:Bind Title}" />
         </Grid>
 
-        <Frame x:Name="contentFrame" Grid.Row="1" Navigated="contentFrame_Navigated"/>
+        <Frame x:Name="contentFrame" Grid.Row="1" Navigated="contentFrame_Navigated" CacheSize="10"/>
 
     </Grid>
 </Window>

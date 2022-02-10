@@ -44,7 +44,9 @@
 	  <None Remove="Pages\About.xaml" />
 	  <None Remove="Pages\BaseCommand.xaml" />
 	  <None Remove="Pages\CommandPages\AddSticker.xaml" />
+	  <None Remove="Pages\CommandPages\DelSticker.xaml" />
 	  <None Remove="Pages\CommandPages\InfoPages\AddInfo.xaml" />
+	  <None Remove="Pages\CommandPages\InfoPages\DelInfo.xaml" />
 	  <None Remove="Pages\CommandPages\ProcessingCommand.xaml" />
 	  <None Remove="Pages\GenericError.xaml" />
 	  <None Remove="Pages\Home.xaml" />
@@ -123,6 +125,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="C:\Users\josep\Stuff\Projects\dotnet\TelegramSticker\ReunionApp\.editorconfig" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\CommandPages\InfoPages\DelInfo.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\CommandPages\DelSticker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Pages\Unsupported.xaml">

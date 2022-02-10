@@ -24,10 +24,10 @@
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0" Margin="24, 24, 0, 0"  Spacing="12">
-                <Button Content="Back" Click="Back"/>
+                <Button x:Name="BackButton" Content="Back" Click="Back"/>
                 <StackPanel Spacing="8">
                     <Image Source="{x:Bind pack.EnsuredThumb.BestPath}" Width="100" HorizontalAlignment="Center"/>
-                    <TextBlock x:Name="Op" FontSize="30" FontWeight="Bold" TextWrapping="Wrap" HorizontalAlignment="Center" HorizontalTextAlignment="Center"/>
+                    <TextBlock x:Name="Op" FontSize="28" FontWeight="Bold" TextWrapping="Wrap" HorizontalAlignment="Center" HorizontalTextAlignment="Center"/>
                 </StackPanel>
             </StackPanel>
 

@@ -14,6 +14,8 @@ using Microsoft.UI.Xaml.Navigation;
 using TgApi.Types;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using static ReunionApp.Pages.CommandPages.AddSticker;
+using static ReunionApp.Pages.CommandPages.DelSticker;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -26,15 +28,10 @@ public sealed partial class BaseCommand : Page
 {
 
     private StickerPack pack;
+    public bool IsBackEnabled { get; set; } = true;
     public Frame ContentFrame => Frame;
 
     public record BaseCommandParams(StickerPack pack, CommandType commandType);
-
-    public enum CommandType
-    {
-        NONE = 0,
-        ADDSTICKER = 1,
-    }
 
     public BaseCommand()
     {
@@ -72,9 +69,14 @@ public sealed partial class BaseCommand : Page
         switch (type)
         {
             case CommandType.ADDSTICKER:
-                ContentFrame.Navigate(typeof(CommandPages.AddSticker));
+                ContentFrame.Navigate(typeof(CommandPages.AddSticker), new AddStickerParams(pack, BackButton));
                 InfoFrame.Navigate(typeof(CommandPages.InfoPages.AddInfo));
                 Op.Text = "Add New Stickers";
+                break;
+            case CommandType.DELSTICKER:
+                ContentFrame.Navigate(typeof(CommandPages.DelSticker), new DelStickerParams(pack, BackButton));
+                InfoFrame.Navigate(typeof(CommandPages.InfoPages.DelInfo));
+                Op.Text = "Delete Stickers";
                 break;
             default:
                 App.GetInstance().ShowBasicDialog("No command was selected",
@@ -85,4 +87,11 @@ public sealed partial class BaseCommand : Page
 
     private void Back(object sender, RoutedEventArgs e) =>
         App.GetInstance().RootFrame.GoBack();
+}
+
+public enum CommandType
+{
+    NONE = 0,
+    ADDSTICKER = 1,
+    DELSTICKER = 2,
 }

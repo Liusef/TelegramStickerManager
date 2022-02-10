@@ -1,5 +1,6 @@
 ﻿using TdLib;
 using TgApi.Types;
+using static TdLib.TdApi.MessageContent;
 
 namespace TgApi.Telegram;
 
@@ -92,4 +93,15 @@ public static class TdClientExt
         Utils.Serialize<string[]>(r, $"{GlobalVars.PacksDir}{GlobalVars.PacksFileName}");
         return r;
     }
+
+    /// <summary>
+    /// Returns the text of a Message
+    /// </summary>
+    /// <param name="msg">A TdLib message object</param>
+    /// <returns>The string content of the message</returns>
+    public static string GetMessageString(this TdApi.Message msg)
+	{
+        if (msg.Content is MessageText txt) return txt.Text.Text;
+        return "";
+	}
 }

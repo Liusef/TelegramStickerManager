@@ -8,7 +8,7 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <StackPanel Margin="24">
+    <StackPanel Margin="24" Spacing="24">
         <Button Content="Back" Click="Back"/>
         <TextBlock FontWeight="Bold" FontSize="40" HorizontalAlignment="Center">
             Telegram Sticker Manager

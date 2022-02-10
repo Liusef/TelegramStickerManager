@@ -46,7 +46,12 @@ public sealed partial class Home : Page
 	{
 		try
 		{
-			TdClient c = App.GetInstance().Client;
+            if (forceNew) 
+            { 
+                await App.GetInstance().ResetTdClient(); 
+                App.GetInstance().ResetFrameCache();
+            }
+            TdClient c = App.GetInstance().Client;
 			var nameList = forceNew ? await c.GetOwnedPacksAsync() : await PackList.GetOwnedPacks(c);
 			if (nameList is null || nameList.Length == 0)
 			{
@@ -56,8 +61,9 @@ public sealed partial class Home : Page
 			{
 				foreach (string pack in nameList)
 				{
-					packList.Add(await Task.Run(async()=>await StickerPack.GetBasicPack(c, pack)));
-				}
+					if (forceNew) packList.Add(await Task.Run(async () => await StickerPack.GenerateFromName(c, pack)));
+                    else packList.Add(await Task.Run(async () => await StickerPack.GetBasicPack(c, pack)));
+                }
 				foreach (var pack in packList)
 				{
 					await Task.Run(async()=>await pack.EnsuredThumb.GetPathEnsureDownloaded(c));

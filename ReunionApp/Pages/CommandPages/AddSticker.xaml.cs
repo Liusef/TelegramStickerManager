@@ -21,6 +21,9 @@ using Windows.Storage.Pickers;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp;
 using Microsoft.UI.Xaml.Media.Imaging;
+using TgApi.Types;
+using ReunionApp.Runners;
+using Microsoft.UI.Xaml.Media.Animation;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -31,12 +34,24 @@ namespace ReunionApp.Pages.CommandPages;
 /// </summary>
 public sealed partial class AddSticker : Page
 {
-
+    private StickerPack pack;
+    private Button backButton;
     private ObservableCollection<NewSticker> stickers = new ObservableCollection<NewSticker>();
+
+    public record AddStickerParams(StickerPack pack, Button back);
 
     public AddSticker()
     {
         this.InitializeComponent();
+    }
+
+    protected override void OnNavigatedTo(NavigationEventArgs e)
+    {
+        base.OnNavigatedTo(e);
+        var parameters = e.Parameter as AddStickerParams;
+        pack = parameters.pack;
+        backButton = parameters.back;
+
     }
 
     protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -45,7 +60,6 @@ public sealed partial class AddSticker : Page
         // NOTE: Lots of objects that need to be garbage collected are RefCounted from Unmanaged memory
         // TODO This is not a good solution for memory management. Find a way to dispose of pages instead.
         //foreach (var ns in stickers) ns.Img = null;
-        NavigationCacheMode = NavigationCacheMode.Disabled;
         Grid.ItemsSource = new ObservableCollection<NewSticker>();
         //stickers = new ObservableCollection<NewSticker>();
         Grid.ItemsSource = null;
@@ -62,6 +76,8 @@ public sealed partial class AddSticker : Page
         picker.FileTypeFilter.Add(".jpeg");
         picker.FileTypeFilter.Add(".png");
         picker.FileTypeFilter.Add(".webp");
+        picker.FileTypeFilter.Add(".bmp");
+        picker.FileTypeFilter.Add(".tga");
 
         var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.GetInstance().MainWindow);
         WinRT.Interop.InitializeWithWindow.Initialize(picker, hwnd);
@@ -99,12 +115,14 @@ public sealed partial class AddSticker : Page
         if (await FindWarnings()) return;
 
         processing.Visibility = Visibility.Visible;
+        backButton.IsEnabled = false;
 
         await Task.Run( async () => await ProcessImgs());
 
+        var runner = new AddStickerRunner(pack, stickers.ToArray());
+
         processing.Visibility = Visibility.Collapsed;
-        App.GetInstance().RootFrame.Navigate(typeof(Unsupported), "Adding stickers to packs is currently unsupported.");
-        return;
+        ((Frame) Parent).Navigate(typeof(ProcessingCommand), runner, new DrillInNavigationTransitionInfo());
     }
 
     private async Task ProcessImgs()
@@ -137,6 +155,9 @@ public sealed partial class AddSticker : Page
                         await img.SaveAsync(path);
                         sticker.TempPath = path;
                     }
+                    else if (!(TgApi.Utils.GetExtension(sticker.ImgPath) == "png" ||
+                               TgApi.Utils.GetExtension(sticker.ImgPath) == "webp"))
+                        await img.SaveAsync($"{temp}{DateTime.Now.Ticks}.png");
                     img.Dispose();
                 }
                 Configuration.Default.MemoryAllocator.ReleaseRetainedResources();
@@ -152,11 +173,19 @@ public sealed partial class AddSticker : Page
         Task.Run(async () => { await Task.Delay(5000); Configuration.Default.MemoryAllocator.ReleaseRetainedResources(); });
         }
 
-    private async Task<bool> FindErrors() //TODO Make sure this method checks if you have too many items added (max sticker count is 120?)
+    private async Task<bool> FindErrors() 
     {
         if (stickers.Count == 0)
         {
             await App.GetInstance().ShowBasicDialog("You didn't add anything!", "Please add some stickers before continuing!");
+            return true;
+        }
+
+        if (stickers.Count + pack.Count > 120)
+		{
+            await App.GetInstance().ShowBasicDialog("You added too many stickers!", $"The max size for a sticker pack is 120.\n" +
+                                                                                    $"This pack already has {pack.Count}, you added {stickers.Count}\n" +
+                                                                                    $"Total: {pack.Count + stickers.Count}");
             return true;
         }
 

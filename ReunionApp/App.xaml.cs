@@ -23,6 +23,7 @@ using Microsoft.UI.Xaml.Media.Animation;
 using System.Collections.ObjectModel;
 using TgApi.Types;
 using Microsoft.UI.Xaml.Media.Imaging;
+using ReunionApp.Pages;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -164,6 +165,21 @@ public partial class App : Application
 				break;
 		}
 	}
+
+    public async Task ResetTdClient()
+    {
+        Client.Dispose();
+        Client = new TdLib.TdClient();
+        auth = new AuthHandler(Client);
+        authState = AuthHandler.AuthState.Null;
+        await HandleAuth();
+    }
+
+    public void ResetFrameCache()
+    {
+        RootFrame.CacheSize = 0;
+        RootFrame.CacheSize = 10;
+    }
 
 	public static BitmapImage GetBitmapFromPath(string path) => new BitmapImage(new Uri(path));
 

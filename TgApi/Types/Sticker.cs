@@ -36,7 +36,7 @@ public class Sticker
     /// </summary>
     public string Filename { get; set; }
     /// <summary>
-    /// The Remote File ID of the sticker document. This shouldn't be used.
+    /// The Remote File ID of the sticker document.
     /// </summary>
     public string RemoteFileId { get; set; }
     /// <summary>

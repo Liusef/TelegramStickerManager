@@ -42,13 +42,14 @@ public sealed partial class PackPage : Page
 
     protected async override void OnNavigatedTo(NavigationEventArgs e)
     {
-        bool update = pack == null || (e.Parameter != null && (e.Parameter as StickerPack).Id != pack.Id);
+        bool update = pack == null || (e.Parameter != null && (e.Parameter as StickerPack) != pack);
 
         if (update)
         {
             StickerGrid.Visibility = Visibility.Collapsed;
             Loading.Visibility = Visibility.Visible;
-            
+            DisableAllButtons();
+
             pack = e.Parameter as StickerPack;
             PackThumb.Source = new BitmapImage(App.GetUriFromString(pack.EnsuredThumb.BestPath));
             Title.Text = pack.Title;
@@ -68,6 +69,7 @@ public sealed partial class PackPage : Page
 
         StickerGrid.Visibility = Visibility.Visible;
         Loading.Visibility = Visibility.Collapsed;
+        EnableAllButtons();
     }
 
     protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -88,6 +90,18 @@ public sealed partial class PackPage : Page
         GC.Collect();
     }
 
+    private void EnableAllButtons()
+    {
+        Add.IsEnabled = true;
+        Del.IsEnabled = true;
+    }
+
+    private void DisableAllButtons()
+    {
+        Add.IsEnabled = false;
+        Del.IsEnabled = false;
+    }
+
 
 	private void Back(object sender, RoutedEventArgs e) =>
 		App.GetInstance().RootFrame.GoBack();
@@ -96,7 +110,15 @@ public sealed partial class PackPage : Page
     {
         App.GetInstance().RootFrame.Navigate(typeof(BaseCommand), 
             new BaseCommand.BaseCommandParams(pack, 
-            BaseCommand.CommandType.ADDSTICKER),
+            CommandType.ADDSTICKER),
+            new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+    }
+
+    private void DelSticker(object server, RoutedEventArgs e)
+    {
+        App.GetInstance().RootFrame.Navigate(typeof(BaseCommand),
+            new BaseCommand.BaseCommandParams(pack,
+            CommandType.DELSTICKER),
             new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
     }
 }
