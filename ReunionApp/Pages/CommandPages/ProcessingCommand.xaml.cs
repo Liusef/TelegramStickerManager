@@ -37,13 +37,19 @@ public sealed partial class ProcessingCommand : Page
     {
         base.OnNavigatedTo(e);
         runner = e.Parameter as CommandRunner;
+        runner.Outputs.CollectionChanged += Outputs_CollectionChanged;
 
         await runner.RunCommandsAsync();
         Continue.IsEnabled = true;
 
         await Task.Run(async () => await Task.Delay(100));
-        Outputs.SizeChanged -= Outputs_SizeChanged;
 
+    }
+
+    private async void Outputs_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    {
+        await Task.Run(async () => await Task.Delay(20));
+        Scroll.ChangeView(null, Scroll.ScrollableHeight, null);
     }
 
     private async void Continue_Click(object sender, RoutedEventArgs e)
@@ -51,10 +57,5 @@ public sealed partial class ProcessingCommand : Page
         Continue.IsEnabled = false;
         await runner.PostTasks();
         App.GetInstance().RootFrame.Navigate(typeof(Home), null, new DrillInNavigationTransitionInfo());
-    }
-
-    private void Outputs_SizeChanged(object sender, SizeChangedEventArgs e) // TODO This is suuuper jank. Try to find a more elegant solution that mimics chat apps.
-    {
-        Scroll.ChangeView(null, double.MaxValue, null);
     }
 }

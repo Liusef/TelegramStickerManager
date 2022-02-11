@@ -71,7 +71,8 @@ public sealed partial class Home : Page
 				Packs.Visibility = Visibility.Visible;
 			}
 			Loading.Visibility = Visibility.Collapsed;
-		}
+            LoadingBar.IsIndeterminate = false;
+        }
 		catch (Exception ex)
 		{
 			await App.GetInstance().ShowExceptionDialog(ex);
@@ -88,6 +89,7 @@ public sealed partial class Home : Page
             return;
 		}
         Loading.Visibility = Visibility.Visible;
+        LoadingBar.IsIndeterminate = true;
 
         if (pack.IsCachedCopy) await Task.Run(async () => pack.InjectCompleteInfo(await StickerPack.GenerateFromName(App.GetInstance().Client, pack.Name)));
 
@@ -100,7 +102,8 @@ public sealed partial class Home : Page
 		None.Visibility = Visibility.Collapsed;
 		Packs.Visibility = Visibility.Collapsed;
 		Loading.Visibility = Visibility.Visible;
-		packList = new ObservableCollection<StickerPack>();
+        LoadingBar.IsIndeterminate = true;
+        packList = new ObservableCollection<StickerPack>();
         Packs.ItemsSource = packList;
         await LoadStickers(true);
 	}
