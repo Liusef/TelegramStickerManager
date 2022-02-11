@@ -16,6 +16,7 @@ using Microsoft.UI.Xaml.Media.Imaging;
 using System.Threading.Tasks;
 using TdLib;
 using TgApi.Telegram;
+using ReunionApp.Pages.CommandPages;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -36,16 +37,19 @@ public sealed partial class Home : Page
 		LoadStickers();
 	}
 
-    protected override void OnNavigatedTo(NavigationEventArgs e)
+    protected override async void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
         App.GetInstance().RootFrame.BackStack.Clear();
+        //if (e.Parameter is bool b && b) Refresh(null, null);
     }
 
     public async Task LoadStickers(bool forceNew = false)
 	{
 		try
 		{
+            packList = new ObservableCollection<StickerPack>();
+            Packs.ItemsSource = packList;
             if (forceNew) 
             { 
                 await App.GetInstance().ResetTdClient(); 
@@ -103,13 +107,11 @@ public sealed partial class Home : Page
 		Packs.Visibility = Visibility.Collapsed;
 		Loading.Visibility = Visibility.Visible;
         LoadingBar.IsIndeterminate = true;
-        packList = new ObservableCollection<StickerPack>();
-        Packs.ItemsSource = packList;
         await LoadStickers(true);
 	}
 
-    private async void NewPack(object sender, RoutedEventArgs e) =>
-        await App.GetInstance().ShowBasicDialog("Oops!", "Not implemented yet");
+    private void NewPack(object sender, RoutedEventArgs e) =>
+        App.GetInstance().RootFrame.Navigate(typeof(NewPack));
 
 	private void Settings(object sender, RoutedEventArgs e)
 	{

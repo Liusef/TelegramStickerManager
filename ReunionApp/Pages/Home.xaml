@@ -86,9 +86,12 @@
             </GridView.ItemTemplate>
         </GridView>
 
-        <TextBlock Grid.Row="2" x:Name="None" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed">
-            You don't have any stickers!
-        </TextBlock>
+        <StackPanel Grid.Row="2" x:Name="None" VerticalAlignment="Center" HorizontalAlignment="Center"  Visibility="Collapsed">
+            <TextBlock HorizontalTextAlignment="Center">
+                You don't have any stickers!
+                <LineBreak/>Open the Hamburger menu on the top left to Refresh or make a new pack!
+            </TextBlock>
+        </StackPanel>
 
         <StackPanel Grid.Row="3" x:Name="Loading" VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="12" Margin="0, 0, 0, 10">
             <ProgressBar x:Name="LoadingBar" Width="500" IsIndeterminate="True" Value="0"/>

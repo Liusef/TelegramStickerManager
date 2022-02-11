@@ -6,7 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
+using TgApi.Telegram;
 using TgApi.Types;
+using static TdLib.TdApi;
 
 namespace ReunionApp.Runners;
 
@@ -30,6 +32,10 @@ public abstract class CommandRunner : INotifyPropertyChanged
         await App.GetInstance().ResetTdClient();
         App.GetInstance().ResetFrameCache();
     }
+
+    public virtual void AddReplyToOutputs(Message msg) =>
+        Outputs.Add(new CommandOutput(msg.GetMessageString(), null, false));
+
 }
 
 public record CommandOutput(string Content, string ImgPath, bool Right)

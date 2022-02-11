@@ -56,6 +56,7 @@ public sealed partial class PackPage : Page
             Name.Text = pack.Name;
             CleanUp();
 
+            await pack.EnsuredThumb.GetPathEnsureDownloaded(App.GetInstance().Client);
             await pack.EnsureAllDecodedDownloadedParallel(App.GetInstance().Client, App.Threads);
             stickers = new ObservableCollection<Sticker>(pack.Stickers);
             StickerGrid.ItemsSource = stickers;

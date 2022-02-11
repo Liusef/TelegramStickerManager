@@ -39,7 +39,7 @@ public class StickerPackThumb
     /// The local path of the thumb on the system
     /// </summary>
     [JsonIgnore]
-    public string LocalPath => (IsDesignatedThumb ? GlobalVars.ThumbsDir : GlobalVars.StickersDir) + Filename;
+    public virtual string LocalPath => (IsDesignatedThumb ? GlobalVars.ThumbsDir : GlobalVars.StickersDir) + Filename;
 
     /// <summary>
     /// Whether or not the thumb is downloaded to the system
@@ -51,7 +51,7 @@ public class StickerPackThumb
     /// Returns the path of the best image to use. Checks the decoded images folder.
     /// </summary>
     [JsonIgnore]
-    public string BestPath
+    public virtual string BestPath
     {
         get
         {

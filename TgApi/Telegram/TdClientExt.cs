@@ -84,7 +84,12 @@ public static class TdClientExt
             var packlist = new List<string>();
             foreach (var row in rmsk.Rows)
             {
-                foreach (var b in row) packlist.Add(b.Text);
+                foreach (var b in row)
+				{
+                    var entry = b.Text;
+                    if (entry[0] == '<') continue;
+                    else packlist.Add(entry);
+                }
             }
             r = packlist.ToArray();
         }

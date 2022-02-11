@@ -66,9 +66,6 @@ public class AddStickerRunner : CommandRunner
                 Outputs.Add(new CommandOutput(stickers[Index].Emojis, null, true));
                 reply = await waiter.SendMsgAndAwaitNext(stickers[Index].Emojis);
                 Outputs.Add(new CommandOutput(reply.GetMessageString(), null, false));
-            } else
-            {
-                continue;
             }
         }
         Outputs.Add(new CommandOutput("/done", null, true));

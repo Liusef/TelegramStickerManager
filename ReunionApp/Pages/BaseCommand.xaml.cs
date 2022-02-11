@@ -16,6 +16,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using static ReunionApp.Pages.CommandPages.AddSticker;
 using static ReunionApp.Pages.CommandPages.DelSticker;
+using static ReunionApp.Pages.CommandPages.NewPackAddStickers;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -56,7 +57,7 @@ public sealed partial class BaseCommand : Page
         UnloadObject(ContentFrame);
         UnloadObject(InfoFrame);
         Bindings.StopTracking();
-        Task.Run(async () => { await Task.Delay(5000); GC.Collect();});  // This code ensures that when this method is called and images aren't being displayed,
+        Task.Run(async () => { await Task.Delay(5000); GC.Collect();});   // This code ensures that when this method is called and images aren't being displayed,
                                                                           // since the images are in unmanaged memory, they're discarded and most of the memory it used
                                                                           // is freed. (The rest is usually freed on the next page navigation)
                                                                           // This solution is awful, stupid, and terrible, and i have no idea why it works.
@@ -78,6 +79,11 @@ public sealed partial class BaseCommand : Page
                 InfoFrame.Navigate(typeof(CommandPages.InfoPages.DelInfo));
                 Op.Text = "Delete Stickers";
                 break;
+            case CommandType.NEWPACK:
+                ContentFrame.Navigate(typeof(CommandPages.NewPackAddStickers), new NewPackAddStickersParams(pack, BackButton));
+                InfoFrame.Navigate(typeof(CommandPages.InfoPages.AddInfo));
+                Op.Text = "Add Some Stickers!";
+                break;
             default:
                 App.GetInstance().ShowBasicDialog("No command was selected",
                     "Somehow, no command for modifying the stickerpack was selected. Please click back.");
@@ -94,4 +100,5 @@ public enum CommandType
     NONE = 0,
     ADDSTICKER = 1,
     DELSTICKER = 2,
+    NEWPACK = 3,
 }

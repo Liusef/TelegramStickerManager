@@ -233,6 +233,10 @@ public class StickerPack
 	{
         if (!IsCachedCopy) return;
         Stickers = full.Stickers;
-        IsCachedCopy = false;
+        if (Thumb == null || !Thumb.IsDesignatedThumb || (full.Thumb != null && full.Thumb.RemoteFileId != Thumb.RemoteFileId))
+		{
+            if (full.Thumb != null && full.Thumb.IsDesignatedThumb) Thumb = full.Thumb;
+		}
+		IsCachedCopy = false;
 	}
 }

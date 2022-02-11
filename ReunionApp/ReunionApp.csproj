@@ -47,6 +47,8 @@
 	  <None Remove="Pages\CommandPages\DelSticker.xaml" />
 	  <None Remove="Pages\CommandPages\InfoPages\AddInfo.xaml" />
 	  <None Remove="Pages\CommandPages\InfoPages\DelInfo.xaml" />
+	  <None Remove="Pages\CommandPages\NewPack.xaml" />
+	  <None Remove="Pages\CommandPages\NewPackAddStickers.xaml" />
 	  <None Remove="Pages\CommandPages\ProcessingCommand.xaml" />
 	  <None Remove="Pages\GenericError.xaml" />
 	  <None Remove="Pages\Home.xaml" />
@@ -55,6 +57,7 @@
 	  <None Remove="Pages\PackPage.xaml" />
 	  <None Remove="Pages\Settings.xaml" />
 	  <None Remove="Pages\Unsupported.xaml" />
+	  <None Remove="Runners\NewPackRunnerNameDialog.xaml" />
   </ItemGroup>
 
 
@@ -125,6 +128,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="C:\Users\josep\Stuff\Projects\dotnet\TelegramSticker\ReunionApp\.editorconfig" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Runners\RunnerDependencies\NewPackRunnerNameDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\CommandPages\NewPackAddStickers.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\CommandPages\NewPack.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Pages\CommandPages\InfoPages\DelInfo.xaml">

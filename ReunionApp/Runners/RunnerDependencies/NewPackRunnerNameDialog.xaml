@@ -1,0 +1,16 @@
+﻿<Page
+    x:Class="ReunionApp.Runners.RunnerDependencies.NewPackRunnerNameDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ReunionApp.Runners"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <StackPanel Spacing="12">
+        <TextBlock>
+            Enter a new Name
+        </TextBlock>
+        <TextBox x:Name="UInput" Width="240" KeyDown="UInput_KeyDown"/>
+    </StackPanel>
+</Page>

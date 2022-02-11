@@ -56,6 +56,6 @@ public sealed partial class ProcessingCommand : Page
     {
         Continue.IsEnabled = false;
         await runner.PostTasks();
-        App.GetInstance().RootFrame.Navigate(typeof(Home), null, new DrillInNavigationTransitionInfo());
+        App.GetInstance().RootFrame.Navigate(typeof(Home), true, new DrillInNavigationTransitionInfo());
     }
 }

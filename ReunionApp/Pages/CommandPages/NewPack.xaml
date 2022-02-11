@@ -1,0 +1,74 @@
+﻿<Page
+    x:Class="ReunionApp.Pages.CommandPages.NewPack"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ReunionApp.Pages.CommandPages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid Margin="24">
+        <Button Content="Back" VerticalAlignment="Top" Click="Back"/>
+
+        <StackPanel VerticalAlignment="Center" Spacing="24">
+            <TextBlock HorizontalTextAlignment="Center" FontWeight="Bold" FontSize="28">
+                Create a new Sticker Pack
+            </TextBlock>
+
+            <Grid HorizontalAlignment="Center" ColumnSpacing="24">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="24"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="24"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Title" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <TextBox x:Name="Title" Grid.Row="0" Grid.Column="1" Width="240" HorizontalAlignment="Left" HorizontalTextAlignment="Left"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" FontSize="10" Opacity="0.5" HorizontalAlignment="Left" >
+                    This is the title that appears when viewing the pack.
+                </TextBlock>
+
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="Name" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <TextBox x:Name="Name" Grid.Row="3" Grid.Column="1" Width="240" HorizontalAlignment="Left"/>
+                <TextBlock Grid.Row="4" Grid.Column="1" FontSize="10" Opacity="0.5" HorizontalAlignment="Left" HorizontalTextAlignment="Left">
+                    This is the name that's used in the URL to share the pack. 
+                    <LineBreak/>Please Note: You'll need to select a new one if it's already taken.
+                </TextBlock>
+
+                <TextBlock Grid.Row="6" Grid.Column="0" Text="Thumbnail" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <StackPanel Grid.Row="6" Grid.Column="1" HorizontalAlignment="Left" Orientation="Horizontal" Spacing="12">
+                    <!--Button x:Name="AddThumb" Content="Add Thumb" Click="ChooseThumb"/-->
+                    <SplitButton x:Name="AddThumb" Click="SplitButton_Click" Content="Add Thumb">
+                        <SplitButton.Flyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem Text="Add Thumb" Click="AddFlyout_Click"/>
+                                <MenuFlyoutItem Text="Clear Thumb" Click="ClearThumb"/>
+                            </MenuFlyout>
+                        </SplitButton.Flyout>
+                    </SplitButton>
+                    <TextBlock x:Name="Filename" Text="No Thumbnail Selected" VerticalAlignment="Center" FontSize="12" MaxWidth="150" TextTrimming="CharacterEllipsis"/>
+                </StackPanel>
+                <TextBlock Grid.Row="7" Grid.Column="1" FontSize="10" Opacity="0.5" HorizontalAlignment="Left" HorizontalTextAlignment="Left">
+                    OPTIONAL! A Thumbnail for your pack. Please use a square image.
+                    <LineBreak/>Without a thumb, Telegram will use your first sticker. (It's easier to not)
+                </TextBlock>
+            </Grid>
+
+            <Button Content="Continue" HorizontalAlignment="Center" Width="200" Height="40" Click="Continue"/>
+
+        </StackPanel>
+        
+    </Grid>
+</Page>
