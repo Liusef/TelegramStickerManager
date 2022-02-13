@@ -53,6 +53,7 @@
 	  <None Remove="Pages\GenericError.xaml" />
 	  <None Remove="Pages\Home.xaml" />
 	  <None Remove="Pages\LoginPages\LoginCode.xaml" />
+	  <None Remove="Pages\LoginPages\LoginPassword.xaml" />
 	  <None Remove="Pages\LoginPages\LoginPhone.xaml" />
 	  <None Remove="Pages\PackPage.xaml" />
 	  <None Remove="Pages\Settings.xaml" />
@@ -128,6 +129,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="C:\Users\josep\Stuff\Projects\dotnet\TelegramSticker\ReunionApp\.editorconfig" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\LoginPages\LoginPassword.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Runners\RunnerDependencies\NewPackRunnerNameDialog.xaml">

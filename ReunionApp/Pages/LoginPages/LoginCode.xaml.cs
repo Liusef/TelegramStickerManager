@@ -65,15 +65,18 @@ public sealed partial class LoginCode : Page
 		}
 		catch (Exception ex)
 		{
-			App.GetInstance().ShowExceptionDialog(ex);
+			await App.GetInstance().ShowExceptionDialog(ex);
 			return;
 		}
 
 		while (last == auth.LastRequestReceivedAt) await Task.Delay(50);
 
-		if (LoginCode.IsNotSupportedState(AuthHandler.GetState(auth.CurrentState))) return;
+        if (LoginCode.IsNotSupportedState(AuthHandler.GetState(auth.CurrentState))) return;
 
-		if (AuthHandler.GetState(auth.CurrentState) == AuthHandler.AuthState.Ready)
+        if (AuthHandler.GetState(auth.CurrentState) == AuthHandler.AuthState.WaitPassword)
+            App.GetInstance().RootFrame.Navigate(typeof(LoginPassword), auth, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+
+        if (AuthHandler.GetState(auth.CurrentState) == AuthHandler.AuthState.Ready)
 			App.GetInstance().RootFrame.Navigate(typeof(Home), null, new DrillInNavigationTransitionInfo());
 	}
 
@@ -92,9 +95,6 @@ public sealed partial class LoginCode : Page
 	{
 		switch (state)
 		{
-			case AuthHandler.AuthState.WaitPassword:
-				App.GetInstance().RootFrame.Navigate(typeof(GenericError), "2 factor auth is not supported in this version, though it may be added in the future. Contact dev for more info");
-				return true;
 			case AuthHandler.AuthState.WaitRegistration:
 				App.GetInstance().RootFrame.Navigate(typeof(GenericError), "Registration is not supported in this application. Please register using the Telegram app.");
 				return true;

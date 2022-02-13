@@ -173,6 +173,14 @@ public class AuthHandler
         await Client.ExecuteAsync(new TdApi.CheckAuthenticationCode {Code = code});
 
     /// <summary>
+    /// Handles state WatiPassword
+    /// </summary>
+    /// <param name="password">The 2 factor password set by the user</param>
+    /// <returns>A TdApi.Ok object if the request was successful</returns>
+    public async Task<TdApi.Ok?> Handle_WaitPassword(string password) =>
+        await Client.ExecuteAsync(new TdApi.CheckAuthenticationPassword {Password = password});
+
+    /// <summary>
     /// The current state of authentication
     /// </summary>
     public enum AuthState
@@ -195,7 +203,6 @@ public class AuthHandler
     /// <returns></returns>
     public static AuthState GetState(TdApi.AuthorizationState state)
     {
-        if (state is null) return 0;
         if (state.GetType() == typeof(AuthorizationStateWaitTdlibParameters)) return AuthState.WaitTdLibParams;
         if (state.GetType() == typeof(AuthorizationStateWaitEncryptionKey)) return AuthState.WaitEncryptionKey;
         if (state.GetType() == typeof(AuthorizationStateWaitPhoneNumber)) return AuthState.WaitPhoneNumber;
