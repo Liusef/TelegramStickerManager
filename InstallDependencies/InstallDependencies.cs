@@ -1,5 +1,4 @@
 ﻿using System;
-using InstallDependencies;
 using System.Threading.Tasks;
 using System.Security.Principal;
 using System.Diagnostics;
@@ -8,7 +7,7 @@ using System.Net;
 
 namespace InstallDependencies
 {
-    internal class Program
+    internal class InstallDependencies
     {
         private const string Sep = "=========================================================";
         private const string Net6DRT = "Microsoft.WindowsDesktop.App 6.0";
