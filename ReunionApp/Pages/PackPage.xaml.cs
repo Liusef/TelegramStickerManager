@@ -95,33 +95,38 @@ public sealed partial class PackPage : Page
     {
         Add.IsEnabled = true;
         Del.IsEnabled = true;
+        Order.IsEnabled = true;
     }
 
     private void DisableAllButtons()
     {
         Add.IsEnabled = false;
         Del.IsEnabled = false;
+        Order.IsEnabled = false;
     }
 
 
 	private void Back(object sender, RoutedEventArgs e) =>
 		App.GetInstance().RootFrame.GoBack();
 	
-    private void AddSticker(object sender, RoutedEventArgs e)
-    {
+    private void AddSticker(object sender, RoutedEventArgs e) =>
         App.GetInstance().RootFrame.Navigate(typeof(BaseCommand), 
             new BaseCommand.BaseCommandParams(pack, 
             CommandType.ADDSTICKER),
             new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
-    }
+    
 
-    private void DelSticker(object server, RoutedEventArgs e)
-    {
+    private void DelSticker(object server, RoutedEventArgs e) =>
         App.GetInstance().RootFrame.Navigate(typeof(BaseCommand),
             new BaseCommand.BaseCommandParams(pack,
             CommandType.DELSTICKER),
             new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
-    }
+
+    private void OrderSticker(object sender, RoutedEventArgs e) =>
+        App.GetInstance().RootFrame.Navigate(typeof(BaseCommand),
+            new BaseCommand.BaseCommandParams(pack,
+            CommandType.ORDERSTICKER),
+            new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
 }
 
 

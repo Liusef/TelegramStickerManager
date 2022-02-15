@@ -17,6 +17,7 @@ using Windows.Foundation.Collections;
 using static ReunionApp.Pages.CommandPages.AddSticker;
 using static ReunionApp.Pages.CommandPages.DelSticker;
 using static ReunionApp.Pages.CommandPages.NewPackAddStickers;
+using static ReunionApp.Pages.CommandPages.OrderSticker;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -84,6 +85,11 @@ public sealed partial class BaseCommand : Page
                 InfoFrame.Navigate(typeof(CommandPages.InfoPages.AddInfo));
                 Op.Text = "Add Some Stickers!";
                 break;
+            case CommandType.ORDERSTICKER:
+                ContentFrame.Navigate(typeof(CommandPages.OrderSticker), new OrderStickerParams(pack, BackButton));
+                InfoFrame.Navigate(typeof(CommandPages.InfoPages.OrderInfo));
+                Op.Text = "Reorder Stickers";
+                break;
             default:
                 App.GetInstance().ShowBasicDialog("No command was selected",
                     "Somehow, no command for modifying the stickerpack was selected. Please click back.");
@@ -101,4 +107,5 @@ public enum CommandType
     ADDSTICKER = 1,
     DELSTICKER = 2,
     NEWPACK = 3,
+    ORDERSTICKER = 4,
 }

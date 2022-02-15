@@ -29,19 +29,20 @@ namespace ReunionApp.Pages;
 public sealed partial class Home : Page
 {
 
-	private ObservableCollection<StickerPack> packList = new ObservableCollection<StickerPack>();
+    private ObservableCollection<StickerPack> packList;
+    private bool cached = false;
 
 	public Home()
 	{
 		this.InitializeComponent();
-		LoadStickers();
 	}
 
     protected override async void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
         App.GetInstance().RootFrame.BackStack.Clear();
-        //if (e.Parameter is bool b && b) Refresh(null, null);
+        bool refresh = e.Parameter as bool? ?? false;
+        if (refresh && e.NavigationMode == NavigationMode.New) await LoadStickers(refresh);
     }
 
     public async Task LoadStickers(bool forceNew = false)
@@ -50,11 +51,8 @@ public sealed partial class Home : Page
 		{
             packList = new ObservableCollection<StickerPack>();
             Packs.ItemsSource = packList;
-            if (forceNew) 
-            { 
-                await App.GetInstance().ResetTdClient(); 
-                App.GetInstance().ResetFrameCache();
-            }
+            ShowLoading();
+            if (forceNew) await App.GetInstance().ResetTdClient(false); 
             TdClient c = App.GetInstance().Client;
 			var nameList = forceNew ? await c.GetOwnedPacksAsync() : await PackList.GetOwnedPacks(c);
 			if (nameList is null || nameList.Length == 0)
@@ -97,30 +95,29 @@ public sealed partial class Home : Page
 
         if (pack.IsCachedCopy) await Task.Run(async () => pack.InjectCompleteInfo(await StickerPack.GenerateFromName(App.GetInstance().Client, pack.Name)));
 
-		App.GetInstance().RootFrame.Navigate(typeof(PackPage), pack);
-		Loading.Visibility = Visibility.Collapsed;
+        Loading.Visibility = Visibility.Collapsed;
+        App.GetInstance().RootFrame.Navigate(typeof(PackPage), pack);
 	}
 
-	private async void Refresh(object sender, RoutedEventArgs e)
-	{
-		None.Visibility = Visibility.Collapsed;
-		Packs.Visibility = Visibility.Collapsed;
-		Loading.Visibility = Visibility.Visible;
+    private void ShowLoading()
+    {
+        None.Visibility = Visibility.Collapsed;
+        Packs.Visibility = Visibility.Collapsed;
+        Loading.Visibility = Visibility.Visible;
         LoadingBar.IsIndeterminate = true;
+    }
+
+	private async void Refresh(object sender, RoutedEventArgs e) => 
         await LoadStickers(true);
-	}
+	
 
     private void NewPack(object sender, RoutedEventArgs e) =>
         App.GetInstance().RootFrame.Navigate(typeof(NewPack));
 
-	private void Settings(object sender, RoutedEventArgs e)
-	{
+	private void Settings(object sender, RoutedEventArgs e) =>
 		App.GetInstance().RootFrame.Navigate(typeof(Settings));
-	}
 
-	private void About(object sender, RoutedEventArgs e)
-	{
+	private void About(object sender, RoutedEventArgs e) =>
 		App.GetInstance().RootFrame.Navigate(typeof(About));
-	}
 }
 

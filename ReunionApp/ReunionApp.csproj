@@ -13,6 +13,7 @@
 	<WindowsPackageType>None</WindowsPackageType>
 	<PlatformTarget>AnyCPU</PlatformTarget>
 	<DebugType>embedded</DebugType>
+	<ApplicationIcon>Images\AppIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <Optimize>False</Optimize>
@@ -33,6 +34,9 @@
     <Optimize>True</Optimize>
   </PropertyGroup>
   <ItemGroup>
+      <Content Include="Images\AppIcon.ico">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
 	  <Content Include="Images\AppIcon.png">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </Content>
@@ -47,12 +51,15 @@
 	  <None Remove="Pages\CommandPages\DelSticker.xaml" />
 	  <None Remove="Pages\CommandPages\InfoPages\AddInfo.xaml" />
 	  <None Remove="Pages\CommandPages\InfoPages\DelInfo.xaml" />
+	  <None Remove="Pages\CommandPages\InfoPages\OrderInfo.xaml" />
 	  <None Remove="Pages\CommandPages\NewPack.xaml" />
 	  <None Remove="Pages\CommandPages\NewPackAddStickers.xaml" />
+	  <None Remove="Pages\CommandPages\OrderSticker.xaml" />
 	  <None Remove="Pages\CommandPages\ProcessingCommand.xaml" />
 	  <None Remove="Pages\GenericError.xaml" />
 	  <None Remove="Pages\Home.xaml" />
 	  <None Remove="Pages\LoginPages\LoginCode.xaml" />
+	  <None Remove="Pages\LoginPages\LoginPassword.xaml" />
 	  <None Remove="Pages\LoginPages\LoginPhone.xaml" />
 	  <None Remove="Pages\PackPage.xaml" />
 	  <None Remove="Pages\Settings.xaml" />
@@ -128,6 +135,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="C:\Users\josep\Stuff\Projects\dotnet\TelegramSticker\ReunionApp\.editorconfig" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\CommandPages\InfoPages\OrderInfo.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\CommandPages\OrderSticker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\LoginPages\LoginPassword.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Runners\RunnerDependencies\NewPackRunnerNameDialog.xaml">

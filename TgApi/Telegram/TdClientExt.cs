@@ -100,6 +100,18 @@ public static class TdClientExt
     }
 
     /// <summary>
+    /// Marks unread notifications in a chat as read
+    /// </summary>
+    /// <param name="client">An active TdClient</param>
+    /// <param name="chatId">The Id of the chat to mark as read</param>
+    /// <returns></returns>
+    public static async Task MarkChatAsRead(this TdClient client, long chatId)
+	{
+        var chat = await client.GetChatAsync(chatId);
+        await client.ViewMessagesAsync(chatId, 0, new[] { chat.LastMessage.Id }, true);
+    }
+
+    /// <summary>
     /// Returns the text of a Message
     /// </summary>
     /// <param name="msg">A TdLib message object</param>

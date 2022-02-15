@@ -92,12 +92,10 @@ public class Sticker
             Height = input.Height,
             RemoteFileId = input.Sticker_.Remote.Id,
             Size = input.Sticker_.ExpectedSize,
-            MainEmoji = input.Emoji
+            MainEmoji = input.Emoji,
         };
         TdApi.Emojis inputEmojis = await inputEmojisTask;
-        List<string> emojis = new List<string>(inputEmojis.Emojis_);
-        emojis.Remove(input.Emoji);
-        s.Emojis = input.Emoji + string.Join("", emojis);
+        s.Emojis = string.Join("", inputEmojis.Emojis_);
         s.Filename = (await filenameTask).Text_;
 
         if (input.IsMask) s.Type = StickerType.MASK;
