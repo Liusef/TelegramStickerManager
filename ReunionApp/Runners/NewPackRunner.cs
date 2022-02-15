@@ -24,7 +24,7 @@ public class NewPackRunner : CommandRunner
         set
         {
             _index = value;
-            OnProgressChanged();
+            Progress = 100 * (double)Index / newStickers.Length;
         }
     }
 
@@ -32,15 +32,6 @@ public class NewPackRunner : CommandRunner
     {
         pack = p;
         newStickers = ns;
-    }
-
-    public override double Progress => 100 * (double)Index / newStickers.Length;
-
-    public override event PropertyChangedEventHandler PropertyChanged;
-
-    protected override void OnProgressChanged()
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Progress)));
     }
 
     private async Task AskForNewName()
@@ -69,10 +60,10 @@ public class NewPackRunner : CommandRunner
         var botId = await client.GetIdFromUsernameAsync("Stickers");
         var waiter = new MessageWaiter(client, botId);
         await waiter.SendMsgAndAwaitNext("/cancel");
-        Outputs.Add(new CommandOutput("/newpack", null, true));
-        AddReplyToOutputs(await waiter.SendMsgAndAwaitNext("/newpack"));
-        Outputs.Add(new CommandOutput(pack.Title, null, true));
-        AddReplyToOutputs(await waiter.SendMsgAndAwaitNext(pack.Title));
+
+        await SendAndAddToOutputsAsync(waiter, "/newpack");
+        await SendAndAddToOutputsAsync(waiter, pack.Title);
+
         for (Index = 0; Index < newStickers.Length; Index++) 
         {
             var upload = await FileUpload.StartUpload(client, newStickers[Index].EnsuredPath);
@@ -80,15 +71,13 @@ public class NewPackRunner : CommandRunner
             Outputs.Add(new CommandOutput(null, newStickers[Index].ImgPath, true));
             var cmsg = await client.SendBasicDocumentAsync(botId, new InputFileId { Id = upload.LocalId }); // TODO Could use InputFileLocal instead of a FileUpload
             var reply = await waiter.WaitNextMsgAsync(cmsg.Id);
-            Outputs.Add(new CommandOutput(reply.GetMessageString(), null, false));
-            if (reply.GetMessageString().Substring(0, 7) == "Thanks!")
-            {
-                Outputs.Add(new CommandOutput(newStickers[Index].Emojis, null, true));
-                AddReplyToOutputs(await waiter.SendMsgAndAwaitNext(newStickers[Index].Emojis));
-            }
+            AddReplyToOutputs(reply);
+
+            if (reply.GetMessageString().Substring(0, 7) == "Thanks!") await SendAndAddToOutputsAsync(waiter, newStickers[Index].Emojis);
         }
-        Outputs.Add(new CommandOutput("/publish", null, true));
-        AddReplyToOutputs(await waiter.SendMsgAndAwaitNext("/publish"));
+
+        await SendAndAddToOutputsAsync(waiter, "/publish");
+
         if (File.Exists(pack.Thumb.LocalPath))
         {
             var upload = await FileUpload.StartUpload(client, pack.Thumb.LocalPath);
@@ -96,22 +85,20 @@ public class NewPackRunner : CommandRunner
             Outputs.Add(new CommandOutput(null, pack.Thumb.LocalPath, true));
             var cmsg = await client.SendBasicDocumentAsync(botId, new InputFileId { Id = upload.LocalId }); // TODO Could use InputFileLocal instead of a FileUpload
             var reply = await waiter.WaitNextMsgAsync(cmsg.Id);
-            Outputs.Add(new CommandOutput(reply.GetMessageString(), null, false));
+            AddReplyToOutputs(reply);
         } 
-        else
-        {
-            Outputs.Add(new CommandOutput("/skip", null, true));
-            AddReplyToOutputs(await waiter.SendMsgAndAwaitNext("/skip"));
-        }
+        else await SendAndAddToOutputsAsync(waiter, "/skip");
+        
         Outputs.Add(new CommandOutput(pack.Name, null, true));
         var r = await waiter.SendMsgAndAwaitNext(pack.Name);
-        Outputs.Add(new CommandOutput(r.GetMessageString(), null, false));
+        AddReplyToOutputs(r);
+
         while (r.GetMessageString()[0..5] == "Sorry")
         {
             await AskForNewName();
             Outputs.Add(new CommandOutput(pack.Name, null, true));
             r = await waiter.SendMsgAndAwaitNext(pack.Name);
-            Outputs.Add(new CommandOutput(r.GetMessageString(), null, false));
+            AddReplyToOutputs(r);
         }
     }
 }

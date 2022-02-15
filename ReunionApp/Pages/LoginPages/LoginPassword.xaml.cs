@@ -73,6 +73,6 @@ public sealed partial class LoginPassword : Page
         if (LoginCode.IsNotSupportedState(AuthHandler.GetState(auth.CurrentState))) return;
 
         if (AuthHandler.GetState(auth.CurrentState) == AuthHandler.AuthState.Ready)
-            App.GetInstance().RootFrame.Navigate(typeof(Home), null, new DrillInNavigationTransitionInfo());
+            App.GetInstance().RootFrame.Navigate(typeof(Home), true, new DrillInNavigationTransitionInfo());
     }
 }

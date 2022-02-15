@@ -24,6 +24,7 @@ using System.Collections.ObjectModel;
 using TgApi.Types;
 using Microsoft.UI.Xaml.Media.Imaging;
 using ReunionApp.Pages;
+using TdLib;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -58,12 +59,13 @@ public partial class App : Application
 	/// </summary>
 	public App()
 	{
-		auth = new AuthHandler(Client);
+        this.InitializeComponent();
+        auth = new AuthHandler(Client);
 		Client.Bindings.SetLogVerbosityLevel(0);
 		GlobalVars.EnsureDirectories();
 		HandleAuth();
-		this.InitializeComponent();
-		App.Current.UnhandledException += App_UnhandledException;
+        Client.UpdateReceived += ReadStickerBotMsgs;
+        App.Current.UnhandledException += App_UnhandledException;
 	}
 
 	/// <summary>
@@ -71,13 +73,26 @@ public partial class App : Application
 	/// will be used such as when the application is launched to open a specific file.
 	/// </summary>
 	/// <param name="args">Details about the launch request and process.</param>
-	protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
+	protected async override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
 	{
 		m_window = new MainWindow();
 		m_window.Activate();
 	}
 
-	private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
+    private async void ReadStickerBotMsgs(object sender, TdApi.Update e)
+    {
+        if (e is TdApi.Update.UpdateNewMessage nMsg)
+        {
+            var chatId = await Client.GetIdFromUsernameAsync("Stickers");
+            if (nMsg.Message.ChatId == chatId)
+            {
+                await Client.OpenChatAsync(chatId);
+                await Client.ViewMessagesAsync(chatId, 0, new[] { nMsg.Message.Id }, true);
+            }
+        }
+    }
+
+    private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
 	{
 		e.Handled = true;
 		ShowExceptionDialog(e.Exception);
@@ -107,10 +122,10 @@ public partial class App : Application
         await ShowBasicDialog($"Oops! The program hit a(n) {exception.GetType()} Exception", exception.ToString());
     }
 
-	public async Task HandleAuth()
+	public async Task HandleAuth(bool autoNavigate = true)
 	{
 		if (auth is null) return;
-		await Task.Delay(200);
+		await Task.Delay(50);
 		var lastRequest = DateTimeOffset.MinValue;
 		authState = AuthHandler.GetState(auth.CurrentState);
 		while (authState != AuthHandler.AuthState.Ready &&
@@ -144,7 +159,7 @@ public partial class App : Application
 					break;
 			}
 
-			while (lastRequest == auth.LastRequestReceivedAt) await Task.Delay(100);
+			while (lastRequest == auth.LastRequestReceivedAt) await Task.Delay(50);
 
 			lastRequest = auth.LastRequestReceivedAt;
 			authState = AuthHandler.GetState(auth.CurrentState);
@@ -155,30 +170,28 @@ public partial class App : Application
 			}
 		}
 
-		switch (authState)
-		{
-			case AuthHandler.AuthState.Ready:
-				RootFrame.Navigate(typeof(Pages.Home), null, new DrillInNavigationTransitionInfo());
-				break;
-			default:
-				RootFrame.Navigate(typeof(Pages.LoginPages.LoginPhone), auth, new DrillInNavigationTransitionInfo());
-				break;
-		}
+        if (autoNavigate)
+        {
+            switch (authState)
+            {
+                case AuthHandler.AuthState.Ready:
+                    RootFrame.Navigate(typeof(Pages.Home), true, new DrillInNavigationTransitionInfo());
+                    break;
+                default:
+                    RootFrame.Navigate(typeof(Pages.LoginPages.LoginPhone), auth, new DrillInNavigationTransitionInfo());
+                    break;
+            }
+        }
 	}
 
-    public async Task ResetTdClient()
+    public async Task ResetTdClient(bool autoNavigate = true)
     {
         Client.Dispose();
         Client = new TdLib.TdClient();
         auth = new AuthHandler(Client);
         authState = AuthHandler.AuthState.Null;
-        await HandleAuth();
-    }
-
-    public void ResetFrameCache()
-    {
-        RootFrame.CacheSize = 0;
-        RootFrame.CacheSize = 10;
+        await HandleAuth(autoNavigate);
+        Client.UpdateReceived += ReadStickerBotMsgs;
     }
 
 	public static BitmapImage GetBitmapFromPath(string path) => new BitmapImage(new Uri(path));

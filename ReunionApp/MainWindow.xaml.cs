@@ -29,8 +29,20 @@ namespace ReunionApp
 			this.InitializeComponent();
 			ExtendsContentIntoTitleBar = true;
 			SetTitleBar(appTitleBar);
+            SetWindowIcon("Images/AppIcon.ico");
 			contentFrame.Navigate(typeof(Pages.LoadingApp));
 		}
+
+        private void SetWindowIcon(string location)
+        {
+            // Get the AppWindow from the XAML Window ("this" is your XAML window)
+            IntPtr hWnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
+            WindowId myWndId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(hWnd);
+            var appWindow = AppWindow.GetFromWindowId(myWndId);
+
+            // And then set the icon
+            appWindow.SetIcon(location);
+        }
 
         private void contentFrame_Navigated(object sender, NavigationEventArgs e)
         {

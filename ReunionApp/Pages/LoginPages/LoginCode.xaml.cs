@@ -77,7 +77,7 @@ public sealed partial class LoginCode : Page
             App.GetInstance().RootFrame.Navigate(typeof(LoginPassword), auth, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
 
         if (AuthHandler.GetState(auth.CurrentState) == AuthHandler.AuthState.Ready)
-			App.GetInstance().RootFrame.Navigate(typeof(Home), null, new DrillInNavigationTransitionInfo());
+			App.GetInstance().RootFrame.Navigate(typeof(Home), true, new DrillInNavigationTransitionInfo());
 	}
 
 	private void CodeBox_TextChanged(object sender, TextChangedEventArgs e)

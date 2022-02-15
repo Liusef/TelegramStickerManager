@@ -20,9 +20,14 @@
             <RowDefinition Height="48"/>
         </Grid.RowDefinitions>
 
-        <Button Grid.Row="0" VerticalAlignment="Top" Padding="6">
+        <Button Grid.Row="0" VerticalAlignment="Top" Padding="6" Style="{ThemeResource AccentButtonStyle}">
 
-            <SymbolIcon Symbol="GlobalNavigationButton"/>
+            <StackPanel Orientation="Horizontal" Spacing="6" Margin="4">
+                <SymbolIcon Symbol="GlobalNavigationButton"/>
+                <TextBlock>
+                    More Options
+                </TextBlock>
+            </StackPanel>
 
             <Button.Flyout>
                 <MenuFlyout>

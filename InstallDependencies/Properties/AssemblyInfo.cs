@@ -4,8 +4,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("InstallDependencies")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Install Dependencies")]
+[assembly: AssemblyDescription("Installs Dependencies for Telegram Sticker Manager. Uses .NET Framework 4.8")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("InstallDependencies")]

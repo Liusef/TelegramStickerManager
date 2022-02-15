@@ -43,6 +43,6 @@
                 HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="60"
                 Margin="0, 12, 0, 0" Click="Continue_Click"/>
         
-        <ProgressBar Width="Auto" Grid.Row="2" Value="{x:Bind runner.Progress, Mode=OneWay}"/>
+        <ProgressBar x:Name="Loading" Width="Auto" Grid.Row="2" Value="{x:Bind runner.Progress, Mode=OneWay}"/>
     </Grid>
 </Page>

@@ -43,7 +43,6 @@ public sealed partial class ProcessingCommand : Page
         Continue.IsEnabled = true;
 
         await Task.Run(async () => await Task.Delay(100));
-
     }
 
     private async void Outputs_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -54,8 +53,10 @@ public sealed partial class ProcessingCommand : Page
 
     private async void Continue_Click(object sender, RoutedEventArgs e)
     {
+        Loading.IsIndeterminate = true;
         Continue.IsEnabled = false;
-        await runner.PostTasks();
+        await runner.PostTasksAsync();
+
         App.GetInstance().RootFrame.Navigate(typeof(Home), true, new DrillInNavigationTransitionInfo());
     }
 }

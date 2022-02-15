@@ -29,6 +29,7 @@
             <StackPanel Margin="0, 24, 0, 0" HorizontalAlignment="Stretch" Spacing="12">
                 <Button x:Name="Add" Content="Add Stickers" Click="AddSticker" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" IsEnabled="False"/>
                 <Button x:Name="Del" Content="Delete Stickers" Click="DelSticker" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" IsEnabled="False"/>
+                <Button x:Name="Order" Content="Reorder Stickers" Click="OrderSticker" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" IsEnabled="False"/>
             </StackPanel>
         </StackPanel>
 

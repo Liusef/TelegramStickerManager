@@ -33,7 +33,14 @@ namespace InstallDependencies
 
             var t = Task.Run(() =>
             {
-                NET6 = Net6DRTInstalled();
+                try
+                {
+                    NET6 = Net6DRTInstalled();
+                }
+                catch
+                {
+                    NET6 = false;
+                }
                 WARTFull = WinARTFullInstall();
                 WARTAny = WinARTAnyInstall();
             });
@@ -43,6 +50,7 @@ namespace InstallDependencies
                 Console.Write(".");
                 await Task.Delay(1000);
             }
+            await t;
             
             Console.WriteLine("\n");
             
@@ -63,29 +71,11 @@ namespace InstallDependencies
                     NET6Canceled = true;
                 }
             }
-
-            if (!WARTFull && !WARTAny)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("\nWe couldn't find the Windows App Runtime on your device\n");
-                Console.ResetColor();
-
-                if (Utils.PromptYesNo("Would you like this program to automatically install the Windows App Runtime 1.0 (215 MB)? (y/n): "))
-                {
-                    var s = await InstallWART();
-                    WARTFull = s;
-                    WARTCanceled = !s;
-                }
-                else
-                {
-                    WARTCanceled = true;
-                }
-            }
             
             if (!WARTFull && WARTAny)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("\nWe found a version a version of the Windows App Runtime, but it may be incompatible.\n");
+                Console.WriteLine("We found a version a version of the Windows App Runtime, but it may be incompatible.\n");
                 Console.ResetColor();
 
                 if (Utils.PromptYesNo("Would you like this program to automatically install the Windows App Runtime 1.0 (215 MB)? (y/n): "))
@@ -100,7 +90,25 @@ namespace InstallDependencies
                 }
             }
 
-            
+            else if (!WARTFull && !WARTAny)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("We couldn't find the Windows App Runtime on your device\n");
+                Console.ResetColor();
+
+                if (Utils.PromptYesNo("Would you like this program to automatically install the Windows App Runtime 1.0 (215 MB)? (y/n): "))
+                {
+                    var s = await InstallWART();
+                    WARTFull = s;
+                    WARTCanceled = !s;
+                }
+                else
+                {
+                    WARTCanceled = true;
+                }
+            }
+
+
             if (NET6Canceled)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -122,10 +130,10 @@ namespace InstallDependencies
                 Console.WriteLine(Sep);
                 Console.ResetColor();
             }
-            if (WARTAnyCanceled)
+            else if (WARTAnyCanceled)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine($"\n{ Sep}\nThe app may not run with your Windows App Runtime installation.Download the recommended version here:");
+                Console.WriteLine($"\n{ Sep}\nThe app may not run with your Windows App Runtime installation. Download the recommended version here:");
                 Console.ResetColor();
                 Console.WriteLine($"https://aka.ms/windowsappsdk/1.0-stable/msix-installer");
                 Console.ForegroundColor = ConsoleColor.Yellow;
