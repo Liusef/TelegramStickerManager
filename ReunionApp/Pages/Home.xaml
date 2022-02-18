@@ -20,7 +20,7 @@
             <RowDefinition Height="48"/>
         </Grid.RowDefinitions>
 
-        <Button Grid.Row="0" VerticalAlignment="Top" Padding="6" Style="{ThemeResource AccentButtonStyle}">
+        <Button Grid.Row="0" VerticalAlignment="Top" Padding="6">
 
             <StackPanel Orientation="Horizontal" Spacing="6" Margin="4">
                 <SymbolIcon Symbol="GlobalNavigationButton"/>

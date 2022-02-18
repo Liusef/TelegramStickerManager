@@ -30,7 +30,6 @@ public sealed partial class Home : Page
 {
 
     private ObservableCollection<StickerPack> packList;
-    private bool cached = false;
 
 	public Home()
 	{
