@@ -61,23 +61,23 @@ public partial class App : Application
 	{
         this.InitializeComponent();
         auth = new AuthHandler(Client);
-		Client.Bindings.SetLogVerbosityLevel(0);
+		Client.Bindings.SetLogVerbosityLevel(1);
 		GlobalVars.EnsureDirectories();
-		HandleAuth();
         Client.UpdateReceived += ReadStickerBotMsgs;
         App.Current.UnhandledException += App_UnhandledException;
-	}
+    }
 
-	/// <summary>
-	/// Invoked when the application is launched normally by the end user.  Other entry points
-	/// will be used such as when the application is launched to open a specific file.
-	/// </summary>
-	/// <param name="args">Details about the launch request and process.</param>
-	protected async override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
+    /// <summary>
+    /// Invoked when the application is launched normally by the end user.  Other entry points
+    /// will be used such as when the application is launched to open a specific file.
+    /// </summary>
+    /// <param name="args">Details about the launch request and process.</param>
+    protected async override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
 	{
 		m_window = new MainWindow();
 		m_window.Activate();
-	}
+        await HandleAuth();
+    }
 
     private async void ReadStickerBotMsgs(object sender, TdApi.Update e)
     {
@@ -128,62 +128,69 @@ public partial class App : Application
 		await Task.Delay(50);
 		var lastRequest = DateTimeOffset.MinValue;
 		authState = AuthHandler.GetState(auth.CurrentState);
-		while (authState != AuthHandler.AuthState.Ready &&
-			authState != AuthHandler.AuthState.WaitPhoneNumber &&
-			authState != AuthHandler.AuthState.WaitCode &&
-			authState != AuthHandler.AuthState.WaitOtherDeviceConfirmation &&
-			authState != AuthHandler.AuthState.WaitRegistration &&
-			authState != AuthHandler.AuthState.WaitPassword)
-		{
-			switch (authState)
-			{
-				case AuthHandler.AuthState.WaitTdLibParams:
-					await auth.Handle_WaitTdLibParameters(new TdLib.TdApi.TdlibParameters()
-					{
-						ApiId = GlobalVars.ApiId,
-						ApiHash = GlobalVars.ApiHash,
-						SystemLanguageCode = GlobalVars.SystemLanguageCode,
-						DeviceModel = GlobalVars.DeviceModel,
-						ApplicationVersion = GlobalVars.ApplicationVersion,
-						DatabaseDirectory = GlobalVars.TdDir,
-                        UseTestDc = false,
-                        UseChatInfoDatabase = false,
-                        UseFileDatabase = false,
-                        UseMessageDatabase = false
-					});
-					break;
-				case AuthHandler.AuthState.WaitEncryptionKey:
-					await auth.Handle_WaitEncryptionKey();
-					break;
-				default:
-					await Task.Delay(100);
-					break;
-			}
-
-			while (lastRequest == auth.LastRequestReceivedAt) await Task.Delay(50);
-
-			lastRequest = auth.LastRequestReceivedAt;
-			authState = AuthHandler.GetState(auth.CurrentState);
-
-			if (authState == AuthHandler.AuthState.Null)
-			{
-				RootFrame.Navigate(typeof(Pages.GenericError), "The application encountered an unknown sign-in state. Please restart the app");
-			}
-		}
-
-        if (autoNavigate)
+        try
         {
-            switch (authState)
+            while (authState != AuthHandler.AuthState.Ready &&
+                authState != AuthHandler.AuthState.WaitPhoneNumber &&
+                authState != AuthHandler.AuthState.WaitCode &&
+                authState != AuthHandler.AuthState.WaitOtherDeviceConfirmation &&
+                authState != AuthHandler.AuthState.WaitRegistration &&
+                authState != AuthHandler.AuthState.WaitPassword)
             {
-                case AuthHandler.AuthState.Ready:
-                    RootFrame.Navigate(typeof(Pages.Home), true, new DrillInNavigationTransitionInfo());
-                    break;
-                default:
-                    RootFrame.Navigate(typeof(Pages.LoginPages.LoginPhone), auth, new DrillInNavigationTransitionInfo());
-                    break;
+                switch (authState)
+                {
+                    case AuthHandler.AuthState.WaitTdLibParams:
+                        await auth.Handle_WaitTdLibParameters(new TdLib.TdApi.TdlibParameters()
+                        {
+                            ApiId = GlobalVars.ApiId,
+                            ApiHash = GlobalVars.ApiHash,
+                            SystemLanguageCode = GlobalVars.SystemLanguageCode,
+                            DeviceModel = GlobalVars.DeviceModel,
+                            ApplicationVersion = GlobalVars.ApplicationVersion,
+                            DatabaseDirectory = GlobalVars.TdDir,
+                            UseTestDc = false,
+                            UseChatInfoDatabase = false,
+                            UseFileDatabase = false,
+                            UseMessageDatabase = false
+                        });
+                        break;
+                    case AuthHandler.AuthState.WaitEncryptionKey:
+                        await auth.Handle_WaitEncryptionKey();
+                        break;
+                    default:
+                        await Task.Delay(100);
+                        break;
+                }
+
+                while (lastRequest == auth.LastRequestReceivedAt) await Task.Delay(50);
+
+                lastRequest = auth.LastRequestReceivedAt;
+                authState = AuthHandler.GetState(auth.CurrentState);
+
+                if (authState == AuthHandler.AuthState.Null)
+                {
+                    RootFrame.Navigate(typeof(Pages.GenericError), "The application encountered an unknown sign-in state. Please restart the app");
+                }
+            }
+
+            if (autoNavigate)
+            {
+                switch (authState)
+                {
+                    case AuthHandler.AuthState.Ready:
+                        RootFrame.Navigate(typeof(Pages.Home), true, new DrillInNavigationTransitionInfo());
+                        break;
+                    default:
+                        RootFrame.Navigate(typeof(Pages.LoginPages.LoginPhone), auth, new DrillInNavigationTransitionInfo());
+                        break;
+                }
             }
         }
-	}
+        catch (Exception ex)
+        {
+            await ShowExceptionDialog(ex);
+        }
+    }
 
     public async Task ResetTdClient(bool autoNavigate = true)
     {
