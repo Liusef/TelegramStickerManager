@@ -27,6 +27,7 @@ namespace ReunionApp.Pages.CommandPages;
 public sealed partial class ProcessingCommand : Page
 {
     CommandRunner runner;
+    private Task refreshTimer;
 
     public ProcessingCommand()
     {
@@ -40,6 +41,7 @@ public sealed partial class ProcessingCommand : Page
         runner.Outputs.CollectionChanged += Outputs_CollectionChanged;
 
         await runner.RunCommandsAsync();
+        refreshTimer = Task.Run(async () => await Task.Delay(1000));
         Continue.IsEnabled = true;
 
         await Task.Run(async () => await Task.Delay(100));
@@ -53,13 +55,11 @@ public sealed partial class ProcessingCommand : Page
 
     private async void Continue_Click(object sender, RoutedEventArgs e)
     {
-        await Task.Run(async () => await Task.Delay(500)); // This (and await task) are here because if you reset your TdClient too soon after the 
-                                                           // operation, it won't get the latest version. This ensures there's enough delay.
-                                                           // TODO Make it not do this, this is AWFUL
-
         Loading.IsIndeterminate = true;
         Continue.IsEnabled = false;
-        await runner.PostTasksAsync();
+
+        await refreshTimer;
+        await Task.Run(async () => await runner.PostTasksAsync());
 
         App.GetInstance().RootFrame.Navigate(typeof(Home), true, new DrillInNavigationTransitionInfo());
     }
