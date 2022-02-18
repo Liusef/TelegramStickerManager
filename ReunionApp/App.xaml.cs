@@ -86,7 +86,7 @@ public partial class App : Application
             var chatId = await Client.GetIdFromUsernameAsync("Stickers");
             if (nMsg.Message.ChatId == chatId)
             {
-                await Client.OpenChatAsync(chatId);
+                //await Client.OpenChatAsync(chatId);
                 await Client.ViewMessagesAsync(chatId, 0, new[] { nMsg.Message.Id }, true);
             }
         }
@@ -146,6 +146,7 @@ public partial class App : Application
 						DeviceModel = GlobalVars.DeviceModel,
 						ApplicationVersion = GlobalVars.ApplicationVersion,
 						DatabaseDirectory = GlobalVars.TdDir,
+                        UseTestDc = false,
                         UseChatInfoDatabase = false,
                         UseFileDatabase = false,
                         UseMessageDatabase = false

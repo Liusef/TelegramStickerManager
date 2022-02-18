@@ -203,6 +203,7 @@ public class AuthHandler
     /// <returns></returns>
     public static AuthState GetState(TdApi.AuthorizationState state)
     {
+        if (state == null) return 0;
         if (state.GetType() == typeof(AuthorizationStateWaitTdlibParameters)) return AuthState.WaitTdLibParams;
         if (state.GetType() == typeof(AuthorizationStateWaitEncryptionKey)) return AuthState.WaitEncryptionKey;
         if (state.GetType() == typeof(AuthorizationStateWaitPhoneNumber)) return AuthState.WaitPhoneNumber;

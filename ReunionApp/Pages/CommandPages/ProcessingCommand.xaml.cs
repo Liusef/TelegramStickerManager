@@ -53,6 +53,10 @@ public sealed partial class ProcessingCommand : Page
 
     private async void Continue_Click(object sender, RoutedEventArgs e)
     {
+        await Task.Run(async () => await Task.Delay(500)); // This (and await task) are here because if you reset your TdClient too soon after the 
+                                                           // operation, it won't get the latest version. This ensures there's enough delay.
+                                                           // TODO Make it not do this, this is AWFUL
+
         Loading.IsIndeterminate = true;
         Continue.IsEnabled = false;
         await runner.PostTasksAsync();
