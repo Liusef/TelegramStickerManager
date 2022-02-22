@@ -8,15 +8,23 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <StackPanel VerticalAlignment="Top" Spacing="20" Margin="50,50,0,0">
-        <TextBlock FontSize="30" FontWeight="Bold" TextWrapping="WrapWholeWords">
+    <StackPanel VerticalAlignment="Top"
+                Spacing="20"
+                Margin="50,50,0,0">
+        
+        <TextBlock FontSize="30"
+                   FontWeight="Bold"
+                   TextWrapping="WrapWholeWords">
             The application encountered an error or unexpected state and cannot continue.
         </TextBlock>
         <TextBlock TextWrapping="WrapWholeWords">
             If any additional information was provided, it will be displayed below. You may close the application.
         </TextBlock>
-        <TextBlock x:Name="body" IsTextSelectionEnabled="True" TextWrapping="WrapWholeWords">
+        <TextBlock x:Name="body"
+                   IsTextSelectionEnabled="True" 
+                   TextWrapping="WrapWholeWords">
             No additional info provided.
         </TextBlock>
+        
     </StackPanel>
 </Page>

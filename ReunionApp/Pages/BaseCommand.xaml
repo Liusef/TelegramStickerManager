@@ -23,11 +23,22 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <StackPanel Grid.Row="0" Margin="24, 24, 0, 0"  Spacing="12">
-                <Button x:Name="BackButton" Content="Back" Click="Back"/>
+            <StackPanel Grid.Row="0" 
+                        Margin="24, 24, 0, 0" 
+                        Spacing="12">
+                <Button x:Name="BackButton"
+                        Content="Back"
+                        Click="Back"/>
                 <StackPanel Spacing="8">
-                    <Image Source="{x:Bind pack.EnsuredThumb.BestPath}" Width="100" HorizontalAlignment="Center"/>
-                    <TextBlock x:Name="Op" FontSize="28" FontWeight="Bold" TextWrapping="Wrap" HorizontalAlignment="Center" HorizontalTextAlignment="Center"/>
+                    <Image Source="{x:Bind pack.EnsuredThumb.BestPath}"
+                           Width="100" 
+                           HorizontalAlignment="Center"/>
+                    <TextBlock x:Name="Op"
+                               FontSize="28"
+                               FontWeight="Bold"
+                               TextWrapping="Wrap" 
+                               HorizontalAlignment="Center"
+                               HorizontalTextAlignment="Center"/>
                 </StackPanel>
             </StackPanel>
 
@@ -45,6 +56,5 @@
                Background="{ThemeResource SystemRevealListLowColor}"
                IsNavigationStackEnabled="False"
                CacheSize="0"/>
-
     </Grid>
 </Page>

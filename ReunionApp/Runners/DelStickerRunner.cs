@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using TgApi.Telegram;
 using TgApi.Types;
 using static TdLib.TdApi.InputFile;
@@ -14,20 +9,17 @@ public class DelStickerRunner : CommandRunner
 {
     private Sticker[] stickers;
     private int _index;
-    private int Index 
-    { 
+    private int Index
+    {
         get => _index;
-        set 
+        set
         {
             _index = value;
             Progress = 100 * (double)Index / stickers.Length;
-        } 
+        }
     }
 
-    public DelStickerRunner(Sticker[] s) : base()
-    {
-        stickers = s;
-    }
+    public DelStickerRunner(Sticker[] s) : base() => stickers = s;
 
     public override async Task RunCommandsAsync()
     {
@@ -41,7 +33,7 @@ public class DelStickerRunner : CommandRunner
         {
             await SendAndAddToOutputsAsync(waiter, "/delsticker");
 
-            Outputs.Add(new CommandOutput(null, stickers[Index].DecodedPath,true));
+            Outputs.Add(new CommandOutput(null, stickers[Index].DecodedPath, true));
             var msg = await client.SendBasicDocumentAsync(botId, new InputFileRemote { Id = stickers[Index].RemoteFileId });
             var reply = await waiter.WaitNextMsgAsync(msg.Id);
             AddReplyToOutputs(reply);

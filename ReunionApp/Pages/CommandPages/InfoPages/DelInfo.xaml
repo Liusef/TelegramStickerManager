@@ -9,12 +9,15 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <StackPanel VerticalAlignment="Bottom" Spacing="12">
+
+        <StackPanel VerticalAlignment="Bottom" 
+                    Spacing="12">
             <Button HorizontalAlignment="Stretch">
                 Info
                 <Button.Flyout>
                     <Flyout>
-                        <TextBlock Width="400" TextWrapping="WrapWholeWords">
+                        <TextBlock Width="400" 
+                                   TextWrapping="WrapWholeWords">
                             Haven't written instructions here yet.
                             <LineBreak/><LineBreak/>This app will automatically downscale your images to meet the image size requirements of telegram.
                         </TextBlock>
@@ -22,5 +25,6 @@
                 </Button.Flyout>
             </Button>
         </StackPanel>
+
     </Grid>
 </Page>

@@ -7,10 +7,6 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 using NeoSmart.Unicode;
@@ -18,8 +14,6 @@ using ReunionApp.Runners;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 using TgApi.Types;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Storage.Pickers;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -60,7 +54,6 @@ public sealed partial class NewPackAddStickers : Page
         // TODO This is not a good solution for memory management. Find a way to dispose of pages instead.
         //foreach (var ns in stickers) ns.Img = null;
         Grid.ItemsSource = new ObservableCollection<NewSticker>();
-        //stickers = new ObservableCollection<NewSticker>();
         Grid.ItemsSource = null;
         UnloadObject(Grid);
         Bindings.StopTracking();
@@ -206,16 +199,13 @@ public sealed partial class NewPackAddStickers : Page
         return false;
     }
 
-    private async Task<bool> FindWarnings()
+    private async Task<bool> FindWarnings() // TODO implement warnings
     {
         return false;
     }
 
-    private void SplitButton_Click(SplitButton sender, SplitButtonClickEventArgs args)
-    {
-        Add(sender, default);
-    }
-
+    private void SplitButton_Click(SplitButton sender, SplitButtonClickEventArgs args) => Add(sender, default);
+    
     private void Emojis_TextChanged(object sender, RoutedEventArgs args)
     {
         var send = sender as TextBox;

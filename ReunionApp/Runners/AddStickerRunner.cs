@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using ReunionApp.Pages.CommandPages;
 using TgApi.Telegram;
 using TgApi.Types;
@@ -43,7 +38,7 @@ public class AddStickerRunner : CommandRunner
 
         for (Index = 0; Index < stickers.Length; Index++) // TODO see if starting all the uploads first is faster
         {
-            var upload = await FileUpload.StartUpload(client, stickers[Index].EnsuredPath); 
+            var upload = await FileUpload.StartUpload(client, stickers[Index].EnsuredPath);
             await upload.WaitForCompletion();
             Outputs.Add(new CommandOutput(null, stickers[Index].ImgPath, true));
             var cmsg = await client.SendBasicDocumentAsync(botId, new InputFileId { Id = upload.LocalId }); // TODO Could use InputFileLocal instead of a FileUpload
@@ -52,6 +47,6 @@ public class AddStickerRunner : CommandRunner
 
             if (reply.GetMessageString().Substring(0, 7) == "Thanks!") await SendAndAddToOutputsAsync(waiter, stickers[Index].Emojis);
         }
-        await SendAndAddToOutputsAsync(waiter, "/done");    
+        await SendAndAddToOutputsAsync(waiter, "/done");
     }
 }

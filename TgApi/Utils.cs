@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using TdLib;
 
 namespace TgApi;
 
@@ -38,9 +37,9 @@ public static class Utils
 	/// <param name="obj">The object to serialize</param>
 	/// <param name="path">The path to save the json file to</param>
 	/// <typeparam name="T">The type of the object to serialize</typeparam>
-	public static void Serialize<T>(T obj, string path, bool indent = true) => 
-		File.WriteAllText(EnsureFile(path),JsonSerializer.Serialize<T>(obj, 
-			new JsonSerializerOptions{WriteIndented = indent}));
+	public static void Serialize<T>(T obj, string path, bool indent = true) =>
+		File.WriteAllText(EnsureFile(path), JsonSerializer.Serialize<T>(obj,
+			new JsonSerializerOptions { WriteIndented = indent }));
 
 	/// <summary>
 	/// Deserializes an object from a json file
@@ -49,8 +48,8 @@ public static class Utils
 	/// <typeparam name="T">The type to deserialize to</typeparam>
 	/// <returns>The object deserialized from the json</returns>
 	public static T Deserialize<T>(string path) => JsonSerializer.Deserialize<T>(File.ReadAllText(EnsureFile(path)));
-	
-	
+
+
 	/// <summary>
 	/// Prompts the user for an input
 	/// </summary>

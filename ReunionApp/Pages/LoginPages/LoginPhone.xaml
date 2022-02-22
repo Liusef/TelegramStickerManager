@@ -8,16 +8,38 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <StackPanel Spacing="24" VerticalAlignment="Center">
+    <StackPanel Spacing="24"
+                VerticalAlignment="Center">
 
-        <Image Source="../../Images/AppIcon.png" Width="200"/>
-        <TextBlock Text="Sign in to Telegram" HorizontalAlignment="Center" FontWeight="Bold" FontSize="40" TextWrapping="WrapWholeWords"/>
-        <TextBlock HorizontalAlignment="Center" TextWrapping="WrapWholeWords" HorizontalTextAlignment="Center">
+        <Image Source="../../Images/AppIcon.png"
+               Width="200"/>
+        <TextBlock Text="Sign in to Telegram" 
+                   HorizontalAlignment="Center" 
+                   FontWeight="Bold" 
+                   FontSize="40" 
+                   TextWrapping="WrapWholeWords"/>
+        <TextBlock HorizontalAlignment="Center" 
+                   TextWrapping="WrapWholeWords" 
+                   HorizontalTextAlignment="Center">
             Please enter your phone number starting with the country code.
             No extra characters.
         </TextBlock>
 
-        <TextBox x:Name ="PhoneNumberBox" MaxWidth="300" PlaceholderText="Phone Number" TextAlignment="Center" TextChanged="PhoneNumberBox_TextChanged" Text="{Binding OriginalText, UpdateSourceTrigger=PropertyChanged}" KeyDown="PhoneNumberBox_KeyDown"/>
-        <Button x:Name="ContinueButton" Content="Continue" HorizontalAlignment="Center" Style="{StaticResource AccentButtonStyle}" IsEnabled="False" Click="ContinueButton_Click" Margin="0,-16,0,0"/>
+        <TextBox x:Name ="PhoneNumberBox"
+                 MaxWidth="300"
+                 PlaceholderText="Phone Number"
+                 TextAlignment="Center"
+                 TextChanged="PhoneNumberBox_TextChanged"
+                 Text="{Binding OriginalText, UpdateSourceTrigger=PropertyChanged}" 
+                 KeyDown="PhoneNumberBox_KeyDown"/>
+        
+        <Button x:Name="ContinueButton" 
+                Content="Continue"
+                HorizontalAlignment="Center" 
+                Style="{StaticResource AccentButtonStyle}"
+                IsEnabled="False"
+                Click="ContinueButton_Click" 
+                Margin="0,-16,0,0"/>
+        
     </StackPanel>
 </Page>
