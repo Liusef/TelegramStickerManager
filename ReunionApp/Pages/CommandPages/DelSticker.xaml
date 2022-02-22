@@ -27,16 +27,28 @@
                   TabNavigation="Local"
                   IsTabStop="False">
             <GridView.ItemTemplate>
-                <DataTemplate x:Name="StickerPackGridItem" x:DataType="types:Sticker">
-                    <StackPanel Padding="16" Spacing="10" MaxWidth="196"  IsTabStop="False">
-                        <Image Source="{x:Bind DecodedPath}" Width="124" Height="150" VerticalAlignment="Center" IsTabStop="False"/>
-                        <TextBlock Text="{x:Bind Emojis}" HorizontalAlignment="Center"/>
+                <DataTemplate x:Name="StickerPackGridItem" 
+                              x:DataType="types:Sticker">
+                    <StackPanel Padding="16" 
+                                Spacing="10"
+                                MaxWidth="196" 
+                                IsTabStop="False">
+                        <Image Source="{x:Bind DecodedPath}"
+                               Width="124" Height="150" 
+                               VerticalAlignment="Center" 
+                               IsTabStop="False"/>
+                        <TextBlock Text="{x:Bind Emojis}"
+                                   HorizontalAlignment="Center"/>
                     </StackPanel>
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
 
-        <Button Grid.Row="2" Content="Finish" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="6, 0, 6, 6"
+        <Button Grid.Row="2" 
+                Content="Finish" 
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Margin="6, 0, 6, 6"
                 Click="Finish"/>
 
         <ProgressBar x:Name="processing"

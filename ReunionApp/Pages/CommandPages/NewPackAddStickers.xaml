@@ -7,7 +7,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-
     <Grid>
 
         <Grid.RowDefinitions>
@@ -28,39 +27,57 @@
                   TabNavigation="Local"
                   IsTabStop="False">
             <GridView.ItemTemplate>
-                <DataTemplate x:Name="StickerPackGridItem" x:DataType="local:NewSticker">
-                    <StackPanel Padding="16" Spacing="10" MaxWidth="196"  IsTabStop="False">
-                        <Image Width="150" Height="150" VerticalAlignment="Center" IsTabStop="False">
+                <DataTemplate x:Name="StickerPackGridItem" 
+                              x:DataType="local:NewSticker">
+                    <StackPanel Padding="16" 
+                                Spacing="10"
+                                MaxWidth="196" 
+                                IsTabStop="False">
+                        <Image Width="150"
+                               Height="150" 
+                               VerticalAlignment="Center"
+                               IsTabStop="False">
                             <Image.Source>
-                                <BitmapImage UriSource="{x:Bind ImgPath}" DecodePixelWidth="150"/>
+                                <BitmapImage UriSource="{x:Bind ImgPath}" 
+                                             DecodePixelWidth="150"/>
                                 <!-- TODO Determine its necessary to have a dedicated Decode width-->
                             </Image.Source>
                         </Image>
                         <TextBox Text="{Binding Path=Emojis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 IsTabStop="True" TextChanged="Emojis_TextChanged"/>
+                                 IsTabStop="True" 
+                                 TextChanged="Emojis_TextChanged"/>
                     </StackPanel>
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
 
-        <Grid Grid.Row="2" Margin="6, 0, 6, 6">
+        <Grid Grid.Row="2" 
+              Margin="6, 0, 6, 6">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <SplitButton Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0, 0, 6, 0" 
+            <SplitButton Grid.Column="0" 
+                         HorizontalAlignment="Stretch"
+                         VerticalAlignment="Stretch"
+                         Margin="0, 0, 6, 0" 
                          Click="SplitButton_Click">
                 + Add Files
                 <SplitButton.Flyout>
                     <MenuFlyout>
-                        <MenuFlyoutItem Text="+ Add Files" Click="Add"/>
-                        <MenuFlyoutItem Text="- Delete Files" Click="Delete"/>
+                        <MenuFlyoutItem Text="+ Add Files" 
+                                        Click="Add"/>
+                        <MenuFlyoutItem Text="- Delete Files" 
+                                        Click="Delete"/>
                     </MenuFlyout>
                 </SplitButton.Flyout>
             </SplitButton>
 
-            <Button Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0, 0, 6, 0"
+            <Button Grid.Column="1" 
+                    HorizontalAlignment="Stretch" 
+                    VerticalAlignment="Stretch" 
+                    Margin="0, 0, 6, 0"
                     Click="Finish">
                 Finish
             </Button>

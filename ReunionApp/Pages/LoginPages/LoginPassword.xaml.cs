@@ -1,20 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 using TgApi.Telegram;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -38,10 +29,8 @@ public sealed partial class LoginPassword : Page
         auth = e.Parameter as AuthHandler;
     }
 
-    private void Pwd_PasswordChanged(object sender, RoutedEventArgs e)
-    {
-        ContinueButton.IsEnabled = Pwd.Password.Length > 0;
-    }
+    private void Pwd_PasswordChanged(object sender, RoutedEventArgs e) => ContinueButton.IsEnabled = Pwd.Password.Length > 0;
+    
 
     private async void Pwd_KeyDown(object sender, KeyRoutedEventArgs e)
     {
@@ -49,10 +38,7 @@ public sealed partial class LoginPassword : Page
             await AttemptLogin();
     }
 
-    private async void ContinueButton_Click(object sender, RoutedEventArgs e)
-    {
-        await AttemptLogin();
-    }
+    private async void ContinueButton_Click(object sender, RoutedEventArgs e) => await AttemptLogin();
 
     private async Task AttemptLogin()
     {
