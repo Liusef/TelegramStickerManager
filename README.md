@@ -1,7 +1,7 @@
 # TelegramStickerManager
 An app to deal with @Stickers so you don't have to.
 
-This program can automate making 
+This program can automate: 
 - Making new sticker packs
 - Adding stickers
 - Deleting stickers
