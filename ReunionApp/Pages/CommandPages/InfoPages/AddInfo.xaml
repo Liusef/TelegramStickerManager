@@ -9,12 +9,15 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <StackPanel VerticalAlignment="Bottom" Spacing="12">
+
+        <StackPanel VerticalAlignment="Bottom" 
+                    Spacing="12">
             <Button HorizontalAlignment="Stretch">
                 Info
                 <Button.Flyout>
                     <Flyout>
-                        <TextBlock Width="400" TextWrapping="WrapWholeWords">
+                        <TextBlock Width="400" 
+                                   TextWrapping="WrapWholeWords">
                             Haven't written instructions here yet.
                             <LineBreak/><LineBreak/>This app will automatically downscale your images to meet the image size requirements of telegram.
                         </TextBlock>
@@ -25,7 +28,8 @@
                 Features
                 <Button.Flyout>
                     <Flyout>
-                        <TextBlock Width="400" TextWrapping="WrapWholeWords">
+                        <TextBlock Width="400" 
+                                   TextWrapping="WrapWholeWords">
                             To move between text boxes, press tab 2 times!   
                             <LineBreak/><LineBreak/>You can use emoji shortcodes here! Whle there aren't suggestions, typing :fox_face: will yield 🦊
                             <LineBreak/><LineBreak/>This app uses Github emoji shortcodes which differ slightly from other platforms, like discord.
@@ -33,7 +37,7 @@
                     </Flyout>
                 </Button.Flyout>
             </Button>
-            
         </StackPanel>
+
     </Grid>
 </Page>

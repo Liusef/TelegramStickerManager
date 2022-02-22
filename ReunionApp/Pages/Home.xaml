@@ -20,24 +20,30 @@
             <RowDefinition Height="48"/>
         </Grid.RowDefinitions>
 
-        <Button Grid.Row="0" VerticalAlignment="Top" Padding="6">
+        <Button Grid.Row="0" 
+                VerticalAlignment="Top" 
+                Padding="6">
 
-            <StackPanel Orientation="Horizontal" Spacing="6" Margin="4">
+            <StackPanel Orientation="Horizontal" 
+                        Spacing="6"
+                        Margin="4">
                 <SymbolIcon Symbol="GlobalNavigationButton"/>
                 <TextBlock>
                     More Options
                 </TextBlock>
             </StackPanel>
-
+            
             <Button.Flyout>
                 <MenuFlyout>
-                    <MenuFlyoutItem Text="New Pack" Click="NewPack">
+                    <MenuFlyoutItem Text="New Pack"
+                                    Click="NewPack">
                         <MenuFlyoutItem.Icon>
                             <SymbolIcon Symbol="Add"/>
                         </MenuFlyoutItem.Icon>    
                     </MenuFlyoutItem>
 
-                    <MenuFlyoutItem Text="Refresh" Click="Refresh">
+                    <MenuFlyoutItem Text="Refresh"
+                                    Click="Refresh">
                         <MenuFlyoutItem.Icon>
                             <SymbolIcon Symbol="Refresh"/>
                         </MenuFlyoutItem.Icon>
@@ -45,15 +51,18 @@
                     
                     <MenuFlyoutSeparator/>
 
-                    <MenuFlyoutItem Text="Settings" Click="Settings">
+                    <MenuFlyoutItem Text="Settings"
+                                    Click="Settings">
                         <MenuFlyoutItem.Icon>
                             <SymbolIcon Symbol="Setting"/>
                         </MenuFlyoutItem.Icon>
                     </MenuFlyoutItem>
 
-                    <MenuFlyoutItem Text="About" Click="About">
+                    <MenuFlyoutItem Text="About" 
+                                    Click="About">
                         <MenuFlyoutItem.Icon>
-                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE946;"/>
+                            <FontIcon FontFamily="Segoe Fluent Icons"
+                                      Glyph="&#xE946;"/>
                         </MenuFlyoutItem.Icon>
                     </MenuFlyoutItem>
 
@@ -61,7 +70,11 @@
             </Button.Flyout>
         </Button>
         
-        <TextBlock Grid.Row="0" Text="Welcome Back!" FontSize="40" FontWeight="Bold" HorizontalAlignment="Center"/>
+        <TextBlock Grid.Row="0"
+                   Text="Welcome Back!"
+                   FontSize="40"
+                   FontWeight="Bold" 
+                   HorizontalAlignment="Center"/>
 
         <GridView 
             Grid.Row="2" 
@@ -76,31 +89,46 @@
             SelectionMode="None"
             ItemClick="Packs_ItemClick">
             <GridView.ItemTemplate>
-                <DataTemplate x:Name="StickerPackGridItem" x:DataType="types:StickerPack">
+                <DataTemplate x:Name="StickerPackGridItem" 
+                              x:DataType="types:StickerPack">
                     <StackPanel Padding="24, 12, 24, 12" Spacing="10">
-                        <Image Source="{x:Bind EnsuredThumb.BestPath}" Width="100" Height="100" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
-                        <!--Image Width="100" Height="100" HorizontalAlignment="Center" VerticalAlignment="Stretch">
-                            <Image.Source>
-                                <BitmapImage UriSource="{x:Bind project:App.ThumbUri(EnsuredThumb.Filename, EnsuredThumb.IsDesignatedThumb)}"
-                                             DecodePixelWidth="100" DecodePixelType="Logical"/>
-                            </Image.Source>
-                        </Image-->
-                        <TextBlock Text="{x:Bind Title}" HorizontalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                        <Image Source="{x:Bind EnsuredThumb.BestPath}" 
+                               Width="100" Height="100" 
+                               HorizontalAlignment="Center" 
+                               VerticalAlignment="Stretch"/>
+                        <TextBlock Text="{x:Bind Title}" 
+                                   HorizontalAlignment="Center" 
+                                   TextTrimming="CharacterEllipsis"/>
                     </StackPanel>
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
 
-        <StackPanel Grid.Row="2" x:Name="None" VerticalAlignment="Center" HorizontalAlignment="Center"  Visibility="Collapsed">
+        <StackPanel Grid.Row="2" 
+                    x:Name="None"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center" 
+                    Visibility="Collapsed">
             <TextBlock HorizontalTextAlignment="Center">
                 You don't have any stickers!
                 <LineBreak/>Open the Hamburger menu on the top left to Refresh or make a new pack!
             </TextBlock>
         </StackPanel>
 
-        <StackPanel Grid.Row="3" x:Name="Loading" VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="12" Margin="0, 0, 0, 10">
-            <ProgressBar x:Name="LoadingBar" Width="500" IsIndeterminate="True" Value="0"/>
-            <TextBlock Text="Loading" HorizontalAlignment="Center" FontSize="18" FontWeight="SemiBold"/>
+        <StackPanel Grid.Row="3" 
+                    x:Name="Loading" 
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Spacing="12"
+                    Margin="0, 0, 0, 10">
+            <ProgressBar x:Name="LoadingBar" 
+                         Width="500" 
+                         IsIndeterminate="True"
+                         Value="0"/>
+            <TextBlock Text="Loading"
+                       HorizontalAlignment="Center"
+                       FontSize="18"
+                       FontWeight="SemiBold"/>
         </StackPanel>
     </Grid>
 </Page>

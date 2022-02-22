@@ -1,19 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using TgApi.Types;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using static ReunionApp.Pages.CommandPages.AddSticker;
 using static ReunionApp.Pages.CommandPages.DelSticker;
 using static ReunionApp.Pages.CommandPages.NewPackAddStickers;
@@ -58,15 +48,15 @@ public sealed partial class BaseCommand : Page
         UnloadObject(ContentFrame);
         UnloadObject(InfoFrame);
         Bindings.StopTracking();
-        Task.Run(async () => { await Task.Delay(5000); GC.Collect();});   // This code ensures that when this method is called and images aren't being displayed,
-                                                                          // since the images are in unmanaged memory, they're discarded and most of the memory it used
-                                                                          // is freed. (The rest is usually freed on the next page navigation)
-                                                                          // This solution is awful, stupid, and terrible, and i have no idea why it works.
-                                                                          // TODO Find a better way to deal free memory for images that aren't being displayed
+        Task.Run(async () => { await Task.Delay(5000); GC.Collect(); });   // This code ensures that when this method is called and images aren't being displayed,
+                                                                           // since the images are in unmanaged memory, they're discarded and most of the memory it used
+                                                                           // is freed. (The rest is usually freed on the next page navigation)
+                                                                           // This solution is awful, stupid, and terrible, and i have no idea why it works.
+                                                                           // TODO Find a better way to deal free memory for images that aren't being displayed
         base.OnNavigatedFrom(e);
     }
 
-    private void SelectPage(CommandType type)
+    private async void SelectPage(CommandType type)
     {
         switch (type)
         {
@@ -91,14 +81,13 @@ public sealed partial class BaseCommand : Page
                 Op.Text = "Reorder Stickers";
                 break;
             default:
-                App.GetInstance().ShowBasicDialog("No command was selected",
+                await App.GetInstance().ShowBasicDialog("No command was selected",
                     "Somehow, no command for modifying the stickerpack was selected. Please click back.");
                 break;
         }
     }
 
-    private void Back(object sender, RoutedEventArgs e) =>
-        App.GetInstance().RootFrame.GoBack();
+    private void Back(object sender, RoutedEventArgs e) => App.GetInstance().RootFrame.GoBack();
 }
 
 public enum CommandType

@@ -1,57 +1,42 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using Microsoft.UI.Windowing;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Microsoft.UI;
-using Windows.UI.Popups;
-using System.Runtime;
+﻿using System;
 using System.Threading.Tasks;
+using Microsoft.UI;
+using Microsoft.UI.Windowing;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Navigation;
 
 namespace ReunionApp
 {
-	public sealed partial class MainWindow : Window
-	{
-		public Frame ContentFrame => contentFrame;
+    public sealed partial class MainWindow : Window
+    {
+        public Frame ContentFrame => contentFrame;
 
-		public MainWindow()
-		{
-			this.InitializeComponent();
-			ExtendsContentIntoTitleBar = true;
-			SetTitleBar(appTitleBar);
+        public MainWindow()
+        {
+            this.InitializeComponent();
+            ExtendsContentIntoTitleBar = true;
+            SetTitleBar(appTitleBar);
             SetWindowIcon("Images/AppIcon.ico");
-			contentFrame.Navigate(typeof(Pages.LoadingApp));
-		}
+            contentFrame.Navigate(typeof(Pages.LoadingApp));
+        }
 
         private void SetWindowIcon(string location)
         {
-            // Get the AppWindow from the XAML Window ("this" is your XAML window)
-            IntPtr hWnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
+            IntPtr hWnd = WinRT.Interop.WindowNative.GetWindowHandle(this); // Get the AppWindow from the XAML Window ("this" is your XAML window)
             WindowId myWndId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(hWnd);
             var appWindow = AppWindow.GetFromWindowId(myWndId);
 
-            // And then set the icon
-            appWindow.SetIcon(location);
+            appWindow.SetIcon(location); // And then set the icon
         }
 
         private void contentFrame_Navigated(object sender, NavigationEventArgs e)
         {
             contentFrame.ForwardStack.Clear();
-            //GC.AddMemoryPressure(10000000);
             CollectLater();
         }
 
-        private async void CollectLater(int delay = 100)
+        private async void CollectLater(int delay = 500)
         {
             await Task.Delay(delay);
             GC.Collect();

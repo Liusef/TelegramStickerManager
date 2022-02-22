@@ -1,21 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 using TgApi.Types;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Storage.Pickers;
 using static ReunionApp.Pages.BaseCommand;
 
@@ -36,11 +26,8 @@ public sealed partial class NewPack : Page
         this.InitializeComponent();
     }
 
-    private void Back(object sender, RoutedEventArgs e)
-    {
-        App.GetInstance().RootFrame.GoBack();
-    }
-
+    private void Back(object sender, RoutedEventArgs e) => App.GetInstance().RootFrame.GoBack();
+    
     private async Task ChooseThumb()
     {
         var picker = new FileOpenPicker();

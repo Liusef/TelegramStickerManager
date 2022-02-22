@@ -1,22 +1,13 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using TgApi.Types;
+﻿using System;
 using System.Collections.ObjectModel;
-using Microsoft.UI.Xaml.Media.Imaging;
 using System.Threading.Tasks;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Navigation;
+using ReunionApp.Pages.CommandPages;
 using TdLib;
 using TgApi.Telegram;
-using ReunionApp.Pages.CommandPages;
+using TgApi.Types;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -31,10 +22,10 @@ public sealed partial class Home : Page
 
     private ObservableCollection<StickerPack> packList;
 
-	public Home()
-	{
-		this.InitializeComponent();
-	}
+    public Home()
+    {
+        this.InitializeComponent();
+    }
 
     protected override async void OnNavigatedTo(NavigationEventArgs e)
     {
@@ -45,50 +36,50 @@ public sealed partial class Home : Page
     }
 
     public async Task LoadStickers(bool forceNew = false)
-	{
-		try
-		{
+    {
+        try
+        {
             packList = new ObservableCollection<StickerPack>();
             Packs.ItemsSource = packList;
             ShowLoading();
-            if (forceNew) await App.GetInstance().ResetTdClient(false); 
+            if (forceNew) await App.GetInstance().ResetTdClient(false);
             TdClient c = App.GetInstance().Client;
-			var nameList = forceNew ? await c.GetOwnedPacksAsync() : await PackList.GetOwnedPacks(c);
-			if (nameList is null || nameList.Length == 0)
-			{
-				None.Visibility = Visibility.Visible;
-			}
-			else
-			{
-				foreach (string pack in nameList)
-				{
-					if (forceNew) packList.Add(await Task.Run(async () => await StickerPack.GenerateFromName(c, pack)));
+            var nameList = forceNew ? await c.GetOwnedPacksAsync() : await PackList.GetOwnedPacks(c);
+            if (nameList is null || nameList.Length == 0)
+            {
+                None.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                foreach (string pack in nameList)
+                {
+                    if (forceNew) packList.Add(await Task.Run(async () => await StickerPack.GenerateFromName(c, pack)));
                     else packList.Add(await Task.Run(async () => await StickerPack.GetBasicPack(c, pack)));
                 }
-				foreach (var pack in packList)
-				{
-					await Task.Run(async()=>await pack.EnsuredThumb.GetPathEnsureDownloaded(c));
-				}
-				Packs.Visibility = Visibility.Visible;
-			}
-			Loading.Visibility = Visibility.Collapsed;
+                foreach (var pack in packList)
+                {
+                    await Task.Run(async () => await pack.EnsuredThumb.GetPathEnsureDownloaded(c));
+                }
+                Packs.Visibility = Visibility.Visible;
+            }
+            Loading.Visibility = Visibility.Collapsed;
             LoadingBar.IsIndeterminate = false;
         }
-		catch (Exception ex)
-		{
-			await App.GetInstance().ShowExceptionDialog(ex);
-		}
-	}
+        catch (Exception ex)
+        {
+            await App.GetInstance().ShowExceptionDialog(ex);
+        }
+    }
 
-	private async void Packs_ItemClick(object sender, ItemClickEventArgs e)
-	{
-		var pack = e.ClickedItem as StickerPack;
+    private async void Packs_ItemClick(object sender, ItemClickEventArgs e)
+    {
+        var pack = e.ClickedItem as StickerPack;
 
         if (pack.Type != StickerType.STANDARD)
-		{
+        {
             App.GetInstance().RootFrame.Navigate(typeof(Unsupported), $"Sticker packs of type {pack.Type} are not supported at this time.");
             return;
-		}
+        }
         Loading.Visibility = Visibility.Visible;
         LoadingBar.IsIndeterminate = true;
 
@@ -96,7 +87,7 @@ public sealed partial class Home : Page
 
         Loading.Visibility = Visibility.Collapsed;
         App.GetInstance().RootFrame.Navigate(typeof(PackPage), pack);
-	}
+    }
 
     private void ShowLoading()
     {
@@ -106,17 +97,13 @@ public sealed partial class Home : Page
         LoadingBar.IsIndeterminate = true;
     }
 
-	private async void Refresh(object sender, RoutedEventArgs e) => 
-        await LoadStickers(true);
-	
+    private async void Refresh(object sender, RoutedEventArgs e) => await LoadStickers(true);
 
-    private void NewPack(object sender, RoutedEventArgs e) =>
-        App.GetInstance().RootFrame.Navigate(typeof(NewPack));
 
-	private void Settings(object sender, RoutedEventArgs e) =>
-		App.GetInstance().RootFrame.Navigate(typeof(Settings));
+    private void NewPack(object sender, RoutedEventArgs e) => App.GetInstance().RootFrame.Navigate(typeof(NewPack));
 
-	private void About(object sender, RoutedEventArgs e) =>
-		App.GetInstance().RootFrame.Navigate(typeof(About));
+    private void Settings(object sender, RoutedEventArgs e) => App.GetInstance().RootFrame.Navigate(typeof(Settings));
+
+    private void About(object sender, RoutedEventArgs e) => App.GetInstance().RootFrame.Navigate(typeof(About));
 }
 

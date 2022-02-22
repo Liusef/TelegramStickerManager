@@ -8,9 +8,13 @@
     mc:Ignorable="d">
 
     <StackPanel Spacing="12">
+        
         <TextBlock>
             Enter a new Name
         </TextBlock>
-        <TextBox x:Name="UInput" Width="240" KeyDown="UInput_KeyDown"/>
+        <TextBox x:Name="UInput"
+                 Width="240"
+                 KeyDown="UInput_KeyDown"/>
+        
     </StackPanel>
 </Page>

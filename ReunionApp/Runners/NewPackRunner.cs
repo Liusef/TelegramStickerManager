@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml.Controls;
 using ReunionApp.Pages.CommandPages;
@@ -41,7 +37,7 @@ public class NewPackRunner : CommandRunner
         cd.IsPrimaryButtonEnabled = false;
         cd.IsSecondaryButtonEnabled = false;
         cd.CloseButtonText = "Enter";
-        var b = new RunnerDependencies.NewPackRunnerNameDialog {Dialog = cd, Pack = pack};
+        var b = new RunnerDependencies.NewPackRunnerNameDialog { Dialog = cd, Pack = pack };
         cd.Content = b;
         cd.XamlRoot = App.GetInstance().MainWindow.Content.XamlRoot;
 
@@ -64,7 +60,7 @@ public class NewPackRunner : CommandRunner
         await SendAndAddToOutputsAsync(waiter, "/newpack");
         await SendAndAddToOutputsAsync(waiter, pack.Title);
 
-        for (Index = 0; Index < newStickers.Length; Index++) 
+        for (Index = 0; Index < newStickers.Length; Index++)
         {
             var upload = await FileUpload.StartUpload(client, newStickers[Index].EnsuredPath);
             await upload.WaitForCompletion();
@@ -86,9 +82,9 @@ public class NewPackRunner : CommandRunner
             var cmsg = await client.SendBasicDocumentAsync(botId, new InputFileId { Id = upload.LocalId }); // TODO Could use InputFileLocal instead of a FileUpload
             var reply = await waiter.WaitNextMsgAsync(cmsg.Id);
             AddReplyToOutputs(reply);
-        } 
+        }
         else await SendAndAddToOutputsAsync(waiter, "/skip");
-        
+
         Outputs.Add(new CommandOutput(pack.Name, null, true));
         var r = await waiter.SendMsgAndAwaitNext(pack.Name);
         AddReplyToOutputs(r);

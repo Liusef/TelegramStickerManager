@@ -18,25 +18,70 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="0" Margin="24, 24, 0, 0"  Spacing="12">
-            <Button Content="Back" Click="Back"/>
+        <StackPanel Grid.Column="0"
+                    Margin="24, 24, 0, 0" 
+                    Spacing="12">
+            <Button Content="Back" 
+                    Click="Back"/>
             <StackPanel Spacing="8">
-                <!--Image Source="{x:Bind project:App.PackThumb(pack.EnsuredThumb)}" Width="100" Height="100" VerticalAlignment="Stretch" HorizontalAlignment="Center" /-->
-                <Image x:Name="PackThumb" Width="100" Height="100" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
-                <TextBlock x:Name="Title" FontSize="24" FontWeight="Bold" TextTrimming="CharacterEllipsis" TextWrapping="Wrap"/>
-                <TextBlock x:Name="Name" FontWeight="Light" TextTrimming="CharacterEllipsis"/>
+                <Image x:Name="PackThumb"
+                       Width="100" 
+                       Height="100"
+                       VerticalAlignment="Stretch"
+                       HorizontalAlignment="Center"/>
+                <TextBlock x:Name="Title" 
+                           FontSize="24" 
+                           FontWeight="Bold" 
+                           TextTrimming="CharacterEllipsis"
+                           TextWrapping="Wrap"/>
+                <TextBlock x:Name="Name"
+                           FontWeight="Light" 
+                           TextTrimming="CharacterEllipsis"/>
             </StackPanel>
-            <StackPanel Margin="0, 24, 0, 0" HorizontalAlignment="Stretch" Spacing="12">
-                <Button x:Name="Add" Content="Add Stickers" Click="AddSticker" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" IsEnabled="False"/>
-                <Button x:Name="Del" Content="Delete Stickers" Click="DelSticker" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" IsEnabled="False"/>
-                <Button x:Name="Order" Content="Reorder Stickers" Click="OrderSticker" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" IsEnabled="False"/>
+            
+            <StackPanel Margin="0, 24, 0, 0"
+                        HorizontalAlignment="Stretch" 
+                        Spacing="12">
+                <Button x:Name="Add"
+                        Content="Add Stickers"
+                        Click="AddSticker" 
+                        HorizontalContentAlignment="Center" 
+                        HorizontalAlignment="Stretch" 
+                        IsEnabled="False"/>
+                <Button x:Name="Del"
+                        Content="Delete Stickers"
+                        Click="DelSticker"
+                        HorizontalContentAlignment="Center"
+                        HorizontalAlignment="Stretch" 
+                        IsEnabled="False"/>
+                <Button x:Name="Order"
+                        Content="Reorder Stickers"
+                        Click="OrderSticker"
+                        HorizontalContentAlignment="Center"
+                        HorizontalAlignment="Stretch"
+                        IsEnabled="False"/>
             </StackPanel>
+            
         </StackPanel>
 
-        <StackPanel x:Name="Loading" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Visible">
-            <ProgressBar x:Name="PB" IsIndeterminate="True"  Grid.Row="2" Width="200" Margin="24"/>
-            <TextBlock Text="Loading" HorizontalAlignment="Center" FontSize="18" FontWeight="SemiBold"/>
-            <TextBlock Text="This may take a while..." HorizontalAlignment="Center"/>
+        <StackPanel x:Name="Loading" 
+                    Grid.Column="1" 
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Center"
+                    Visibility="Visible">
+            
+            <ProgressBar x:Name="PB" 
+                         IsIndeterminate="True" 
+                         Grid.Row="2" 
+                         Width="200"
+                         Margin="24"/>
+            <TextBlock Text="Loading"
+                       HorizontalAlignment="Center"
+                       FontSize="18"
+                       FontWeight="SemiBold"/>
+            <TextBlock Text="This may take a while..." 
+                       HorizontalAlignment="Center"/>
+            
         </StackPanel>
 
         <GridView 
@@ -52,14 +97,23 @@
             Visibility="Collapsed">
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="types:Sticker">
-                    <StackPanel Padding="12" Spacing="12" MinHeight="163">
-                        <!--Image x:Name="StickerImg" Width="124" Height="160" HorizontalAlignment="Center" VerticalAlignment="Stretch"
-                               Source="{x:Bind project:App.StickerImg(Filename)}"/-->
-                        <Image x:Name="StickerImg" Source="{x:Bind BestPath}" Width="124" Height="160" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
-                        <TextBlock Text="{x:Bind Emojis}" HorizontalAlignment="Center" VerticalAlignment="Bottom" TextTrimming="CharacterEllipsis"/>
+                    <StackPanel Padding="12" 
+                                Spacing="12" 
+                                MinHeight="163">
+                        <Image x:Name="StickerImg"
+                               Source="{x:Bind BestPath}"
+                               Width="124"
+                               Height="160" 
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Stretch"/>
+                        <TextBlock Text="{x:Bind Emojis}" 
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Bottom"
+                                   TextTrimming="CharacterEllipsis"/>
                     </StackPanel>
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
+        
     </Grid>
 </Page>

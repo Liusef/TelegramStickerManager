@@ -8,9 +8,17 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <StackPanel VerticalAlignment="Center" Spacing="24">
-        <Image Source="../Images/AppIcon.png" Width="200"/>
-        <ProgressBar x:Name="ProgressBar" Width="500" IsIndeterminate="true" Margin="50,20,50,0"/>
-        <TextBlock x:Name="ProgressText" Text="Starting" HorizontalAlignment="Center" Style="{StaticResource SubtitleTextBlockStyle}" />
+    <StackPanel VerticalAlignment="Center" 
+                Spacing="24">
+        <Image Source="../Images/AppIcon.png"
+               Width="200"/>
+        <ProgressBar x:Name="ProgressBar" 
+                     Width="500" 
+                     IsIndeterminate="true"
+                     Margin="50,20,50,0"/>
+        <TextBlock x:Name="ProgressText" 
+                   Text="Starting"
+                   HorizontalAlignment="Center" 
+                   Style="{StaticResource SubtitleTextBlockStyle}" />
     </StackPanel>
 </Page>

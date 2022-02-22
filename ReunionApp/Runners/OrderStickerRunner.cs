@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using TgApi.Telegram;
 using TgApi.Types;
 using static TdLib.TdApi.InputFile;
@@ -40,7 +35,7 @@ public class OrderStickerRunner : CommandRunner
         for (Index = 0; Index < swaps.Length; Index++)
         {
             Outputs.Add(new CommandOutput(null, swaps[Index].Item1.DecodedPath, true));
-            var msg = await client.SendBasicDocumentAsync(botId, new InputFileRemote {Id = swaps[Index].Item1.RemoteFileId});
+            var msg = await client.SendBasicDocumentAsync(botId, new InputFileRemote { Id = swaps[Index].Item1.RemoteFileId });
             AddReplyToOutputs(await waiter.WaitNextMsgAsync(msg.Id));
             Outputs.Add(new CommandOutput(null, swaps[Index].Item2.DecodedPath, true));
             msg = await client.SendBasicDocumentAsync(botId, new InputFileRemote { Id = swaps[Index].Item2.RemoteFileId });

@@ -4,26 +4,17 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 using NeoSmart.Unicode;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.Storage;
-using Windows.Storage.Pickers;
-using SixLabors.ImageSharp.Processing;
-using SixLabors.ImageSharp;
-using Microsoft.UI.Xaml.Media.Imaging;
-using TgApi.Types;
 using ReunionApp.Runners;
-using Microsoft.UI.Xaml.Media.Animation;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
+using TgApi.Types;
+using Windows.Storage.Pickers;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -51,7 +42,6 @@ public sealed partial class AddSticker : Page
         var parameters = e.Parameter as AddStickerParams;
         pack = parameters.pack;
         backButton = parameters.back;
-
     }
 
     protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -89,22 +79,21 @@ public sealed partial class AddSticker : Page
             stickers.Add(new NewSticker { ImgPath = file.Path });
         }
     }
-    
+
     private void Delete(object sender, RoutedEventArgs e)
     {
         var selected = Grid.SelectedItems;
         if (selected.Count == 0) return;
         for (int i = selected.Count - 1; i >= 0; i--)
         {
-            var ns = (NewSticker) selected[i];
+            var ns = (NewSticker)selected[i];
             //ns.Img = null;
             stickers.Remove(ns);
         }
         selected = null;
         stickers = new ObservableCollection<NewSticker>(stickers);
         Grid.ItemsSource = stickers;
-        Task.Run(async () => { await Task.Delay(5000); GC.Collect(); });
-        // TODO Memory is only freed after navigating off the page
+        Task.Run(async () => { await Task.Delay(5000); GC.Collect(); });  // TODO Memory is only freed after navigating off the page
     }
 
     private async void Finish(object sender, RoutedEventArgs e)
@@ -117,12 +106,12 @@ public sealed partial class AddSticker : Page
         processing.Visibility = Visibility.Visible;
         backButton.IsEnabled = false;
 
-        await Task.Run( async () => await ProcessImgs());
+        await Task.Run(async () => await ProcessImgs());
 
         var runner = new AddStickerRunner(pack, stickers.ToArray());
 
         processing.Visibility = Visibility.Collapsed;
-        ((Frame) Parent).Navigate(typeof(ProcessingCommand), runner, new DrillInNavigationTransitionInfo());
+        ((Frame)Parent).Navigate(typeof(ProcessingCommand), runner, new DrillInNavigationTransitionInfo());
     }
 
     private async Task ProcessImgs()
@@ -171,9 +160,9 @@ public sealed partial class AddSticker : Page
             }
         });
         Task.Run(async () => { await Task.Delay(5000); Configuration.Default.MemoryAllocator.ReleaseRetainedResources(); });
-        }
+    }
 
-    private async Task<bool> FindErrors() 
+    private async Task<bool> FindErrors()
     {
         if (stickers.Count == 0)
         {
@@ -182,7 +171,7 @@ public sealed partial class AddSticker : Page
         }
 
         if (stickers.Count + pack.Count > 120)
-		{
+        {
             await App.GetInstance().ShowBasicDialog("You added too many stickers!", $"The max size for a sticker pack is 120.\n" +
                                                                                     $"This pack already has {pack.Count}, you added {stickers.Count}\n" +
                                                                                     $"Total: {pack.Count + stickers.Count}");
@@ -208,25 +197,13 @@ public sealed partial class AddSticker : Page
         return false;
     }
 
-    private async Task<bool> FindWarnings()
+    private async Task<bool> FindWarnings() // TODO Implement Warnings
     {
-  //      List<string> warnings = new List<string>();
-  //      for (int i = 0; i < stickers.Count; i++)
-		//{
-  //          var s = stickers[i];
-		//}
-  //      if (warnings.Count > 0)
-		//{
-  //          warnings.Insert(0, "Please remember that indices are 0 based. The first item is 0.");
-  //          await App.GetInstance().ShowBasicDialog("Some notes we took:", String.Join("\n", warnings));
-  //      }
         return false;
     }
 
-    private void SplitButton_Click(SplitButton sender, SplitButtonClickEventArgs args)
-    {
-        Add(sender, default);
-    }
+    private void SplitButton_Click(SplitButton sender, SplitButtonClickEventArgs args) => Add(sender, default);
+    
 
     private void Emojis_TextChanged(object sender, RoutedEventArgs args)
     {
@@ -241,7 +218,6 @@ public class NewSticker
     public string ImgPath { get; set; }
     public string TempPath { get; set; }
     public string Emojis { get; set; } = "😳"; // TODO Clear this default value, this is only so i can quickly test things
-    //public BitmapImage Img {get; set;}
 
     public string EnsuredPath => File.Exists(TempPath) ? TempPath : ImgPath;
 }

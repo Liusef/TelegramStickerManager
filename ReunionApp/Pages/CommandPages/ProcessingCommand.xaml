@@ -17,21 +17,29 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         
-        <ScrollViewer x:Name="Scroll" Grid.Row="0" IsVerticalScrollChainingEnabled="True"
+        <ScrollViewer x:Name="Scroll" 
+                      Grid.Row="0"
+                      IsVerticalScrollChainingEnabled="True"
                       CornerRadius="24" >
             <ItemsRepeater x:Name="Outputs"
                            ItemsSource="{x:Bind runner.Outputs}"
                            Margin="36">
                 <ItemsRepeater.Layout>
-                    <StackLayout Spacing="12" Orientation="Vertical"/>
+                    <StackLayout Spacing="12" 
+                                 Orientation="Vertical"/>
                 </ItemsRepeater.Layout>
                 <ItemsRepeater.ItemTemplate>
                     <DataTemplate x:DataType="runners:CommandOutput">
                         <Grid HorizontalAlignment="{x:Bind Align}">
-                            <Image Source="{x:Bind EnsuredImg}" MaxWidth="200" MaxHeight="200"/>
-                            <Grid Background="{ThemeResource SystemAccentColor}" x:Name="jank" x:Load="{x:Bind HasText}"
+                            <Image Source="{x:Bind EnsuredImg}" 
+                                   MaxWidth="200" 
+                                   MaxHeight="200"/>
+                            <Grid Background="{ThemeResource SystemAccentColor}" 
+                                  x:Name="jank" 
+                                  x:Load="{x:Bind HasText}"
                                   CornerRadius="12">
-                                <TextBlock Text="{x:Bind Content}" Margin="12"/>
+                                <TextBlock Text="{x:Bind Content}" 
+                                           Margin="12"/>
                             </Grid>
                         </Grid>
                     </DataTemplate>
@@ -39,10 +47,21 @@
             </ItemsRepeater>
         </ScrollViewer>
         
-        <Button x:Name="Continue" Content="Continue" Grid.Row="1" CornerRadius="12" IsEnabled="False"
-                HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="60"
-                Margin="0, 12, 0, 0" Click="Continue_Click"/>
+        <Button x:Name="Continue" 
+                Content="Continue" 
+                Grid.Row="1"
+                CornerRadius="12" 
+                IsEnabled="False"
+                HorizontalAlignment="Stretch" 
+                VerticalAlignment="Bottom" 
+                Height="60"
+                Margin="0, 12, 0, 0" 
+                Click="Continue_Click"/>
         
-        <ProgressBar x:Name="Loading" Width="Auto" Grid.Row="2" Value="{x:Bind runner.Progress, Mode=OneWay}"/>
+        <ProgressBar x:Name="Loading"
+                     Width="Auto"
+                     Grid.Row="2"
+                     Value="{x:Bind runner.Progress, Mode=OneWay}"/>
+        
     </Grid>
 </Page>

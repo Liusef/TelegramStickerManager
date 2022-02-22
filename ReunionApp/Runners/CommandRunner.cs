@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
 using TgApi.Telegram;
@@ -24,8 +20,8 @@ public abstract class CommandRunner : INotifyPropertyChanged
     public double Progress
     {
         get { return _progress; }
-        set 
-        { 
+        set
+        {
             _progress = value;
             OnProgressChanged();
         }
@@ -37,11 +33,9 @@ public abstract class CommandRunner : INotifyPropertyChanged
 
     public abstract Task RunCommandsAsync();
 
-    public virtual async Task PreTasksAsync() 
+    public virtual async Task PreTasksAsync()
     {
-        //    var chat = await App.GetInstance().Client.GetIdFromUsernameAsync("Stickers");
-        //    await App.GetInstance().Client.OpenChatAsync(chat);
-        //    await App.GetInstance().Client.SetChatNotificationSettingsAsync(chat, new ChatNotificationSettings {MuteFor = int.MaxValue, UseDefaultMuteFor = false });
+        // This is where tasks that need to run before running go. I can't think of any so there aren't any
     }
 
     public virtual async Task PostTasksAsync()
@@ -60,13 +54,12 @@ public abstract class CommandRunner : INotifyPropertyChanged
         Outputs.Add(new CommandOutput(message, null, true));
         AddReplyToOutputs(await waiter.SendMsgAndAwaitNext(message));
     }
-
 }
 
 public record CommandOutput(string Content, string ImgPath, bool Right)
 {
     public HorizontalAlignment Align => Right ? HorizontalAlignment.Right : HorizontalAlignment.Left;
     public bool HasImg => !string.IsNullOrEmpty(ImgPath);
-    public string EnsuredImg => HasImg ? ImgPath : " ";
     public bool HasText => !string.IsNullOrEmpty(Content);
+    public string EnsuredImg => HasImg ? ImgPath : " ";
 }
