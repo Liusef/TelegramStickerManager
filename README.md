@@ -1,8 +1,19 @@
 # TelegramStickerManager
-An app to deal with @Stickers so you don't have to
+An app to deal with @Stickers so you don't have to.
 
-## To run this project:
-Check the [releases](https://github.com/Liusef/TelegramStickerManager/releases) page for binaries.
+This program can automate making 
+- Making new sticker packs
+- Adding stickers
+- Deleting stickers
+- Re-ordering stickers
+- More on the way!
+
+all with a simple drag-and-drop user interface which allows you to save time and avoid having to send hundreds of messages to Sticker bot.
+
+If you find this useful, please star the repository!
+
+## To run as a user:
+Check the [releases](https://github.com/Liusef/TelegramStickerManager/releases) page for binaries and run `InstallDependencies.exe` before using!.
 
 To run this application as an end user, you must have at least the [.NET 6 Desktop Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/6.0/runtime) and the [Windows App Runtime](https://aka.ms/windowsappsdk/1.0-stable/msix-installer) installed on your machine.
 
@@ -22,8 +33,8 @@ To download the code, compile, and run on your local machine do the following:
     
     public class ApiKeys
     {
-    public const int ApiId = 0; // API ID goes here
-    public const string ApiHash = ""; // API Hash string goes here
+        public const int ApiId = 0; // API ID goes here
+        public const string ApiHash = ""; // API Hash string goes here
     }
     
     ```
