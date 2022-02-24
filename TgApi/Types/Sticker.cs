@@ -1,6 +1,7 @@
 ﻿using SixLabors.ImageSharp;
 using System.Text.Json.Serialization;
 using TdLib;
+using TgApi.Telegram;
 
 namespace TgApi.Types;
 
@@ -13,11 +14,11 @@ public class Sticker
 	/// <summary>
 	/// The width of the sticker in pixels
 	/// </summary>
-	public int Width { get; set; }
+	public int Width { get; init; }
 	/// <summary>
 	/// The Height of the sticker in pixels
 	/// </summary>
-	public int Height { get; set; }
+	public int Height { get; init; }
 	/// <summary>
 	/// The Primary emoji associated with this sticker
 	/// </summary>
@@ -37,11 +38,11 @@ public class Sticker
 	/// <summary>
 	/// The Remote File ID of the sticker document.
 	/// </summary>
-	public string RemoteFileId { get; set; }
+	public string RemoteFileId { get; init; }
 	/// <summary>
 	/// The size of the sticker
 	/// </summary>
-	public int Size { get; set; }
+	public int Size { get; init; }
 
 	/// <summary>
 	/// The local path of the sticker on the system
@@ -56,7 +57,7 @@ public class Sticker
 	public bool LocalCopySaved => File.Exists(LocalPath);
 
 	/// <summary>
-	/// Gets the path of the pre-decoded PNG version of the sticer
+	/// Gets the path of the pre-decoded PNG version of the sticker
 	/// </summary>
 	[JsonIgnore]
 	public string DecodedPath => $"{GlobalVars.DecodedDir}{Utils.RemoveExtension(Filename)}.png";
@@ -91,16 +92,16 @@ public class Sticker
 			Height = input.Height,
 			RemoteFileId = input.Sticker_.Remote.Id,
 			Size = input.Sticker_.ExpectedSize,
-			MainEmoji = input.Emoji,
+			MainEmoji = input.Emoji
 		};
-		TdApi.Emojis inputEmojis = await inputEmojisTask;
+		var inputEmojis = await inputEmojisTask;
 		s.Emojis = string.Join("", inputEmojis.Emojis_);
 		s.Filename = (await filenameTask).Text_;
 
-		if (input.IsMask) s.Type = StickerType.MASK;
-		else if (input.IsAnimated) s.Type = StickerType.ANIMATED;
-		else if (s.Filename.Substring(s.Filename.Length - 4).Equals("webm")) s.Type = StickerType.VIDEO;
-		else s.Type = StickerType.STANDARD;
+		if (input.IsMask) s.Type = StickerType.Mask;
+		else if (input.IsAnimated) s.Type = StickerType.Animated;
+		else if (Utils.GetExtension(s.Filename).Equals("webm")) s.Type = StickerType.Video;
+		else s.Type = StickerType.Standard;
 
 		return s;
 	}
@@ -134,11 +135,9 @@ public class Sticker
 	/// <param name="priority">The download priority from 1 to 32</param>
 	/// <param name="delay">The delay between polls to check if the download is complete</param>
 	/// <returns>The local path of the image</returns>
-	public async Task<string> GetPathEnsureDownloaded(TdClient client, int priority = 1, int delay = 25)
-	{
-		if (LocalCopySaved) return LocalPath;
-		return (await CompleteDownload(client, priority, delay)).LocalPath;
-	}
+	public async Task<string> GetPathEnsureDownloaded(TdClient client, int priority = 1, int delay = 25) =>
+		LocalCopySaved ? LocalPath : (await CompleteDownload(client, priority, delay)).LocalPath;
+	
 
 	public async Task<string> DecodeSticker()
 	{

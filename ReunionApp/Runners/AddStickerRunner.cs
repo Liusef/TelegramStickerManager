@@ -36,7 +36,7 @@ public class AddStickerRunner : CommandRunner
         await SendAndAddToOutputsAsync(waiter, "/addsticker");
         await SendAndAddToOutputsAsync(waiter, pack.Name);
 
-        for (Index = 0; Index < stickers.Length; Index++) // TODO see if starting all the uploads first is faster
+        for (Index = 0; Index < stickers.Length; Index++)
         {
             var upload = await FileUpload.StartUpload(client, stickers[Index].EnsuredPath);
             await upload.WaitForCompletion();

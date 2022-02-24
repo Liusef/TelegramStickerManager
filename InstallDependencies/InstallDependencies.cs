@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
 namespace InstallDependencies
 {
-	internal class InstallDependencies
+	internal static class InstallDependencies
 	{
 		private const string Sep = "=========================================================";
 		private const string Net6DRT = "Microsoft.WindowsDesktop.App 6.0";
@@ -114,8 +115,8 @@ namespace InstallDependencies
 				Console.ForegroundColor = ConsoleColor.Red;
 				Console.WriteLine($"\n{Sep}\nThe .NET 6 Desktop Runtime is required to run the application. Download it here:");
 				Console.ResetColor();
-				Console.WriteLine($"https://dotnet.microsoft.com/en-us/download/dotnet/6.0/runtime\n\n" +
-								  $"Please remember to download the .NET 6 Desktop Runtime for running Desktop Apps.");
+				Console.WriteLine("https://dotnet.microsoft.com/en-us/download/dotnet/6.0/runtime\n\n" +
+								  "Please remember to download the .NET 6 Desktop Runtime for running Desktop Apps.");
 				Console.ForegroundColor = ConsoleColor.Red;
 				Console.WriteLine(Sep);
 				Console.ResetColor();
@@ -125,7 +126,7 @@ namespace InstallDependencies
 				Console.ForegroundColor = ConsoleColor.Red;
 				Console.WriteLine($"\n{Sep}\nThe Windows App Runtime is required to run the application. Download it here:");
 				Console.ResetColor();
-				Console.WriteLine($"https://aka.ms/windowsappsdk/1.0-stable/msix-installer");
+				Console.WriteLine("https://aka.ms/windowsappsdk/1.0-stable/msix-installer");
 				Console.ForegroundColor = ConsoleColor.Red;
 				Console.WriteLine(Sep);
 				Console.ResetColor();
@@ -135,7 +136,7 @@ namespace InstallDependencies
 				Console.ForegroundColor = ConsoleColor.Yellow;
 				Console.WriteLine($"\n{ Sep}\nThe app may not run with your Windows App Runtime installation. Download the recommended version here:");
 				Console.ResetColor();
-				Console.WriteLine($"https://aka.ms/windowsappsdk/1.0-stable/msix-installer");
+				Console.WriteLine("https://aka.ms/windowsappsdk/1.0-stable/msix-installer");
 				Console.ForegroundColor = ConsoleColor.Yellow;
 				Console.WriteLine(Sep + "\n");
 				Console.ResetColor();
@@ -143,7 +144,7 @@ namespace InstallDependencies
 			if (NET6 && WARTFull)
 			{
 				Console.ForegroundColor = ConsoleColor.Green;
-				Console.WriteLine($"\nAll dependencies should be installed! Happy stickering!\n");
+				Console.WriteLine("\nAll dependencies should be installed! Happy stickering!\n");
 				Console.ResetColor();
 			}
 
@@ -159,12 +160,11 @@ namespace InstallDependencies
 
 		public static bool WinARTFullInstall()
 		{
-			foreach (string output in new[] { WinART64, WinARTMain, WinARTSingleton, WinARTDDLM })
-			{
-				var s = Utils.GetConsoleOut("powershell", $"-Command Get-AppxPackage {output}");
-				if (s.Length == 0) return false;
-			}
-			return true;
+			return new[]
+				{
+					WinART64, WinARTMain, WinARTSingleton, WinARTDDLM
+				}.Select(output => Utils.GetConsoleOut("powershell", $"-Command Get-AppxPackage {output}"))
+				.All(s => s.Length != 0);
 		}
 
 		public static bool WinARTAnyInstall()
@@ -172,14 +172,14 @@ namespace InstallDependencies
 			return Utils.GetConsoleOut("powershell", $"-Command Get-AppxPackage {AppRT}").Length != 0;
 		}
 
-		public async static Task<bool> InstallNET6DRT()
+		public static async Task<bool> InstallNET6DRT()
 		{
-			var localpath = $"{Path.GetTempPath()}{Path.DirectorySeparatorChar}net6_0_102_desktop_runtime.exe";
+			var localPath = $"{Path.GetTempPath()}{Path.DirectorySeparatorChar}net6_0_102_desktop_runtime.exe";
 			var t = Task.Run(async () =>
 			{
 				using (var wc = new WebClient())
 				{
-					await wc.DownloadFileTaskAsync(NET6Download, localpath);
+					await wc.DownloadFileTaskAsync(NET6Download, localPath);
 				}
 			});
 			Console.Write("Downloading the .NET 6 Desktop Runtime (54.5 MB). This may take a while");
@@ -189,13 +189,13 @@ namespace InstallDependencies
 				await Task.Delay(1000);
 			}
 			Console.WriteLine();
-			if (!File.Exists(localpath))
+			if (!File.Exists(localPath))
 			{
 				var c1 = Utils.PromptYesNo("The .NET 6 Desktop Runtime was not downloaded successfully. Would you like to continue anyways? (y/n):");
 				if (c1) return false;
 				Environment.Exit(1);
 			}
-			t = Task.Run(() => Utils.RunProcess(localpath, "/passive"));
+			t = Task.Run(() => Utils.RunProcess(localPath, "/passive"));
 			Console.Write("Installing the .NET 6 Desktop Runtime. This may take a while");
 			while (!t.IsCompleted)
 			{
@@ -225,7 +225,7 @@ namespace InstallDependencies
 			}
 		}
 
-		public async static Task<bool> InstallWART()
+		public static async Task<bool> InstallWART()
 		{
 			var localpath = $"{Path.GetTempPath()}{Path.DirectorySeparatorChar}winapprt_1.0.zip";
 			var unzipped = $"{Path.GetTempPath()}{Path.DirectorySeparatorChar}winapprt_1.0{Path.DirectorySeparatorChar}";
@@ -276,7 +276,7 @@ namespace InstallDependencies
 
 	}
 
-	public class Utils
+	public static class Utils
 	{
 		public static string Prompt(string prompt)
 		{

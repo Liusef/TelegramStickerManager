@@ -181,6 +181,7 @@ public partial class App : Application
     public async Task ResetTdClient(bool autoNavigate)
     {
         Client.Dispose();
+        auth.Close();
         Client = new TdLib.TdClient();
         auth = new AuthHandler(Client);
         authState = AuthHandler.AuthState.Null;

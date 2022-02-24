@@ -36,9 +36,10 @@ public static class Utils
 	/// </summary>
 	/// <param name="obj">The object to serialize</param>
 	/// <param name="path">The path to save the json file to</param>
+	/// <param name="indent">Whether to indent the saved json (Pretty-printing)</param>
 	/// <typeparam name="T">The type of the object to serialize</typeparam>
 	public static void Serialize<T>(T obj, string path, bool indent = true) =>
-		File.WriteAllText(EnsureFile(path), JsonSerializer.Serialize<T>(obj,
+		File.WriteAllText(EnsureFile(path), JsonSerializer.Serialize(obj,
 			new JsonSerializerOptions { WriteIndented = indent }));
 
 	/// <summary>
@@ -47,7 +48,7 @@ public static class Utils
 	/// <param name="path">The path of the json file to read the json from</param>
 	/// <typeparam name="T">The type to deserialize to</typeparam>
 	/// <returns>The object deserialized from the json</returns>
-	public static T Deserialize<T>(string path) => JsonSerializer.Deserialize<T>(File.ReadAllText(EnsureFile(path)));
+	public static T? Deserialize<T>(string path) => JsonSerializer.Deserialize<T>(File.ReadAllText(EnsureFile(path)));
 
 
 	/// <summary>
@@ -58,7 +59,7 @@ public static class Utils
 	public static string Prompt(string prompt)
 	{
 		Console.Write(prompt);
-		return Console.ReadLine();
+		return Console.ReadLine() ?? "";
 	}
 
 	/// <summary>
@@ -69,8 +70,7 @@ public static class Utils
 	public static string GetExtension(string input)
 	{
 		int i = input.LastIndexOf('.');
-		if (i < input.Length - 1) return input.Substring(i + 1);
-		return "";
+		return i < input.Length - 1 ? input[(i + 1)..] : "";
 	}
 
 	/// <summary>
@@ -81,7 +81,7 @@ public static class Utils
 	public static string RemoveExtension(string input)
 	{
 		int i = input.LastIndexOf('.');
-		return input.Substring(0, i);
+		return input[..i];
 	}
 
 	/// <summary>
@@ -92,7 +92,7 @@ public static class Utils
 	public static string GetPathFilename(string path)
 	{
 		int i = path.LastIndexOf(Path.DirectorySeparatorChar);
-		return path.Substring(i + 1);
+		return path[(i + 1)..];
 	}
 
 	/// <summary>
@@ -103,7 +103,7 @@ public static class Utils
 	public static string GetPathDirectory(string path)
 	{
 		int i = path.LastIndexOf(Path.DirectorySeparatorChar);
-		return path.Substring(0, i + 1);
+		return path[..(i + 1)];
 	}
 
 	/// <summary>
@@ -146,7 +146,7 @@ public static class Utils
 	public static void ClearTemp()
 	{
 		if (!Directory.Exists(GlobalVars.TempDir)) return;
-		foreach (FileInfo file in new DirectoryInfo(GlobalVars.TempDir).EnumerateFiles())
+		foreach (var file in new DirectoryInfo(GlobalVars.TempDir).EnumerateFiles())
 		{
 			file.Delete();
 		}

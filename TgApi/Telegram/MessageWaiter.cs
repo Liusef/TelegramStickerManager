@@ -4,10 +4,10 @@ namespace TgApi.Telegram;
 
 public class MessageWaiter
 {
-	private TdClient client;
-	private long chatId;
-	private EventHandler<TdApi.Update> handler;
-	private TdApi.Message? lastMsg;
+	private TdClient _client;
+	private long _chatId;
+	private EventHandler<TdApi.Update> _handler;
+	private TdApi.Message? _lastMsg;
 
 	/// <summary>
 	/// Instantiates a MessageWaiter Object
@@ -16,18 +16,18 @@ public class MessageWaiter
 	/// <param name="chatId">The chat ID to wait in</param>
 	public MessageWaiter(TdClient client, long chatId)
 	{
-		this.client = client;
-		this.chatId = chatId;
-		this.lastMsg = null;
+		_client = client;
+		_chatId = chatId;
+		_lastMsg = null;
 
-		this.handler = (sender, update) =>
+		_handler = (sender, update) =>
 		{
-			if (update is TdApi.Update.UpdateNewMessage msgUpdate && msgUpdate.Message.ChatId == this.chatId)
+			if (update is TdApi.Update.UpdateNewMessage msgUpdate && msgUpdate.Message.ChatId == _chatId)
 			{
-				lastMsg = msgUpdate.Message;
+				_lastMsg = msgUpdate.Message;
 			}
 		};
-		client.UpdateReceived += handler;
+		client.UpdateReceived += _handler;
 	}
 
 	/// <summary>
@@ -39,12 +39,12 @@ public class MessageWaiter
 	public async Task<TdApi.Message> WaitNextMsgAsync(long currId, int delay = 25)
 	{
 		var t = DateTime.Now;
-		while (currId == lastMsg.Id)
+		while (currId == _lastMsg.Id)
 		{
 			await Task.Delay(delay);
 		}
 		Console.WriteLine($"Elapsed: { (DateTime.Now - t).TotalMilliseconds }ms");
-		return lastMsg;
+		return _lastMsg;
 	}
 
 	/// <summary>
@@ -57,14 +57,14 @@ public class MessageWaiter
 	{
 		var t = DateTime.Now;
 		while (!target.Equals(
-				   (lastMsg.Content as TdApi.MessageContent.MessageText ??
+				   (_lastMsg?.Content as TdApi.MessageContent.MessageText ??
 				   new TdApi.MessageContent.MessageText { Text = new TdApi.FormattedText { Text = "" } })
 				   .Text.Text)) // Ensuring no NullReference using ??
 		{
 			await Task.Delay(delay);
 		}
 		Console.WriteLine($"Elapsed: { (DateTime.Now - t).TotalMilliseconds }ms");
-		return lastMsg;
+		return _lastMsg;
 	}
 
 	/// <summary>
@@ -75,7 +75,7 @@ public class MessageWaiter
 	/// <returns>A TdApi.Message object</returns>
 	public async Task<TdApi.Message> SendMsgAndAwaitNext(string contents, int delay = 25)
 	{
-		long id = (await client.SendBasicMessageAsync(chatId, contents)).Id;
+		long id = (await _client.SendBasicMessageAsync(_chatId, contents)).Id;
 		return await WaitNextMsgAsync(id, delay);
 	}
 
@@ -88,7 +88,7 @@ public class MessageWaiter
 	/// <returns>A TdApi.Message object</returns>
 	public async Task<TdApi.Message> SendMsgAndAwaitNext(string contents, string target, int delay = 25)
 	{
-		await client.SendBasicMessageAsync(chatId, contents);
+		await _client.SendBasicMessageAsync(_chatId, contents);
 		return await WaitForMsgAsync(target, delay);
 	}
 
@@ -97,11 +97,11 @@ public class MessageWaiter
 	/// </summary>
 	public void Close()
 	{
-		this.client.UpdateReceived -= this.handler;
-		this.client = null;
-		this.chatId = default;
-		this.lastMsg = null;
-		this.handler = null;
+		this._client.UpdateReceived -= this._handler;
+		this._client = null;
+		this._chatId = default;
+		this._lastMsg = null;
+		this._handler = null;
 	}
 
 }

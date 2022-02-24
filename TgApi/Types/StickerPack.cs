@@ -1,6 +1,7 @@
 ﻿using SixLabors.ImageSharp;
 using System.Text.Json.Serialization;
 using TdLib;
+using TgApi.Telegram;
 
 namespace TgApi.Types;
 
@@ -9,7 +10,7 @@ public class StickerPack
 	/// <summary>
 	/// The ID of this sticker pack
 	/// </summary>
-	public long Id { get; set; }
+	public long Id { get; init; }
 	/// <summary>
 	/// The title of this sticker pack
 	/// </summary>
@@ -48,7 +49,7 @@ public class StickerPack
 	/// <summary>
 	/// The uri to add the sticker through your browser
 	/// </summary>
-	[JsonIgnore] public Uri AddStickerUri => new Uri($"https://t.me/addstickers/{Name}");
+	[JsonIgnore] public Uri AddStickerUri => new($"https://t.me/addstickers/{Name}");
 
 	/// <summary>
 	/// Always returns a thumbnail. If the pack has no designated thumb it returns the first sticker in the pack.
@@ -67,29 +68,25 @@ public class StickerPack
 	/// <returns></returns>
 	public static async Task<StickerPack> Generate(TdClient client, TdApi.StickerSet input)
 	{
-		var taskList = new List<Task<Sticker>>();
-		foreach (var sticker in input.Stickers)
-		{
-			taskList.Add(Sticker.Generate(client, sticker));
-		}
+		var taskList = input.Stickers.Select(sticker => Sticker.Generate(client, sticker)).ToList();
 		var s = new StickerPack
 		{
 			Id = input.Id,
 			Title = input.Title,
 			Name = input.Name,
-			Thumb = await StickerPackThumb.Generate(client, input.Thumbnail, input.IsAnimated),
+			Thumb = await StickerPackThumb.Generate(client, input.Thumbnail, input.IsAnimated)
 		};
-		var slist = new List<Sticker>();
+		var sList = new List<Sticker>();
 		foreach (var task in taskList)
 		{
-			slist.Add(await task);
+			sList.Add(await task);
 		}
-		s.Stickers = slist.ToArray();
+		s.Stickers = sList.ToArray();
 
-		if (input.IsMasks) s.Type = StickerType.MASK;
-		else if (input.IsAnimated) s.Type = StickerType.ANIMATED;
-		else if (s.Stickers[0].Filename.Substring(s.Stickers[0].Filename.Length - 4).Equals("webm")) s.Type = StickerType.VIDEO;
-		else s.Type = StickerType.STANDARD;
+		if (input.IsMasks) s.Type = StickerType.Mask;
+		else if (input.IsAnimated) s.Type = StickerType.Animated;
+		else if (Utils.GetExtension(s.Stickers[0].Filename).Equals("webm")) s.Type = StickerType.Video;
+		else s.Type = StickerType.Standard;
 
 		s.Cache();
 		return s;
@@ -125,6 +122,7 @@ public class StickerPack
 	/// </summary>
 	/// <param name="client">An active TdClient</param>
 	/// <param name="priority">The priority of the download from 1 to 32</param>
+	/// <param name="delay">The amount of time in milliseconds between polls to check if a download is complete</param>
 	/// <returns>An array of FileDownload objects</returns>
 	public async Task<FileDownload[]> CompleteDownloadAll(TdClient client, int priority = 1, int delay = 25)
 	{
@@ -145,17 +143,13 @@ public class StickerPack
 	/// <returns>An array of paths</returns>
 	public async Task<string[]> EnsureAllDownloaded(TdClient client, int priority = 1, int delay = 25)
 	{
-		var taskList = new List<Task<string>>();
-		foreach (var s in Stickers)
-		{
-			taskList.Add(s.GetPathEnsureDownloaded(client, priority, delay));
-		}
-		var rlist = new List<string>();
+		var taskList = Stickers.Select(s => s.GetPathEnsureDownloaded(client, priority, delay)).ToList();
+		var rList = new List<string>();
 		foreach (var task in taskList)
 		{
-			rlist.Add(await task);
+			rList.Add(await task);
 		}
-		return rlist.ToArray();
+		return rList.ToArray();
 	}
 
 	/// <summary>
@@ -192,14 +186,13 @@ public class StickerPack
 			ct.ThrowIfCancellationRequested();
 		});
 		Configuration.Default.MemoryAllocator.ReleaseRetainedResources();
-		//GC.Collect();
 		return Stickers.Select(x => x.DecodedPath).ToArray();
 	}
 
 	/// <summary>
 	/// Caches the pack to the system
 	/// </summary>
-	public void Cache() => Utils.Serialize<StickerPack>(this, $"{GlobalVars.PacksDir}{Name}.json");
+	public void Cache() => Utils.Serialize(this, $"{GlobalVars.PacksDir}{Name}.json");
 
 	/// <summary>
 	/// Reads a pack from the system's memory. This method does not check if the pack is present
@@ -226,16 +219,16 @@ public class StickerPack
 	}
 
 	/// <summary>
-	/// Adds complete information from fully detailed stickerpack to basic version
+	/// Adds complete information from fully detailed StickerPack to basic version
 	/// </summary>
 	/// <param name="full"></param>
 	public void InjectCompleteInfo(StickerPack full)
 	{
 		if (!IsCachedCopy) return;
 		Stickers = full.Stickers;
-		if (Thumb == null || !Thumb.IsDesignatedThumb || (full.Thumb != null && full.Thumb.RemoteFileId != Thumb.RemoteFileId))
+		if (Thumb is not {IsDesignatedThumb: true} || full.Thumb != null && full.Thumb.RemoteFileId != Thumb.RemoteFileId)
 		{
-			if (full.Thumb != null && full.Thumb.IsDesignatedThumb) Thumb = full.Thumb;
+			if (full.Thumb is {IsDesignatedThumb: true}) Thumb = full.Thumb;
 		}
 		IsCachedCopy = false;
 	}

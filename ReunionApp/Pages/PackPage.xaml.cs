@@ -66,7 +66,6 @@ public sealed partial class PackPage : Page
         // TODO This is not a good solution for memory management. Find a way to dispose of pages instead.
         stickers = new ObservableCollection<Sticker>();
         StickerGrid.ItemsSource = stickers;
-        UnloadObject(StickerGrid);
         Bindings.StopTracking();
         GC.Collect();
     }

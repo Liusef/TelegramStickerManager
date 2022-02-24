@@ -60,9 +60,9 @@ public sealed partial class NewPack : Page
 
     private class NewPackThumb : StickerPackThumb
     {
-        public string _Path { get; set; }
-        public override string LocalPath => _Path;
-        public override string BestPath => _Path;
+        public string Path { get; set; }
+        public override string LocalPath => Path;
+        public override string BestPath => Path;
     }
 
     private async void Continue(object sender, RoutedEventArgs e)
@@ -94,7 +94,7 @@ public sealed partial class NewPack : Page
             {
                 Title = Title.Text,
                 Name = Name.Text,
-                Thumb = new NewPackThumb { _Path = Path }
+                Thumb = new NewPackThumb { Path = Path }
             }, CommandType.NEWPACK));
     }
 

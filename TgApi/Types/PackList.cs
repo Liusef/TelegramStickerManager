@@ -21,7 +21,7 @@ public static class PackList
 	/// </summary>
 	/// <param name="input"></param>
 	public static void Cache(string[] input) =>
-		Utils.Serialize<string[]>(input, $"{GlobalVars.PacksDir}{GlobalVars.PacksFileName}");
+		Utils.Serialize(input, $"{GlobalVars.PacksDir}{GlobalVars.PacksFileName}");
 
 	/// <summary>
 	/// Whether or not a list of all owned packs is cached
@@ -34,5 +34,5 @@ public static class PackList
 	/// </summary>
 	/// <returns>An array of all owned packs</returns>
 	public static string[] ReadCache() =>
-		Utils.Deserialize<string[]>($"{GlobalVars.PacksDir}{GlobalVars.PacksFileName}");
+		Utils.Deserialize<string[]>($"{GlobalVars.PacksDir}{GlobalVars.PacksFileName}") ?? Array.Empty<string>();
 }

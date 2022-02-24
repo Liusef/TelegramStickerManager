@@ -25,13 +25,10 @@ public sealed partial class Settings : Page
         base.OnNavigatedTo(e);
     }
 
-    private void Back(object sender, RoutedEventArgs e) =>
-        App.GetInstance().RootFrame.GoBack();
+    private void Back(object sender, RoutedEventArgs e) => App.GetInstance().RootFrame.GoBack();
 
-    private async void Clear_Click(object sender, RoutedEventArgs e)
-    {
-        await App.GetInstance().Client.OptimizeStorageAsync();
-    }
+    private async void Clear_Click(object sender, RoutedEventArgs e) => await App.GetInstance().Client.OptimizeStorageAsync();
+    
 
     private void Logout_Click(object sender, RoutedEventArgs e)
     {

@@ -51,14 +51,14 @@ public sealed partial class AddSticker : Page
         // This block is to ensure that bitmaps and other large objects are garbage collected, as pages aren't disposed by the garbage collector
         // NOTE: Lots of objects that need to be garbage collected are RefCounted from Unmanaged memory
         // TODO This is not a good solution for memory management. Find a way to dispose of pages instead.
-        //foreach (var ns in stickers) ns.Img = null;
         Grid.ItemsSource = new ObservableCollection<NewSticker>();
-        //stickers = new ObservableCollection<NewSticker>();
         Grid.ItemsSource = null;
-        UnloadObject(Grid);
         Bindings.StopTracking();
         base.OnNavigatedFrom(e);
     }
+
+    // TODO Consider Adding functionality to move to next textbox when you press "Enter"
+    // this could be implemented using an InputInjector with InjectedInputKeyboardInfo with key "Tab"
 
     private async void Add(object sender, RoutedEventArgs e)
     {
@@ -89,7 +89,6 @@ public sealed partial class AddSticker : Page
         for (int i = selected.Count - 1; i >= 0; i--)
         {
             var ns = (NewSticker)selected[i];
-            //ns.Img = null;
             stickers.Remove(ns);
         }
         selected = null;
@@ -174,7 +173,6 @@ public sealed partial class AddSticker : Page
             await App.GetInstance().ShowBasicDialog("You didn't add anything!", "Please add some stickers before continuing!");
             return true;
         }
-
         if (stickers.Count + pack.Count > 120)
         {
             await App.GetInstance().ShowBasicDialog("You added too many stickers!", $"The max size for a sticker pack is 120.\n" +
@@ -182,9 +180,7 @@ public sealed partial class AddSticker : Page
                                                                                     $"Total: {pack.Count + stickers.Count}");
             return true;
         }
-
         List<string> errs = new List<string>();
-
         for (int i = 0; i < stickers.Count; i++)
         {
             var s = stickers[i];
@@ -192,7 +188,6 @@ public sealed partial class AddSticker : Page
             if (string.IsNullOrWhiteSpace(s.Emojis)) errs.Add($"- Error at Index {i}: Emojis list cannot be empty.");
             else if (!Emoji.IsEmoji(s.Emojis)) errs.Add($"- Error at Index {i}: Emojis list contains non-emoji characters.");
         }
-
         if (errs.Count > 0)
         {
             errs.Insert(0, "Please remember that indices are 0 based. The first item is 0.");
