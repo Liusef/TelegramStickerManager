@@ -28,8 +28,9 @@ public sealed partial class AddSticker : Page
     private StickerPack pack;
     private Button backButton;
     private ObservableCollection<NewSticker> stickers = new ObservableCollection<NewSticker>();
+    private bool newPackMode;
 
-    public record AddStickerParams(StickerPack pack, Button back);
+    public record AddStickerParams(StickerPack pack, bool NewPackMode, Button back);
 
     public AddSticker()
     {
@@ -39,7 +40,8 @@ public sealed partial class AddSticker : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        var parameters = e.Parameter as AddStickerParams;
+        var parameters = (AddStickerParams) e.Parameter;
+        newPackMode = parameters.NewPackMode;
         pack = parameters.pack;
         backButton = parameters.back;
     }
@@ -108,7 +110,10 @@ public sealed partial class AddSticker : Page
 
         await Task.Run(async () => await ProcessImgs());
 
-        var runner = new AddStickerRunner(pack, stickers.ToArray());
+        CommandRunner runner;
+
+        if (newPackMode) runner = new NewPackRunner(pack, stickers.ToArray());
+        else runner = new AddStickerRunner(pack, stickers.ToArray());
 
         processing.Visibility = Visibility.Collapsed;
         ((Frame)Parent).Navigate(typeof(ProcessingCommand), runner, new DrillInNavigationTransitionInfo());

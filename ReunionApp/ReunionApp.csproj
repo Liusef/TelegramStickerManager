@@ -53,7 +53,6 @@
 	  <None Remove="Pages\CommandPages\InfoPages\DelInfo.xaml" />
 	  <None Remove="Pages\CommandPages\InfoPages\OrderInfo.xaml" />
 	  <None Remove="Pages\CommandPages\NewPack.xaml" />
-	  <None Remove="Pages\CommandPages\NewPackAddStickers.xaml" />
 	  <None Remove="Pages\CommandPages\OrderSticker.xaml" />
 	  <None Remove="Pages\CommandPages\ProcessingCommand.xaml" />
 	  <None Remove="Pages\GenericError.xaml" />
@@ -153,11 +152,6 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="Runners\RunnerDependencies\NewPackRunnerNameDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Pages\CommandPages\NewPackAddStickers.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

@@ -43,7 +43,7 @@ public class StickerPack
 	/// How many stickers are in the pack. This is only not 0 when it is not a cached copy
 	/// </summary>
 	[JsonIgnore]
-	public int Count => Stickers.Length;
+	public int Count => Stickers is null ? 0 : Stickers.Length;
 
 	/// <summary>
 	/// The uri to add the sticker through your browser
