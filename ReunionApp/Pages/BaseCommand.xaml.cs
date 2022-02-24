@@ -6,7 +6,6 @@ using Microsoft.UI.Xaml.Navigation;
 using TgApi.Types;
 using static ReunionApp.Pages.CommandPages.AddSticker;
 using static ReunionApp.Pages.CommandPages.DelSticker;
-using static ReunionApp.Pages.CommandPages.NewPackAddStickers;
 using static ReunionApp.Pages.CommandPages.OrderSticker;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -61,7 +60,7 @@ public sealed partial class BaseCommand : Page
         switch (type)
         {
             case CommandType.ADDSTICKER:
-                ContentFrame.Navigate(typeof(CommandPages.AddSticker), new AddStickerParams(pack, BackButton));
+                ContentFrame.Navigate(typeof(CommandPages.AddSticker), new AddStickerParams(pack, false, BackButton));
                 InfoFrame.Navigate(typeof(CommandPages.InfoPages.AddInfo));
                 Op.Text = "Add New Stickers";
                 break;
@@ -71,7 +70,7 @@ public sealed partial class BaseCommand : Page
                 Op.Text = "Delete Stickers";
                 break;
             case CommandType.NEWPACK:
-                ContentFrame.Navigate(typeof(CommandPages.NewPackAddStickers), new NewPackAddStickersParams(pack, BackButton));
+                ContentFrame.Navigate(typeof(CommandPages.AddSticker), new AddStickerParams(pack, true, BackButton));
                 InfoFrame.Navigate(typeof(CommandPages.InfoPages.AddInfo));
                 Op.Text = "Add Some Stickers!";
                 break;
