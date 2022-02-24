@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Security.Principal;
 using System.Threading.Tasks;
@@ -160,11 +159,12 @@ namespace InstallDependencies
 
 		public static bool WinARTFullInstall()
 		{
-			return new[]
-				{
-					WinART64, WinARTMain, WinARTSingleton, WinARTDDLM
-				}.Select(output => Utils.GetConsoleOut("powershell", $"-Command Get-AppxPackage {output}"))
-				.All(s => s.Length != 0);
+			foreach (string output in new[] { WinART64, WinARTMain, WinARTSingleton, WinARTDDLM })
+			{
+				var s = Utils.GetConsoleOut("powershell", $"-Command Get-AppxPackage {output}");
+				if (s.Length == 0) return false;
+			}
+			return true;
 		}
 
 		public static bool WinARTAnyInstall()
