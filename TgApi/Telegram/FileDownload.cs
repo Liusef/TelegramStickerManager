@@ -1,10 +1,9 @@
 ﻿using TdLib;
 
-namespace TgApi.Types;
+namespace TgApi.Telegram;
 
 public class FileDownload
 {
-	private TdApi.Client client;
 	private TdApi.File latestFile;
 	private EventHandler<TdApi.Update> handler;
 
@@ -38,20 +37,17 @@ public class FileDownload
 	/// <returns>A FileDownload Object</returns>
 	public static async Task<FileDownload> StartDownload(TdClient client, int id, int priority = 1)
 	{
-		FileDownload r = new FileDownload();
-		r.client = client;
-
-		r.latestFile = await client.DownloadFileAsync(fileId: id, priority: priority);
-
-		r.handler = (object? sender, TdApi.Update update) =>
+		FileDownload r = new FileDownload
 		{
-			if (update is TdApi.Update.UpdateFile fileUpdate && fileUpdate.File.Id == r.LocalId)
-			{
-				r.latestFile = fileUpdate.File;
-				if (r.latestFile.Local.IsDownloadingCompleted) client.UpdateReceived -= r.handler;
-				r.client = null;
-				r.handler = null;
-			}
+			latestFile = await client.DownloadFileAsync(fileId: id, priority: priority)
+		};
+
+		r.handler = (sender, update) =>
+		{
+			if (update is not TdApi.Update.UpdateFile fileUpdate || fileUpdate.File.Id != r.LocalId) return;
+			r.latestFile = fileUpdate.File;
+			if (r.latestFile.Local.IsDownloadingCompleted) client.UpdateReceived -= r.handler;
+			r.handler = null;
 		};
 
 		client.UpdateReceived += r.handler;

@@ -25,6 +25,5 @@
                    HorizontalAlignment="Center">
             I am not real :)
         </TextBlock>
-        
     </StackPanel>
 </Page>

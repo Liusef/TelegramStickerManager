@@ -75,7 +75,7 @@ public sealed partial class Home : Page
     {
         var pack = e.ClickedItem as StickerPack;
 
-        if (pack.Type != StickerType.STANDARD)
+        if (pack.Type != StickerType.Standard)
         {
             App.GetInstance().RootFrame.Navigate(typeof(Unsupported), $"Sticker packs of type {pack.Type} are not supported at this time.");
             return;

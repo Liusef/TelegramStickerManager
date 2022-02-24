@@ -1,11 +1,13 @@
-﻿/// <summary>
+﻿namespace TgApi.Types;
+
+/// <summary>
 /// The type of a sticker pack.
 /// </summary>
 public enum StickerType : short
 {
-	STANDARD = 0,
-	ANIMATED = 1,
-	VIDEO = 2,
+	Standard = 0,
+	Animated = 1,
+	Video = 2,
 
-	MASK = -1
+	Mask = -1
 }

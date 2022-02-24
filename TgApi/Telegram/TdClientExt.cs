@@ -74,27 +74,22 @@ public static class TdClientExt
 	{
 		long id = await client.GetIdFromUsernameAsync(GlobalVars.StickerBot);
 		var waiter = new MessageWaiter(client, id);
-		await waiter.SendMsgAndAwaitNext("/cancel");
-		var msg = await waiter.SendMsgAndAwaitNext("/addsticker");
-		var task = waiter.SendMsgAndAwaitNext("/cancel");
-		string[] r = new string[0];
+		await waiter.SendMsgAndAwaitNext("/cancel", delay);
+		var msg = await waiter.SendMsgAndAwaitNext("/addsticker", delay);
+		var task = waiter.SendMsgAndAwaitNext("/cancel", delay);
+		var r = Array.Empty<string>();
 		if (msg.ReplyMarkup is TdApi.ReplyMarkup.ReplyMarkupShowKeyboard rmsk)
 		{
-			var packlist = new List<string>();
+			var packList = new List<string>();
 			foreach (var row in rmsk.Rows)
 			{
-				foreach (var b in row)
-				{
-					var entry = b.Text;
-					if (entry[0] == '<') continue;
-					else packlist.Add(entry);
-				}
+				packList.AddRange(row.Select(b => b.Text).Where(entry => entry[0] != '<'));
 			}
-			r = packlist.ToArray();
+			r = packList.ToArray();
 		}
 		await task;
 		waiter.Close();
-		Utils.Serialize<string[]>(r, $"{GlobalVars.PacksDir}{GlobalVars.PacksFileName}");
+		Utils.Serialize(r, $"{GlobalVars.PacksDir}{GlobalVars.PacksFileName}");
 		return r;
 	}
 

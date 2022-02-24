@@ -44,8 +44,6 @@ public sealed partial class BaseCommand : Page
         // TODO This is not a good solution for memory management. Find a way to dispose of pages instead.
         NavigationCacheMode = NavigationCacheMode.Disabled;
         ContentFrame.Navigate(typeof(Page));
-        UnloadObject(ContentFrame);
-        UnloadObject(InfoFrame);
         Bindings.StopTracking();
         Task.Run(async () => { await Task.Delay(5000); GC.Collect(); });   // This code ensures that when this method is called and images aren't being displayed,
                                                                            // since the images are in unmanaged memory, they're discarded and most of the memory it used

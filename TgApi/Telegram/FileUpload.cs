@@ -1,10 +1,9 @@
 ﻿using TdLib;
 
-namespace TgApi.Types;
+namespace TgApi.Telegram;
 
 public class FileUpload
 {
-	private TdApi.Client client;
 	private TdApi.File latestFile;
 	private EventHandler<TdApi.Update> handler;
 
@@ -35,18 +34,18 @@ public class FileUpload
 	/// <returns>A FileUpload Object</returns>
 	public static async Task<FileUpload> StartUpload(TdClient client, string path, int priority = 1, TdApi.FileType? type = null)
 	{
-		if (type is null) type = new TdApi.FileType.FileTypeDocument();
+		type ??= new TdApi.FileType.FileTypeDocument();
 
-		FileUpload r = new FileUpload();
-		r.latestFile = await client.UploadFileAsync(new TdApi.InputFile.InputFileLocal { Path = path }, type, priority);
+		FileUpload r = new FileUpload
+		{
+			latestFile = await client.UploadFileAsync(new TdApi.InputFile.InputFileLocal { Path = path }, type, priority)
+		};
 
 		r.handler = (sender, update) =>
 		{
-			if (update is TdApi.Update.UpdateFile fileUpdate && fileUpdate.File.Id == r.LocalId)
-			{
-				r.latestFile = fileUpdate.File;
-				if (r.latestFile.Remote.IsUploadingCompleted) client.UpdateReceived -= r.handler;
-			}
+			if (update is not TdApi.Update.UpdateFile fileUpdate || fileUpdate.File.Id != r.LocalId) return;
+			r.latestFile = fileUpdate.File;
+			if (r.latestFile.Remote.IsUploadingCompleted) client.UpdateReceived -= r.handler;
 		};
 
 		client.UpdateReceived += r.handler;

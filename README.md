@@ -31,7 +31,7 @@ To download the code, compile, and run on your local machine do the following:
     ```c#
     namespace TgApi;
     
-    public class ApiKeys
+    public static class ApiKeys
     {
         public const int ApiId = 0; // API ID goes here
         public const string ApiHash = ""; // API Hash string goes here

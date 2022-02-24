@@ -1,5 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using TdLib;
+using TgApi.Telegram;
 
 namespace TgApi.Types;
 
@@ -8,15 +9,15 @@ public class StickerPackThumb
 	/// <summary>
 	/// The height of the thumb in pixels
 	/// </summary>
-	public int Width { get; set; }
+	public int Width { get; init; }
 	/// <summary>
 	/// The height of the thumb in pixels
 	/// </summary>
-	public int Height { get; set; }
+	public int Height { get; init; }
 	/// <summary>
 	/// The Remote File ID of the thumbnail document. This shouldn't be used.
 	/// </summary>
-	public string RemoteFileId { get; set; }
+	public string RemoteFileId { get; init; }
 	/// <summary>
 	/// The filename of the thumbnail document
 	/// </summary>
@@ -56,12 +57,8 @@ public class StickerPackThumb
 		get
 		{
 			if (IsDesignatedThumb) return LocalPath;
-			else
-			{
-				var decPath = $"{GlobalVars.DecodedDir}{Utils.RemoveExtension(Filename)}.png";
-				if (File.Exists(decPath)) return decPath;
-			}
-			return LocalPath;
+			var decPath = $"{GlobalVars.DecodedDir}{Utils.RemoveExtension(Filename)}.png";
+			return File.Exists(decPath) ? decPath : LocalPath;
 		}
 	}
 
@@ -82,13 +79,13 @@ public class StickerPackThumb
 			Height = input.Height,
 			RemoteFileId = input.File.Remote.Id,
 			Size = input.File.ExpectedSize,
-			IsDesignatedThumb = true
+			IsDesignatedThumb = true,
+			Filename = (await filenameTask).Text_
 		};
-		t.Filename = (await filenameTask).Text_;
-
-		if (isAnimated) t.Type = StickerType.ANIMATED;
-		else if (t.Filename.Substring(t.Filename.Length - 4).Equals("webm")) t.Type = StickerType.VIDEO;
-		else t.Type = StickerType.STANDARD;
+		
+		if (isAnimated) t.Type = StickerType.Animated;
+		else if (Utils.GetExtension(t.Filename).Equals("webm")) t.Type = StickerType.Video;
+		else t.Type = StickerType.Standard;
 
 		return t;
 	}
@@ -162,6 +159,6 @@ public class StickerPackThumb
 	{
 		Console.WriteLine($"Checking thumb for {LocalPath}, is Downloaded {IsDownloaded}");
 		if (IsDownloaded) return LocalPath;
-		return (await CompleteDownloadEnsureCorrectFilename(client, priority, delay));
+		return await CompleteDownloadEnsureCorrectFilename(client, priority, delay);
 	}
 }

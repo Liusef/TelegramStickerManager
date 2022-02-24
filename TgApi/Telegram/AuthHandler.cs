@@ -6,43 +6,39 @@ namespace TgApi.Telegram;
 
 public class AuthHandler
 {
-	private TdClient client;
-	private TdApi.AuthorizationState state;
-	private DateTimeOffset stateTime;
-	private EventHandler<TdApi.Update> handlerDelegate;
+	private DateTimeOffset _stateTime;
+	private EventHandler<TdApi.Update> _handlerDelegate;
 
 	/// <summary>
 	/// The current state of the authorization process
 	/// </summary>
-	public TdApi.AuthorizationState CurrentState => state;
+	public TdApi.AuthorizationState? CurrentState { get; private set; }
 
 	/// <summary>
 	/// The time the last authentication update was received at
 	/// </summary>
-	public DateTimeOffset LastRequestReceivedAt => stateTime;
+	public DateTimeOffset LastRequestReceivedAt => _stateTime;
 
 	/// <summary>
 	/// The TdClient associated with this AuthHandler instance
 	/// </summary>
-	public TdClient Client => client;
+	public TdClient Client { get; private set; }
 
 	/// <summary>
 	/// Instantiates an AuthHandler object
 	/// </summary>
-	/// <param name="Client">An active TdClient</param>
-	public AuthHandler(TdClient Client)
+	/// <param name="client">An active TdClient</param>
+	public AuthHandler(TdClient client)
 	{
-		client = Client;
-		handlerDelegate = (object? sender, TdApi.Update update) =>
+		this.Client = client;
+		_handlerDelegate = (sender, update) =>
 		{
-			if (update is TdApi.Update.UpdateAuthorizationState)
-			{
-				state = ((TdApi.Update.UpdateAuthorizationState)update).AuthorizationState;
-				stateTime = DateTimeOffset.Now;
-				Console.WriteLine($"State: {state}, Time: {stateTime}");
-			}
+			if (update is not TdApi.Update.UpdateAuthorizationState state) return;
+			CurrentState = state.AuthorizationState;
+			_stateTime = DateTimeOffset.Now;
+			Console.WriteLine($"State: {CurrentState}, Time: {_stateTime}");
 		};
-		Client.UpdateReceived += handlerDelegate;
+		client.UpdateReceived += _handlerDelegate;
 	}
 
 	/// <summary>
@@ -50,10 +46,10 @@ public class AuthHandler
 	/// </summary>
 	public void Close()
 	{
-		Client.UpdateReceived -= handlerDelegate;
-		handlerDelegate = null;
-		state = null;
-		client = null;
+		Client.UpdateReceived -= _handlerDelegate;
+		_handlerDelegate = null;
+		CurrentState = null;
+		Client = null;
 	}
 
 	/// <summary>
@@ -68,7 +64,7 @@ public class AuthHandler
 		// This is to keep track of whether or not a new status has been received
 		DateTimeOffset lastRunStatusTime = DateTimeOffset.MinValue;
 
-		while (CurrentState.GetType() != typeof(TdApi.AuthorizationState.AuthorizationStateReady))
+		while (CurrentState.GetType() != typeof(AuthorizationStateReady))
 		{
 			bool unsupported = false;
 			TdApi.Ok? val = null;
@@ -121,12 +117,12 @@ public class AuthHandler
 				Console.WriteLine("TdLib did not return Ok on the last request");
 				// Determines if the operation the user performed is unsupported
 				if (unsupported) throw new Exception("TdLib returned an unsupported state");
-				else lastRunStatusTime = DateTimeOffset.MinValue; // If it errors out, redoes the last operation
+				lastRunStatusTime = DateTimeOffset.MinValue; // If it errors out, redoes the last operation
 			}
 
 			// This section waits for an updated status from telegram before continuing
 			int i = 0;
-			while (stateTime.Equals(lastRunStatusTime))
+			while (_stateTime.Equals(lastRunStatusTime))
 			{
 				i++;
 				Console.WriteLine($"Waiting for reply from Telegram for {i * 100}/{milliTimout} ms");
@@ -135,7 +131,7 @@ public class AuthHandler
 			}
 
 			// Used to keep track of whether a new status has arrived
-			lastRunStatusTime = stateTime;
+			lastRunStatusTime = _stateTime;
 		}
 		Console.WriteLine("You should be all signed in and ready to go! " + CurrentState);
 	}
@@ -172,7 +168,7 @@ public class AuthHandler
 		await Client.ExecuteAsync(new TdApi.CheckAuthenticationCode { Code = code });
 
 	/// <summary>
-	/// Handles state WatiPassword
+	/// Handles state WaitPassword
 	/// </summary>
 	/// <param name="password">The 2 factor password set by the user</param>
 	/// <returns>A TdApi.Ok object if the request was successful</returns>
@@ -202,7 +198,6 @@ public class AuthHandler
 	/// <returns></returns>
 	public static AuthState GetState(TdApi.AuthorizationState state)
 	{
-		if (state == null) return 0;
 		if (state.GetType() == typeof(AuthorizationStateWaitTdlibParameters)) return AuthState.WaitTdLibParams;
 		if (state.GetType() == typeof(AuthorizationStateWaitEncryptionKey)) return AuthState.WaitEncryptionKey;
 		if (state.GetType() == typeof(AuthorizationStateWaitPhoneNumber)) return AuthState.WaitPhoneNumber;
