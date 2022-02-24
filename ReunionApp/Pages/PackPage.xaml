@@ -14,79 +14,79 @@
     <Grid>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="260"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="260" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Column="0"
-                    Margin="24, 24, 0, 0" 
+                    Margin="24, 24, 0, 0"
                     Spacing="12">
-            <Button Content="Back" 
-                    Click="Back"/>
+            <Button Content="Back"
+                    Click="Back" />
             <StackPanel Spacing="8">
                 <Image x:Name="PackThumb"
-                       Width="100" 
+                       Width="100"
                        Height="100"
                        VerticalAlignment="Stretch"
-                       HorizontalAlignment="Center"/>
-                <TextBlock x:Name="Title" 
-                           FontSize="24" 
-                           FontWeight="Bold" 
+                       HorizontalAlignment="Center" />
+                <TextBlock x:Name="Title"
+                           FontSize="24"
+                           FontWeight="Bold"
                            TextTrimming="CharacterEllipsis"
-                           TextWrapping="Wrap"/>
+                           TextWrapping="Wrap" />
                 <TextBlock x:Name="Name"
-                           FontWeight="Light" 
-                           TextTrimming="CharacterEllipsis"/>
+                           FontWeight="Light"
+                           TextTrimming="CharacterEllipsis" />
             </StackPanel>
-            
+
             <StackPanel Margin="0, 24, 0, 0"
-                        HorizontalAlignment="Stretch" 
+                        HorizontalAlignment="Stretch"
                         Spacing="12">
                 <Button x:Name="Add"
                         Content="Add Stickers"
-                        Click="AddSticker" 
-                        HorizontalContentAlignment="Center" 
-                        HorizontalAlignment="Stretch" 
-                        IsEnabled="False"/>
+                        Click="AddSticker"
+                        HorizontalContentAlignment="Center"
+                        HorizontalAlignment="Stretch"
+                        IsEnabled="False" />
                 <Button x:Name="Del"
                         Content="Delete Stickers"
                         Click="DelSticker"
                         HorizontalContentAlignment="Center"
-                        HorizontalAlignment="Stretch" 
-                        IsEnabled="False"/>
+                        HorizontalAlignment="Stretch"
+                        IsEnabled="False" />
                 <Button x:Name="Order"
                         Content="Reorder Stickers"
                         Click="OrderSticker"
                         HorizontalContentAlignment="Center"
                         HorizontalAlignment="Stretch"
-                        IsEnabled="False"/>
+                        IsEnabled="False" />
             </StackPanel>
-            
+
         </StackPanel>
 
-        <StackPanel x:Name="Loading" 
-                    Grid.Column="1" 
-                    VerticalAlignment="Center" 
+        <StackPanel x:Name="Loading"
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
                     HorizontalAlignment="Center"
                     Visibility="Visible">
-            
-            <ProgressBar x:Name="PB" 
-                         IsIndeterminate="True" 
-                         Grid.Row="2" 
+
+            <ProgressBar x:Name="PB"
+                         IsIndeterminate="True"
+                         Grid.Row="2"
                          Width="200"
-                         Margin="24"/>
+                         Margin="24" />
             <TextBlock Text="Loading"
                        HorizontalAlignment="Center"
                        FontSize="18"
-                       FontWeight="SemiBold"/>
-            <TextBlock Text="This may take a while..." 
-                       HorizontalAlignment="Center"/>
-            
+                       FontWeight="SemiBold" />
+            <TextBlock Text="This may take a while..."
+                       HorizontalAlignment="Center" />
+
         </StackPanel>
 
-        <GridView 
-            x:Name="StickerGrid" 
-            Grid.Column="1" 
+        <GridView
+            x:Name="StickerGrid"
+            Grid.Column="1"
             ItemsSource="{x:Bind stickers}"
             HorizontalAlignment="Center"
             Margin="16"
@@ -97,23 +97,23 @@
             Visibility="Collapsed">
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="types:Sticker">
-                    <StackPanel Padding="12" 
-                                Spacing="12" 
+                    <StackPanel Padding="12"
+                                Spacing="12"
                                 MinHeight="163">
                         <Image x:Name="StickerImg"
                                Source="{x:Bind BestPath}"
                                Width="124"
-                               Height="160" 
+                               Height="160"
                                HorizontalAlignment="Center"
-                               VerticalAlignment="Stretch"/>
-                        <TextBlock Text="{x:Bind Emojis}" 
+                               VerticalAlignment="Stretch" />
+                        <TextBlock Text="{x:Bind Emojis}"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Bottom"
-                                   TextTrimming="CharacterEllipsis"/>
+                                   TextTrimming="CharacterEllipsis" />
                     </StackPanel>
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
-        
+
     </Grid>
 </Page>

@@ -4,21 +4,21 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:ReunionApp.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <StackPanel VerticalAlignment="Center" 
+    <StackPanel VerticalAlignment="Center"
                 Spacing="24">
         <Image Source="../Images/AppIcon.png"
-               Width="200"/>
-        <ProgressBar x:Name="ProgressBar" 
-                     Width="500" 
+               Width="200" />
+        <ProgressBar x:Name="ProgressBar"
+                     Width="500"
                      IsIndeterminate="true"
-                     Margin="50,20,50,0"/>
-        <TextBlock x:Name="ProgressText" 
+                     Margin="50,20,50,0" />
+        <TextBlock x:Name="ProgressText"
                    Text="Starting"
-                   HorizontalAlignment="Center" 
+                   HorizontalAlignment="Center"
                    Style="{StaticResource SubtitleTextBlockStyle}" />
     </StackPanel>
 </Page>

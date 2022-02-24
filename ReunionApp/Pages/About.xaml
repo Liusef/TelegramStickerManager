@@ -10,18 +10,18 @@
 
     <StackPanel Margin="24"
                 Spacing="24">
-        
+
         <Button Content="Back"
-                Click="Back"/>
-        
+                Click="Back" />
+
         <TextBlock FontWeight="Bold"
-                   FontSize="40" 
+                   FontSize="40"
                    HorizontalAlignment="Center">
             Telegram Sticker Manager
         </TextBlock>
-        <Image Source="../Images/AppIcon.png" 
-               Width="200"/>
-        <TextBlock Margin="24" 
+        <Image Source="../Images/AppIcon.png"
+               Width="200" />
+        <TextBlock Margin="24"
                    HorizontalAlignment="Center">
             I am not real :)
         </TextBlock>

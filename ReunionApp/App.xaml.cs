@@ -20,15 +20,17 @@ public partial class App : Application
 {
     public static int Threads { get; } = Environment.ProcessorCount < 6 ? Environment.ProcessorCount : 6;
 
-    private MainWindow m_window;
-
-    public MainWindow MainWindow => m_window;
-    public Frame RootFrame => MainWindow.ContentFrame;
-    private bool isCdOpen = false;
+    internal bool isCdOpen = false;
+    
     public TdLib.TdClient Client = new TdLib.TdClient();
     public AuthHandler auth;
     public AuthHandler.AuthState authState;
+    
+    public MainWindow MainWindow { get; private set; }
 
+    public Frame RootFrame => MainWindow.ContentFrame;
+
+    
     /// <summary>
     /// Gets the current instance of the application as an App object
     /// </summary>
@@ -49,147 +51,20 @@ public partial class App : Application
     /// will be used such as when the application is launched to open a specific file.
     /// </summary>
     /// <param name="args">Details about the launch request and process.</param>
-    protected async override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
+    protected override async void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
     {
-        m_window = new MainWindow();
+        MainWindow = new MainWindow();
         auth = new AuthHandler(Client);
         Client.Bindings.SetLogVerbosityLevel(1);
         GlobalVars.EnsureDirectories();
         App.Current.UnhandledException += App_UnhandledException;
-        m_window.Activate();
-        await HandleAuth();
+        MainWindow.Activate();
+        await this.HandleAuth();
     }
 
     private async void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
     {
         e.Handled = true;
-        await ShowExceptionDialog(e.Exception);
+        await this.ShowExceptionDialog(e.Exception);
     }
-
-    public async Task ShowBasicDialog(string title, string body, string closeText = "Ok")
-    {
-        if (isCdOpen) return;
-        isCdOpen = true;
-        var cd = new ContentDialog();
-        cd.Title = title;
-        cd.IsPrimaryButtonEnabled = false;
-        cd.IsSecondaryButtonEnabled = false;
-        cd.CloseButtonText = closeText;
-        var b = new Pages.DialogBody();
-        b.Body.Text = body;
-        cd.Content = b;
-        cd.XamlRoot = m_window.Content.XamlRoot;
-
-        cd.CloseButtonClick += (sender, args) => isCdOpen = false;
-
-        await cd.ShowAsync();
-    }
-
-    public async Task ShowExceptionDialog(Exception exception) => await ShowBasicDialog($"Oops! The program hit a(n) {exception.GetType()} Exception", exception.ToString());
-    
-    public async Task HandleAuth(bool autoNavigate = true)
-    {
-        if (auth is null) return;
-        await Task.Delay(50);
-        var lastRequest = DateTimeOffset.MinValue;
-        authState = AuthHandler.GetState(auth.CurrentState);
-        try
-        {
-            while (authState != AuthHandler.AuthState.Ready &&
-                authState != AuthHandler.AuthState.WaitPhoneNumber &&
-                authState != AuthHandler.AuthState.WaitCode &&
-                authState != AuthHandler.AuthState.WaitOtherDeviceConfirmation &&
-                authState != AuthHandler.AuthState.WaitRegistration &&
-                authState != AuthHandler.AuthState.WaitPassword)
-            {
-                switch (authState)
-                {
-                    case AuthHandler.AuthState.WaitTdLibParams:
-                        await auth.Handle_WaitTdLibParameters(new TdLib.TdApi.TdlibParameters()
-                        {
-                            ApiId = GlobalVars.ApiId,
-                            ApiHash = GlobalVars.ApiHash,
-                            SystemLanguageCode = GlobalVars.SystemLanguageCode,
-                            DeviceModel = GlobalVars.DeviceModel,
-                            ApplicationVersion = GlobalVars.ApplicationVersion,
-                            DatabaseDirectory = GlobalVars.TdDir,
-                            UseTestDc = false,
-                            UseChatInfoDatabase = false,
-                            UseFileDatabase = false,
-                            UseMessageDatabase = false
-                        });
-                        break;
-                    case AuthHandler.AuthState.WaitEncryptionKey:
-                        await auth.Handle_WaitEncryptionKey();
-                        break;
-                    default:
-                        await Task.Delay(100);
-                        break;
-                }
-
-                while (lastRequest == auth.LastRequestReceivedAt) await Task.Delay(50);
-
-                lastRequest = auth.LastRequestReceivedAt;
-                authState = AuthHandler.GetState(auth.CurrentState);
-
-                if (authState == AuthHandler.AuthState.Null)
-                {
-                    RootFrame.Navigate(typeof(Pages.GenericError), "The application encountered an unknown sign-in state. Please restart the app");
-                }
-            }
-
-            if (autoNavigate)
-            {
-                switch (authState)
-                {
-                    case AuthHandler.AuthState.Ready:
-                        RootFrame.Navigate(typeof(Pages.Home), true, new DrillInNavigationTransitionInfo());
-                        break;
-                    default:
-                        RootFrame.Navigate(typeof(Pages.LoginPages.LoginPhone), auth, new DrillInNavigationTransitionInfo());
-                        break;
-                }
-            }
-
-            if (authState == AuthHandler.AuthState.Ready) await OnAuthStateReady();
-
-        }
-        catch (Exception ex)
-        {
-            await ShowExceptionDialog(ex);
-        }
-    }
-
-    private async Task OnAuthStateReady()
-    {
-        Client.UpdateReceived += ReadStickerBotMsgs;
-    }
-
-    private async void ReadStickerBotMsgs(object sender, TdApi.Update e)
-    {
-        if (e is TdApi.Update.UpdateNewMessage nMsg)
-        {
-            var chatId = await Client.GetIdFromUsernameAsync("Stickers");
-            if (nMsg.Message.ChatId == chatId)
-            {
-                //await Client.OpenChatAsync(chatId);
-                await Client.ViewMessagesAsync(chatId, 0, new[] { nMsg.Message.Id }, true);
-            }
-        }
-    }
-
-    public async Task ResetTdClient(bool autoNavigate)
-    {
-        Client.Dispose();
-        auth.Close();
-        Client = new TdLib.TdClient();
-        auth = new AuthHandler(Client);
-        authState = AuthHandler.AuthState.Null;
-        await HandleAuth(autoNavigate);
-        await OnAuthStateReady();
-    }
-
-    public static BitmapImage GetBitmapFromPath(string path) => new BitmapImage(new Uri(path));
-
-    public static Uri GetUriFromString(string str) => new Uri(str);
 }

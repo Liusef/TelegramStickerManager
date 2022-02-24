@@ -11,10 +11,10 @@
     <Grid>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="80"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="80" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <GridView x:Name="Grid"
@@ -26,54 +26,54 @@
                   SelectionMode="Extended"
                   AllowDrop="True">
             <GridView.ItemTemplate>
-                <DataTemplate x:Name="StickerPackGridItem" 
+                <DataTemplate x:Name="StickerPackGridItem"
                               x:DataType="types:Sticker">
                     <StackPanel Padding="16"
                                 Spacing="10"
-                                MaxWidth="196" 
+                                MaxWidth="196"
                                 IsTabStop="False">
-                        <Image Source="{x:Bind DecodedPath}" 
-                               Width="124" 
+                        <Image Source="{x:Bind DecodedPath}"
+                               Width="124"
                                Height="150"
-                               VerticalAlignment="Center" 
-                               IsTabStop="False"/>
-                        <TextBlock Text="{x:Bind Emojis}" 
-                                   HorizontalAlignment="Center"/>
+                               VerticalAlignment="Center"
+                               IsTabStop="False" />
+                        <TextBlock Text="{x:Bind Emojis}"
+                                   HorizontalAlignment="Center" />
                     </StackPanel>
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
 
-        <Grid Grid.Row="2" 
+        <Grid Grid.Row="2"
               Margin="6, 0, 6, 6">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" 
+            <Button Grid.Column="0"
                     HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch" 
+                    VerticalAlignment="Stretch"
                     Margin="0, 0, 6, 0">
                 Reset Order
                 <Button.Flyout>
                     <Flyout>
-                        <StackPanel Margin="12" 
+                        <StackPanel Margin="12"
                                     Spacing="12">
                             <TextBlock>
                                 Are you sure you want to reset the order?
                             </TextBlock>
-                            <Button Content="Yes" 
+                            <Button Content="Yes"
                                     HorizontalAlignment="Stretch"
-                                    Click="Reset"/>
+                                    Click="Reset" />
                         </StackPanel>
                     </Flyout>
                 </Button.Flyout>
             </Button>
 
-            <Button Grid.Column="1" 
+            <Button Grid.Column="1"
                     HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch" 
+                    VerticalAlignment="Stretch"
                     Margin="0, 0, 6, 0"
                     Click="Finish">
                 Finish
@@ -83,7 +83,7 @@
         <ProgressBar x:Name="processing"
                      Grid.Row="3"
                      Visibility="Collapsed"
-                     IsIndeterminate="True"/>
+                     IsIndeterminate="True" />
 
     </Grid>
 </Page>

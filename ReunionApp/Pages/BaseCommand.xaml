@@ -12,49 +12,49 @@
     <Grid>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="260"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="260" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0">
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <StackPanel Grid.Row="0" 
-                        Margin="24, 24, 0, 0" 
+            <StackPanel Grid.Row="0"
+                        Margin="24, 24, 0, 0"
                         Spacing="12">
                 <Button x:Name="BackButton"
                         Content="Back"
-                        Click="Back"/>
+                        Click="Back" />
                 <StackPanel Spacing="8">
                     <Image Source="{x:Bind pack.EnsuredThumb.BestPath}"
-                           Width="100" 
-                           HorizontalAlignment="Center"/>
+                           Width="100"
+                           HorizontalAlignment="Center" />
                     <TextBlock x:Name="Op"
                                FontSize="28"
                                FontWeight="Bold"
-                               TextWrapping="Wrap" 
+                               TextWrapping="Wrap"
                                HorizontalAlignment="Center"
-                               HorizontalTextAlignment="Center"/>
+                               HorizontalTextAlignment="Center" />
                 </StackPanel>
             </StackPanel>
 
             <Frame x:Name="InfoFrame"
                    Grid.Row="1"
-                   Margin="24, 0, 0, 24"/>
+                   Margin="24, 0, 0, 24" />
 
         </Grid>
-            
-        <Frame x:Name="Frame" 
+
+        <Frame x:Name="Frame"
                Grid.Column="1"
                Margin="24"
                Padding="12"
                CornerRadius="16"
                Background="{ThemeResource SystemRevealListLowColor}"
                IsNavigationStackEnabled="False"
-               CacheSize="0"/>
+               CacheSize="0" />
     </Grid>
 </Page>

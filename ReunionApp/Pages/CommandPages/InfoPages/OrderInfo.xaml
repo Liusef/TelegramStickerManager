@@ -10,16 +10,16 @@
 
     <Grid>
 
-        <StackPanel VerticalAlignment="Bottom" 
+        <StackPanel VerticalAlignment="Bottom"
                     Spacing="12">
             <Button HorizontalAlignment="Stretch">
                 Info
                 <Button.Flyout>
                     <Flyout>
-                        <TextBlock Width="400" 
+                        <TextBlock Width="400"
                                    TextWrapping="WrapWholeWords">
                             Haven't written instructions here yet.
-                            <LineBreak/><LineBreak/>This app will automatically downscale your images to meet the image size requirements of telegram.
+                            <LineBreak /><LineBreak />This app will automatically downscale your images to meet the image size requirements of telegram.
                         </TextBlock>
                     </Flyout>
                 </Button.Flyout>

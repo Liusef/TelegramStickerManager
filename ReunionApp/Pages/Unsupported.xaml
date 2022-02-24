@@ -9,27 +9,27 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <StackPanel VerticalAlignment="Top"
-                Spacing="20" 
+                Spacing="20"
                 Margin="50,50,0,0">
-        
+
         <Button Content="Back"
-                Click="Back"/>
-        
-        <TextBlock FontSize="30" 
-                   FontWeight="Bold" 
+                Click="Back" />
+
+        <TextBlock FontSize="30"
+                   FontWeight="Bold"
                    TextWrapping="WrapWholeWords">
             The application reached an unsupported state.
         </TextBlock>
-        
+
         <TextBlock TextWrapping="WrapWholeWords">
             The state the application has reached is not currently supported in this release. Please leave an issue on github if you want this to be added!
         </TextBlock>
-        
-        <TextBlock x:Name="body" 
-                   IsTextSelectionEnabled="True" 
+
+        <TextBlock x:Name="body"
+                   IsTextSelectionEnabled="True"
                    TextWrapping="WrapWholeWords">
             No additional info provided.
         </TextBlock>
-        
+
     </StackPanel>
 </Page>

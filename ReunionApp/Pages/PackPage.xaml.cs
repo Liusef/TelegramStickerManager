@@ -27,7 +27,7 @@ public sealed partial class PackPage : Page
         this.InitializeComponent();
     }
 
-    protected async override void OnNavigatedTo(NavigationEventArgs e)
+    protected override async void OnNavigatedTo(NavigationEventArgs e)
     {
         bool update = pack == null || (e.Parameter != null && (e.Parameter as StickerPack) != pack);
 
@@ -38,7 +38,7 @@ public sealed partial class PackPage : Page
             DisableAllButtons();
 
             pack = e.Parameter as StickerPack;
-            PackThumb.Source = new BitmapImage(App.GetUriFromString(pack.EnsuredThumb.BestPath));
+            PackThumb.Source = new BitmapImage(AppUtils.GetUriFromString(pack.EnsuredThumb.BestPath));
             Title.Text = pack.Title;
             Name.Text = pack.Name;
             CleanUp();

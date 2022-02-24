@@ -11,7 +11,7 @@
     <StackPanel VerticalAlignment="Top"
                 Spacing="20"
                 Margin="50,50,0,0">
-        
+
         <TextBlock FontSize="30"
                    FontWeight="Bold"
                    TextWrapping="WrapWholeWords">
@@ -21,10 +21,10 @@
             If any additional information was provided, it will be displayed below. You may close the application.
         </TextBlock>
         <TextBlock x:Name="body"
-                   IsTextSelectionEnabled="True" 
+                   IsTextSelectionEnabled="True"
                    TextWrapping="WrapWholeWords">
             No additional info provided.
         </TextBlock>
-        
+
     </StackPanel>
 </Page>
