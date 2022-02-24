@@ -32,9 +32,9 @@ public sealed partial class BaseCommand : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        var parameters = e.Parameter as BaseCommandParams;
-        pack = parameters.pack;
-        SelectPage(parameters.commandType);
+        var (stickerPack, commandType) = e.Parameter as BaseCommandParams;
+        pack = stickerPack;
+        SelectPage(commandType);
     }
 
     protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -57,22 +57,22 @@ public sealed partial class BaseCommand : Page
     {
         switch (type)
         {
-            case CommandType.ADDSTICKER:
+            case CommandType.AddSticker:
                 ContentFrame.Navigate(typeof(CommandPages.AddSticker), new AddStickerParams(pack, false, BackButton));
                 InfoFrame.Navigate(typeof(CommandPages.InfoPages.AddInfo));
                 Op.Text = "Add New Stickers";
                 break;
-            case CommandType.DELSTICKER:
+            case CommandType.DelSticker:
                 ContentFrame.Navigate(typeof(CommandPages.DelSticker), new DelStickerParams(pack, BackButton));
                 InfoFrame.Navigate(typeof(CommandPages.InfoPages.DelInfo));
                 Op.Text = "Delete Stickers";
                 break;
-            case CommandType.NEWPACK:
+            case CommandType.NewPack:
                 ContentFrame.Navigate(typeof(CommandPages.AddSticker), new AddStickerParams(pack, true, BackButton));
                 InfoFrame.Navigate(typeof(CommandPages.InfoPages.AddInfo));
                 Op.Text = "Add Some Stickers!";
                 break;
-            case CommandType.ORDERSTICKER:
+            case CommandType.OrderSticker:
                 ContentFrame.Navigate(typeof(CommandPages.OrderSticker), new OrderStickerParams(pack, BackButton));
                 InfoFrame.Navigate(typeof(CommandPages.InfoPages.OrderInfo));
                 Op.Text = "Reorder Stickers";
@@ -89,9 +89,9 @@ public sealed partial class BaseCommand : Page
 
 public enum CommandType
 {
-    NONE = 0,
-    ADDSTICKER = 1,
-    DELSTICKER = 2,
-    NEWPACK = 3,
-    ORDERSTICKER = 4,
+    None = 0,
+    AddSticker = 1,
+    DelSticker = 2,
+    NewPack = 3,
+    OrderSticker = 4
 }

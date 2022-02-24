@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -30,11 +29,10 @@ public sealed partial class DelSticker : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        var p = e.Parameter as DelStickerParams;
-        if (p != null)
+        if (e.Parameter is DelStickerParams (var stickerPack, var backButton))
         {
-            pack = p.stickerPack;
-            back = p.back;
+            pack = stickerPack;
+            back = backButton;
         }
     }
 

@@ -5,17 +5,16 @@
     xmlns:local="using:ReunionApp.Pages.CommandPages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:gemoji="using:GEmojiSharp"
     mc:Ignorable="d">
 
 
     <Grid>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="80"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="80" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <GridView x:Name="Grid"
@@ -31,23 +30,23 @@
 
             <GridView.ItemContainerStyle>
                 <Style TargetType="GridViewItem">
-                    <Setter Property="IsTabStop" Value="False"/>
-                    <Setter Property="CornerRadius" Value="20"/>
+                    <Setter Property="IsTabStop" Value="False" />
+                    <Setter Property="CornerRadius" Value="20" />
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="GridViewItem">
-                                <ListViewItemPresenter 
+                                <ListViewItemPresenter
                                     CornerRadius="4"
                                     SelectedBorderBrush="{ThemeResource SystemAccentColorLight2}"
                                     SelectedPointerOverBorderBrush="{ThemeResource SystemAccentColorLight2}"
-                                    PointerOverForeground="{ThemeResource SystemControlBackgroundListLowBrush}" 
-                                    PressedBackground="{ThemeResource SystemControlBackgroundListLowBrush}" 
-                                    PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" 
-                                    PointerOverBackground="{ThemeResource SystemControlHighlightListLowBrush}" 
-                                    SelectedPressedBackground="{ThemeResource SystemControlHighlightListAccentHighBrush}" 
-                                    SelectedForeground="{ThemeResource SystemControlForegroundBaseHighBrush}" 
-                                    SelectedPointerOverBackground="{ThemeResource SystemControlBackgroundListLowBrush}" 
-                                    SelectedBackground="{ThemeResource SystemControlBackgroundListLowBrush}"/>
+                                    PointerOverForeground="{ThemeResource SystemControlBackgroundListLowBrush}"
+                                    PressedBackground="{ThemeResource SystemControlBackgroundListLowBrush}"
+                                    PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}"
+                                    PointerOverBackground="{ThemeResource SystemControlHighlightListLowBrush}"
+                                    SelectedPressedBackground="{ThemeResource SystemControlHighlightListAccentHighBrush}"
+                                    SelectedForeground="{ThemeResource SystemControlForegroundBaseHighBrush}"
+                                    SelectedPointerOverBackground="{ThemeResource SystemControlBackgroundListLowBrush}"
+                                    SelectedBackground="{ThemeResource SystemControlBackgroundListLowBrush}" />
                                 <!--TODO See if i can make this a global style or smth-->
                             </ControlTemplate>
                         </Setter.Value>
@@ -55,55 +54,55 @@
                 </Style>
             </GridView.ItemContainerStyle>
             <GridView.ItemTemplate>
-                <DataTemplate x:Name="StickerPackGridItem" 
+                <DataTemplate x:Name="StickerPackGridItem"
                               x:DataType="local:NewSticker">
-                    <StackPanel Padding="16" 
-                                MaxWidth="196" 
+                    <StackPanel Padding="16"
+                                MaxWidth="196"
                                 IsTabStop="False"
                                 Spacing="10">
-                        <Image Width="150" 
-                               Height="150" 
-                               VerticalAlignment="Center" 
+                        <Image Width="150"
+                               Height="150"
+                               VerticalAlignment="Center"
                                IsTabStop="False">
                             <Image.Source>
-                                <BitmapImage UriSource="{x:Bind ImgPath}" 
-                                             DecodePixelWidth="150"/>
+                                <BitmapImage UriSource="{x:Bind ImgPath}"
+                                             DecodePixelWidth="150" />
                             </Image.Source>
                         </Image>
                         <TextBox Text="{Binding Path=Emojis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 IsTabStop="True" 
-                                 TextChanged="Emojis_TextChanged"/>
+                                 IsTabStop="True"
+                                 TextChanged="Emojis_TextChanged" />
                     </StackPanel>
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
 
-        <Grid Grid.Row="2" 
+        <Grid Grid.Row="2"
               Margin="6, 0, 6, 6">
 
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <SplitButton Grid.Column="0" 
-                         HorizontalAlignment="Stretch" 
-                         VerticalAlignment="Stretch" 
-                         Margin="0, 0, 6, 0" 
+            <SplitButton Grid.Column="0"
+                         HorizontalAlignment="Stretch"
+                         VerticalAlignment="Stretch"
+                         Margin="0, 0, 6, 0"
                          Click="SplitButton_Click">
                 + Add Files
                 <SplitButton.Flyout>
                     <MenuFlyout>
-                        <MenuFlyoutItem Text="+ Add Files" 
-                                        Click="Add"/>
+                        <MenuFlyoutItem Text="+ Add Files"
+                                        Click="Add" />
                         <MenuFlyoutItem Text="- Delete Files"
-                                        Click="Delete"/>
+                                        Click="Delete" />
                     </MenuFlyout>
                 </SplitButton.Flyout>
             </SplitButton>
-            <Button Grid.Column="1" 
-                    HorizontalAlignment="Stretch" 
-                    VerticalAlignment="Stretch" 
+            <Button Grid.Column="1"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
                     Margin="0, 0, 6, 0"
                     Click="Finish">
                 Finish
@@ -114,7 +113,7 @@
         <ProgressBar x:Name="processing"
                      Grid.Row="3"
                      Visibility="Collapsed"
-                     IsIndeterminate="True"/>
+                     IsIndeterminate="True" />
 
     </Grid>
 </Page>

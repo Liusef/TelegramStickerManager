@@ -31,9 +31,9 @@ public sealed partial class LoginCode : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        var parameters = e.Parameter as LoginCodeParams;
-        auth = parameters.auth;
-        phone = parameters.phone;
+        var (authHandler, s) = (LoginCodeParams) e.Parameter;
+        auth = authHandler;
+        phone = s;
     }
 
     private void ChangeButton_Click(object sender, RoutedEventArgs e) => App.GetInstance().RootFrame.GoBack();
@@ -56,10 +56,10 @@ public sealed partial class LoginCode : Page
 
         while (last == auth.LastRequestReceivedAt) await Task.Delay(50);
 
-        if (LoginCode.IsNotSupportedState(AuthHandler.GetState(auth.CurrentState))) return;
+        if (IsNotSupportedState(AuthHandler.GetState(auth.CurrentState))) return;
 
         if (AuthHandler.GetState(auth.CurrentState) == AuthHandler.AuthState.WaitPassword)
-            App.GetInstance().RootFrame.Navigate(typeof(LoginPassword), auth, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            App.GetInstance().RootFrame.Navigate(typeof(LoginPassword), auth, new SlideNavigationTransitionInfo { Effect = SlideNavigationTransitionEffect.FromRight });
 
         if (AuthHandler.GetState(auth.CurrentState) == AuthHandler.AuthState.Ready)
             App.GetInstance().RootFrame.Navigate(typeof(Home), true, new DrillInNavigationTransitionInfo());

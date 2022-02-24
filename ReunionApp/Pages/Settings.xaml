@@ -2,44 +2,43 @@
     x:Class="ReunionApp.Pages.Settings"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:ReunionApp.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <StackPanel Margin="24">
-        
-        <Button Content="Back" 
-                Click="Back"/>
-        <TextBlock FontWeight="Bold" 
-                   FontSize="40" 
+
+        <Button Content="Back"
+                Click="Back" />
+        <TextBlock FontWeight="Bold"
+                   FontSize="40"
                    HorizontalAlignment="Center">
             Settings
         </TextBlock>
 
-        <StackPanel Margin="32" 
+        <StackPanel Margin="32"
                     Spacing="12">
             <TextBlock FontWeight="SemiBold"
                        FontSize="20">
-            Local storage usage
+                Local storage usage
             </TextBlock>
-            <Button x:Name="Clear" 
-                    Content="Clear Old Files" 
-                    Click="Clear_Click"/>
+            <Button x:Name="Clear"
+                    Content="Clear Old Files"
+                    Click="Clear_Click" />
         </StackPanel>
 
         <StackPanel Margin="32"
                     Spacing="12">
-            
+
             <TextBlock FontWeight="SemiBold"
                        FontSize="20">
-            Clear locally cached info and Logout
+                Clear locally cached info and Logout
             </TextBlock>
-            <Button x:Name="Logout" 
-                    Content="Logout" 
-                    Click="Logout_Click"/>
-            
+            <Button x:Name="Logout"
+                    Content="Logout"
+                    Click="Logout_Click" />
+
         </StackPanel>
 
     </StackPanel>

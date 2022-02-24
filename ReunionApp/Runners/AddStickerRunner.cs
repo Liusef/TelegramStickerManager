@@ -20,7 +20,7 @@ public class AddStickerRunner : CommandRunner
         }
     }
 
-    public AddStickerRunner(StickerPack spack, NewSticker[] nsArr) : base()
+    public AddStickerRunner(StickerPack spack, NewSticker[] nsArr)
     {
         pack = spack;
         stickers = nsArr;
@@ -45,7 +45,7 @@ public class AddStickerRunner : CommandRunner
             var reply = await waiter.WaitNextMsgAsync(cmsg.Id);
             AddReplyToOutputs(reply);
 
-            if (reply.GetMessageString().Substring(0, 7) == "Thanks!") await SendAndAddToOutputsAsync(waiter, stickers[Index].Emojis);
+            if (reply.GetMessageString()[..7] == "Thanks!") await SendAndAddToOutputsAsync(waiter, stickers[Index].Emojis);
         }
         await SendAndAddToOutputsAsync(waiter, "/done");
     }
