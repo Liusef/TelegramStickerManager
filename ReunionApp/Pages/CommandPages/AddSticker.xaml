@@ -26,8 +26,34 @@
                   CanReorderItems="True"
                   AllowDrop="True"
                   SelectionMode="Extended"
-                  TabNavigation="Local"
+                  TabNavigation="Cycle"
                   IsTabStop="False">
+
+            <GridView.ItemContainerStyle>
+                <Style TargetType="GridViewItem">
+                    <Setter Property="IsTabStop" Value="False"/>
+                    <Setter Property="CornerRadius" Value="20"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="GridViewItem">
+                                <ListViewItemPresenter 
+                                    CornerRadius="4"
+                                    SelectedBorderBrush="{ThemeResource SystemAccentColorLight2}"
+                                    SelectedPointerOverBorderBrush="{ThemeResource SystemAccentColorLight2}"
+                                    PointerOverForeground="{ThemeResource SystemControlBackgroundListLowBrush}" 
+                                    PressedBackground="{ThemeResource SystemControlBackgroundListLowBrush}" 
+                                    PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" 
+                                    PointerOverBackground="{ThemeResource SystemControlHighlightListLowBrush}" 
+                                    SelectedPressedBackground="{ThemeResource SystemControlHighlightListAccentHighBrush}" 
+                                    SelectedForeground="{ThemeResource SystemControlForegroundBaseHighBrush}" 
+                                    SelectedPointerOverBackground="{ThemeResource SystemControlBackgroundListLowBrush}" 
+                                    SelectedBackground="{ThemeResource SystemControlBackgroundListLowBrush}"/>
+                                <!--TODO See if i can make this a global style or smth-->
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </GridView.ItemContainerStyle>
             <GridView.ItemTemplate>
                 <DataTemplate x:Name="StickerPackGridItem" 
                               x:DataType="local:NewSticker">
