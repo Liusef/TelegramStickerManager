@@ -10,7 +10,7 @@ public class OrderStickerRunner : CommandRunner
     private (Sticker, Sticker)[] swaps;
     private int _index = 0;
 
-    public OrderStickerRunner((Sticker, Sticker)[] inputSwaps) : base()
+    public OrderStickerRunner((Sticker, Sticker)[] inputSwaps)
     {
         swaps = inputSwaps;
     }

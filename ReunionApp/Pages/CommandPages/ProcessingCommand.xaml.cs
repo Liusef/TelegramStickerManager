@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
@@ -30,10 +29,8 @@ public sealed partial class ProcessingCommand : Page
         runner.Outputs.CollectionChanged += Outputs_CollectionChanged;
 
         await runner.RunCommandsAsync();
-        refreshTimer = Task.Run(async () => await Task.Delay(1000));
+        refreshTimer = Task.Run(async () => await Task.Delay(1500));
         Continue.IsEnabled = true;
-
-        await Task.Run(async () => await Task.Delay(100));
     }
 
     private async void Outputs_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

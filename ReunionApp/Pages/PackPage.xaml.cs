@@ -57,8 +57,6 @@ public sealed partial class PackPage : Page
         EnableAllButtons();
     }
 
-    protected override void OnNavigatedFrom(NavigationEventArgs e) => base.OnNavigatedFrom(e);
-    
     private void CleanUp()
     {
         // This block is to ensure that bitmaps and other large objects are garbage collected, as pages aren't disposed by the garbage collector
@@ -90,21 +88,21 @@ public sealed partial class PackPage : Page
     private void AddSticker(object sender, RoutedEventArgs e) =>
         App.GetInstance().RootFrame.Navigate(typeof(BaseCommand),
             new BaseCommand.BaseCommandParams(pack,
-            CommandType.ADDSTICKER),
-            new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            CommandType.AddSticker),
+            new SlideNavigationTransitionInfo { Effect = SlideNavigationTransitionEffect.FromRight });
 
 
     private void DelSticker(object server, RoutedEventArgs e) =>
         App.GetInstance().RootFrame.Navigate(typeof(BaseCommand),
             new BaseCommand.BaseCommandParams(pack,
-            CommandType.DELSTICKER),
-            new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            CommandType.DelSticker),
+            new SlideNavigationTransitionInfo { Effect = SlideNavigationTransitionEffect.FromRight });
 
     private void OrderSticker(object sender, RoutedEventArgs e) =>
         App.GetInstance().RootFrame.Navigate(typeof(BaseCommand),
             new BaseCommand.BaseCommandParams(pack,
-            CommandType.ORDERSTICKER),
-            new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            CommandType.OrderSticker),
+            new SlideNavigationTransitionInfo { Effect = SlideNavigationTransitionEffect.FromRight });
 }
 
 

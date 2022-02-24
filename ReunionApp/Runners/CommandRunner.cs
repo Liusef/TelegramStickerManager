@@ -14,7 +14,7 @@ public abstract class CommandRunner : INotifyPropertyChanged
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public ObservableCollection<CommandOutput> Outputs { get; set; } = new System.Collections.ObjectModel.ObservableCollection<CommandOutput>();
+    public ObservableCollection<CommandOutput> Outputs { get; set; } = new();
 
     private double _progress = 0;
     public double Progress
@@ -46,10 +46,10 @@ public abstract class CommandRunner : INotifyPropertyChanged
         if (pack != null) pack.IsCachedCopy = true;
     }
 
-    public virtual void AddReplyToOutputs(Message msg) =>
+    protected virtual void AddReplyToOutputs(Message msg) =>
         Outputs.Add(new CommandOutput(msg.GetMessageString(), null, false));
 
-    public async virtual Task SendAndAddToOutputsAsync(MessageWaiter waiter, string message)
+    protected virtual async Task SendAndAddToOutputsAsync(MessageWaiter waiter, string message)
     {
         Outputs.Add(new CommandOutput(message, null, true));
         AddReplyToOutputs(await waiter.SendMsgAndAwaitNext(message));

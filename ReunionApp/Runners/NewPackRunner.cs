@@ -11,7 +11,7 @@ namespace ReunionApp.Runners;
 
 public class NewPackRunner : CommandRunner
 {
-    private StickerPack pack;
+    private new StickerPack pack;
     private NewSticker[] newStickers;
     private int _index;
     private int Index
@@ -24,7 +24,7 @@ public class NewPackRunner : CommandRunner
         }
     }
 
-    public NewPackRunner(StickerPack p, NewSticker[] ns) : base()
+    public NewPackRunner(StickerPack p, NewSticker[] ns)
     {
         pack = p;
         newStickers = ns;
@@ -32,16 +32,18 @@ public class NewPackRunner : CommandRunner
 
     private async Task AskForNewName()
     {
-        var cd = new ContentDialog();
-        cd.Title = "The provided name was invalid";
-        cd.IsPrimaryButtonEnabled = false;
-        cd.IsSecondaryButtonEnabled = false;
-        cd.CloseButtonText = "Enter";
+        var cd = new ContentDialog
+        {
+            Title = "The provided name was invalid",
+            IsPrimaryButtonEnabled = false,
+            IsSecondaryButtonEnabled = false,
+            CloseButtonText = "Enter"
+        };
         var b = new RunnerDependencies.NewPackRunnerNameDialog { Dialog = cd, Pack = pack };
         cd.Content = b;
         cd.XamlRoot = App.GetInstance().MainWindow.Content.XamlRoot;
 
-        cd.Closing += (ContentDialog sender, ContentDialogClosingEventArgs args) =>
+        cd.Closing += (sender, args) =>
         {
             if (!b.IsValid()) args.Cancel = true;
             pack.Name = b.UserInput.Text;
@@ -50,7 +52,7 @@ public class NewPackRunner : CommandRunner
         await cd.ShowAsync();
     }
 
-    public async override Task RunCommandsAsync()
+    public override async Task RunCommandsAsync()
     {
         var client = App.GetInstance().Client;
         var botId = await client.GetIdFromUsernameAsync("Stickers");
@@ -69,7 +71,7 @@ public class NewPackRunner : CommandRunner
             var reply = await waiter.WaitNextMsgAsync(cmsg.Id);
             AddReplyToOutputs(reply);
 
-            if (reply.GetMessageString().Substring(0, 7) == "Thanks!") await SendAndAddToOutputsAsync(waiter, newStickers[Index].Emojis);
+            if (reply.GetMessageString()[..7] == "Thanks!") await SendAndAddToOutputsAsync(waiter, newStickers[Index].Emojis);
         }
 
         await SendAndAddToOutputsAsync(waiter, "/publish");
@@ -89,7 +91,7 @@ public class NewPackRunner : CommandRunner
         var r = await waiter.SendMsgAndAwaitNext(pack.Name);
         AddReplyToOutputs(r);
 
-        while (r.GetMessageString()[0..5] == "Sorry")
+        while (r.GetMessageString()[..5] == "Sorry")
         {
             await AskForNewName();
             Outputs.Add(new CommandOutput(pack.Name, null, true));

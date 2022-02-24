@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -34,11 +33,10 @@ public sealed partial class OrderSticker : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        var p = e.Parameter as OrderStickerParams;
-        if (p != null)
+        if (e.Parameter is OrderStickerParams(var packParam, var backParam))
         {
-            pack = p.packParam;
-            back = p.backParam;
+            pack = packParam;
+            back = backParam;
         }
         stickers = new ObservableCollection<Sticker>(pack.Stickers);
     }

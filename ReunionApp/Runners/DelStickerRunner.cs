@@ -19,7 +19,7 @@ public class DelStickerRunner : CommandRunner
         }
     }
 
-    public DelStickerRunner(Sticker[] s) : base() => stickers = s;
+    public DelStickerRunner(Sticker[] s) => stickers = s;
 
     public override async Task RunCommandsAsync()
     {

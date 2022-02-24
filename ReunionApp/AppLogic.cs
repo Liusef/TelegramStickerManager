@@ -13,23 +13,23 @@ public static class AppLogic
 {
     public static async Task HandleAuth(this App app, bool autoNavigate = true)
     {
-        app.auth ??= new AuthHandler(app.Client);
+        app.Auth ??= new AuthHandler(app.Client);
         await Task.Delay(50);
         var lastRequest = DateTimeOffset.MinValue;
-        app.authState = AuthHandler.GetState(app.auth.CurrentState);
+        app.AuthState = AuthHandler.GetState(app.Auth.CurrentState);
         try
         {
-            while (app.authState != AuthHandler.AuthState.Ready &&
-                app.authState != AuthHandler.AuthState.WaitPhoneNumber &&
-                app.authState != AuthHandler.AuthState.WaitCode &&
-                app.authState != AuthHandler.AuthState.WaitOtherDeviceConfirmation &&
-                app.authState != AuthHandler.AuthState.WaitRegistration &&
-                app.authState != AuthHandler.AuthState.WaitPassword)
+            while (app.AuthState != AuthHandler.AuthState.Ready &&
+                   app.AuthState != AuthHandler.AuthState.WaitPhoneNumber &&
+                   app.AuthState != AuthHandler.AuthState.WaitCode &&
+                   app.AuthState != AuthHandler.AuthState.WaitOtherDeviceConfirmation &&
+                   app.AuthState != AuthHandler.AuthState.WaitRegistration &&
+                   app.AuthState != AuthHandler.AuthState.WaitPassword)
             {
-                switch (app.authState)
+                switch (app.AuthState)
                 {
                     case AuthHandler.AuthState.WaitTdLibParams:
-                        await app.auth.Handle_WaitTdLibParameters(new TdApi.TdlibParameters()
+                        await app.Auth.Handle_WaitTdLibParameters(new TdApi.TdlibParameters
                         {
                             ApiId = GlobalVars.ApiId,
                             ApiHash = GlobalVars.ApiHash,
@@ -44,19 +44,19 @@ public static class AppLogic
                         });
                         break;
                     case AuthHandler.AuthState.WaitEncryptionKey:
-                        await app.auth.Handle_WaitEncryptionKey();
+                        await app.Auth.Handle_WaitEncryptionKey();
                         break;
                     default:
                         await Task.Delay(100);
                         break;
                 }
 
-                while (lastRequest == app.auth.LastRequestReceivedAt) await Task.Delay(50);
+                while (lastRequest == app.Auth.LastRequestReceivedAt) await Task.Delay(50);
 
-                lastRequest = app.auth.LastRequestReceivedAt;
-                app.authState = AuthHandler.GetState(app.auth.CurrentState);
+                lastRequest = app.Auth.LastRequestReceivedAt;
+                app.AuthState = AuthHandler.GetState(app.Auth.CurrentState);
 
-                if (app.authState == AuthHandler.AuthState.Null)
+                if (app.AuthState == AuthHandler.AuthState.Null)
                 {
                     app.RootFrame.Navigate(typeof(GenericError), "The application encountered an unknown sign-in state. Please restart the app");
                 }
@@ -64,18 +64,18 @@ public static class AppLogic
 
             if (autoNavigate)
             {
-                switch (app.authState)
+                switch (app.AuthState)
                 {
                     case AuthHandler.AuthState.Ready:
                         app.RootFrame.Navigate(typeof(Home), true, new DrillInNavigationTransitionInfo());
                         break;
                     default:
-                        app.RootFrame.Navigate(typeof(LoginPhone), app.auth, new DrillInNavigationTransitionInfo());
+                        app.RootFrame.Navigate(typeof(LoginPhone), app.Auth, new DrillInNavigationTransitionInfo());
                         break;
                 }
             }
 
-            if (app.authState == AuthHandler.AuthState.Ready) await app.OnAuthStateReady();
+            if (app.AuthState == AuthHandler.AuthState.Ready) await app.OnAuthStateReady();
 
         }
         catch (Exception ex)

@@ -40,10 +40,10 @@ public sealed partial class AddSticker : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        var parameters = (AddStickerParams) e.Parameter;
-        newPackMode = parameters.NewPackMode;
-        pack = parameters.pack;
-        backButton = parameters.back;
+        var (stickerPack, b, back) = (AddStickerParams) e.Parameter;
+        newPackMode = b;
+        pack = stickerPack;
+        backButton = back;
     }
 
     protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -62,8 +62,7 @@ public sealed partial class AddSticker : Page
 
     private async void Add(object sender, RoutedEventArgs e)
     {
-        var picker = new FileOpenPicker();
-        picker.ViewMode = PickerViewMode.Thumbnail;
+        var picker = new FileOpenPicker {ViewMode = PickerViewMode.Thumbnail};
         picker.FileTypeFilter.Add(".jpg");
         picker.FileTypeFilter.Add(".jpeg");
         picker.FileTypeFilter.Add(".png");
@@ -76,10 +75,7 @@ public sealed partial class AddSticker : Page
 
         var files = await picker.PickMultipleFilesAsync();
         if (files.Count == 0) return;
-        foreach (var file in files)
-        {
-            stickers.Add(new NewSticker { ImgPath = file.Path });
-        }
+        foreach (var file in files) stickers.Add(new NewSticker { ImgPath = file.Path });
     }
 
     private void Delete(object sender, RoutedEventArgs e)
@@ -125,9 +121,9 @@ public sealed partial class AddSticker : Page
             try
             {
                 string temp = TgApi.GlobalVars.TempDir;
-                using (var img = await SixLabors.ImageSharp.Image.LoadAsync(sticker.ImgPath))
+                using (var img = await SixLabors.ImageSharp.Image.LoadAsync(sticker.ImgPath, ct))
                 {
-                    int maxSize = 512;
+                    const int maxSize = 512;
                     if (!(img.Width <= maxSize && img.Height <= maxSize && (img.Width == maxSize || img.Height == maxSize)))
                     {
                         bool widthlarger = img.Width > img.Height;
@@ -145,12 +141,12 @@ public sealed partial class AddSticker : Page
 
                         string filename = DateTime.Now.Ticks + "";
                         string path = $"{temp}{filename}.png";
-                        await img.SaveAsync(path);
+                        await img.SaveAsync(path, ct);
                         sticker.TempPath = path;
                     }
                     else if (!(TgApi.Utils.GetExtension(sticker.ImgPath) == "png" ||
                                TgApi.Utils.GetExtension(sticker.ImgPath) == "webp"))
-                        await img.SaveAsync($"{temp}{DateTime.Now.Ticks}.png");
+                        await img.SaveAsync($"{temp}{DateTime.Now.Ticks}.png", ct);
                     img.Dispose();
                 }
                 Configuration.Default.MemoryAllocator.ReleaseRetainedResources();

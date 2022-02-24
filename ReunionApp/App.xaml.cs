@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media.Animation;
-using Microsoft.UI.Xaml.Media.Imaging;
 using TdLib;
 using TgApi;
 using TgApi.Telegram;
@@ -20,11 +17,11 @@ public partial class App : Application
 {
     public static int Threads { get; } = Environment.ProcessorCount < 6 ? Environment.ProcessorCount : 6;
 
-    internal bool isCdOpen = false;
+    internal bool IsCdOpen = false;
     
-    public TdLib.TdClient Client = new TdLib.TdClient();
-    public AuthHandler auth;
-    public AuthHandler.AuthState authState;
+    public TdClient Client = new();
+    public AuthHandler Auth;
+    public AuthHandler.AuthState AuthState;
     
     public MainWindow MainWindow { get; private set; }
 
@@ -35,7 +32,7 @@ public partial class App : Application
     /// Gets the current instance of the application as an App object
     /// </summary>
     /// <returns> The current instance of the application as an App object</returns>
-    public static App GetInstance() => Application.Current as App;
+    public static App GetInstance() => Current as App;
 
     /// <summary>
     /// Initializes the singleton application object.  This is the first line of authored code
@@ -51,10 +48,10 @@ public partial class App : Application
     /// will be used such as when the application is launched to open a specific file.
     /// </summary>
     /// <param name="args">Details about the launch request and process.</param>
-    protected override async void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
+    protected override async void OnLaunched(LaunchActivatedEventArgs args)
     {
         MainWindow = new MainWindow();
-        auth = new AuthHandler(Client);
+        Auth = new AuthHandler(Client);
         Client.Bindings.SetLogVerbosityLevel(1);
         GlobalVars.EnsureDirectories();
         App.Current.UnhandledException += App_UnhandledException;

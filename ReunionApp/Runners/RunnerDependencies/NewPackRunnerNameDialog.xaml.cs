@@ -23,17 +23,14 @@ public sealed partial class NewPackRunnerNameDialog : Page
     public bool IsValid()
     {
         var txt = UInput.Text;
-        if (string.IsNullOrWhiteSpace(txt)) return false;
-        return true;
+        return !string.IsNullOrWhiteSpace(txt);
     }
 
     private void UInput_KeyDown(object sender, KeyRoutedEventArgs e)
     {
-        if (e.Key == Windows.System.VirtualKey.Enter)
-        {
-            if (!IsValid()) return;
-            Pack.Name = UInput.Text;
-            Dialog.Hide();
-        }
+        if (e.Key != Windows.System.VirtualKey.Enter) return;
+        if (!IsValid()) return;
+        Pack.Name = UInput.Text;
+        Dialog.Hide();
     }
 }

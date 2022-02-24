@@ -30,8 +30,7 @@ public sealed partial class NewPack : Page
     
     private async Task ChooseThumb()
     {
-        var picker = new FileOpenPicker();
-        picker.ViewMode = PickerViewMode.Thumbnail;
+        var picker = new FileOpenPicker {ViewMode = PickerViewMode.Thumbnail};
         picker.FileTypeFilter.Add(".jpg");
         picker.FileTypeFilter.Add(".jpeg");
         picker.FileTypeFilter.Add(".png");
@@ -73,7 +72,7 @@ public sealed partial class NewPack : Page
             try
             {
                 string temp = TgApi.GlobalVars.TempDir;
-                string saveDir = temp + System.DateTime.Now.Ticks + ".png";
+                string saveDir = temp + DateTime.Now.Ticks + ".png";
                 using (var img = await SixLabors.ImageSharp.Image.LoadAsync(Path))
                 {
                     img.Mutate(x => x.Resize(100, 100));
@@ -83,19 +82,19 @@ public sealed partial class NewPack : Page
                 Configuration.Default.MemoryAllocator.ReleaseRetainedResources();
                 Path = saveDir;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Path = " ";
             }
         }
 
         App.GetInstance().RootFrame.Navigate(typeof(BaseCommand), new BaseCommandParams(
-            new TgApi.Types.StickerPack
+            new StickerPack
             {
                 Title = Title.Text,
                 Name = Name.Text,
                 Thumb = new NewPackThumb { Path = Path }
-            }, CommandType.NEWPACK));
+            }, CommandType.NewPack));
     }
 
     private async Task<bool> FindErrors()

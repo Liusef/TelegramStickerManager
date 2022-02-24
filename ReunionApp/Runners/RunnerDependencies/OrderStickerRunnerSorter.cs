@@ -14,7 +14,7 @@ public static class OrderStickerRunnerSorter
         return true;
     }
 
-    public static (Sticker, Sticker)[] GetSwaps(StickerPack pack, Sticker[] order)
+    public static (Sticker, Sticker)[] GetSwaps(StickerPack pack, IEnumerable<Sticker> order)
     {
         List<(Sticker, Sticker)> r = new List<(Sticker, Sticker)>();
         List<(int, Sticker)> s = new List<(int, Sticker)>();

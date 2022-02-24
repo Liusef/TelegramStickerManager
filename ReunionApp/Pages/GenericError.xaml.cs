@@ -19,8 +19,7 @@ public sealed partial class GenericError : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        var text = e.Parameter as string;
-        if (text != null) body.Text = text;
+        if (e.Parameter is string text) body.Text = text;
     }
 }
 
