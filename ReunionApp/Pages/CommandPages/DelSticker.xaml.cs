@@ -67,7 +67,7 @@ public sealed partial class DelSticker : Page
         if (Grid.SelectedItems.Count == pack.Count)
         {
             await App.GetInstance().ShowBasicDialog("You selected all stickers", "You must keep at least 1 sticker in the pack. " +
-                                                                                 "If you want to delete the pack, use @Stickers in Telegram.");
+                                                                                 "If you want to delete the pack, please message @Stickers on Telegram.");
             return true;
         }
         return false;

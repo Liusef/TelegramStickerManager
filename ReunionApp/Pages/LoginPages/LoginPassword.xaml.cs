@@ -34,8 +34,7 @@ public sealed partial class LoginPassword : Page
 
     private async void Pwd_KeyDown(object sender, KeyRoutedEventArgs e)
     {
-        if (e.Key == Windows.System.VirtualKey.Enter && ContinueButton.IsEnabled)
-            await AttemptLogin();
+        if (e.Key == Windows.System.VirtualKey.Enter && ContinueButton.IsEnabled) await AttemptLogin();
     }
 
     private async void ContinueButton_Click(object sender, RoutedEventArgs e) => await AttemptLogin();

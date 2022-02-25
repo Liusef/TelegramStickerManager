@@ -90,7 +90,7 @@ public sealed partial class AddSticker : Page
         selected = null;
         stickers = new ObservableCollection<NewSticker>(stickers);
         Grid.ItemsSource = stickers;
-        Task.Run(async () => { await Task.Delay(5000); GC.Collect(); });  // TODO Memory is only freed after navigating off the page
+        AppUtils.CollectLater(5000);  // TODO Memory is only freed after navigating off the page
     }
 
     private async void Finish(object sender, RoutedEventArgs e)
@@ -130,26 +130,18 @@ public sealed partial class AddSticker : Page
                         int width = widthlarger ? maxSize : 0;
                         int height = widthlarger ? 0 : maxSize;
 
-                        if (width > img.Width || height > img.Height)
-                        {
-                            img.Mutate(x => x.Resize(width, height, KnownResamplers.Lanczos3));
-                        }
-                        else
-                        {
-                            img.Mutate(x => x.Resize(width, height, KnownResamplers.Spline));
-                        }
-
-                        string filename = DateTime.Now.Ticks + "";
-                        string path = $"{temp}{filename}.png";
+                        if (width > img.Width || height > img.Height) img.Mutate(x => x.Resize(width, height, KnownResamplers.Lanczos3));
+                        else img.Mutate(x => x.Resize(width, height, KnownResamplers.Spline));
+                        
+                        string path = $"{temp}{DateTime.Now.Ticks}.png";
                         await img.SaveAsync(path, ct);
                         sticker.TempPath = path;
                     }
-                    else if (!(TgApi.Utils.GetExtension(sticker.ImgPath) == "png" ||
-                               TgApi.Utils.GetExtension(sticker.ImgPath) == "webp"))
+                    else if (!(TgApi.Utils.GetExtension(sticker.ImgPath) == "png" ||TgApi.Utils.GetExtension(sticker.ImgPath) == "webp"))
                         await img.SaveAsync($"{temp}{DateTime.Now.Ticks}.png", ct);
-                    img.Dispose();
+                    img.Dispose(); // TODO img should be disposed automatically from using block. Test if this matters
                 }
-                Configuration.Default.MemoryAllocator.ReleaseRetainedResources();
+                Configuration.Default.MemoryAllocator.ReleaseRetainedResources(); // TODO decide whether garbage collectio needs to run this often
             }
             catch (Exception ex)
             {
@@ -159,8 +151,15 @@ public sealed partial class AddSticker : Page
                 await App.GetInstance().ShowExceptionDialog(ex);
             }
         });
-        Task.Run(async () => { await Task.Delay(5000); Configuration.Default.MemoryAllocator.ReleaseRetainedResources(); });
+        CollectImageSharpLater(5000);
     }
+
+    private static async void CollectImageSharpLater(int delay) =>
+        await Task.Run(async () =>
+       {
+           await Task.Delay(delay);
+           Configuration.Default.MemoryAllocator.ReleaseRetainedResources();
+       });
 
     private async Task<bool> FindErrors()
     {

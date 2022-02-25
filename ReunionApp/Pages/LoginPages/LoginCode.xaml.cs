@@ -70,8 +70,7 @@ public sealed partial class LoginCode : Page
 
     private async void CodeBox_KeyDown(object sender, KeyRoutedEventArgs e)
     {
-        if (e.Key == Windows.System.VirtualKey.Enter && ContinueButton.IsEnabled)
-            await TgSubmitCode(CodeBox.Text.Trim());
+        if (e.Key == Windows.System.VirtualKey.Enter && ContinueButton.IsEnabled) await TgSubmitCode(CodeBox.Text.Trim());
     }
 
     public static bool IsNotSupportedState(AuthHandler.AuthState state)
