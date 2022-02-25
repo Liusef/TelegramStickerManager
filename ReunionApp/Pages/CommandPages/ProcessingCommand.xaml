@@ -56,7 +56,7 @@
                 Margin="0, 12, 0, 0"
                 Click="Continue_Click" />
 
-        <ProgressBar x:Name="Loading"
+        <ProgressBar x:Name="Load"
                      Width="Auto"
                      Grid.Row="2"
                      Value="{x:Bind runner.Progress, Mode=OneWay}" />

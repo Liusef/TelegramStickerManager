@@ -46,7 +46,7 @@
 
         </Grid>
 
-        <Frame x:Name="Frame"
+        <Frame x:Name="ContentFrame"
                Grid.Column="1"
                Margin="24"
                Padding="12"

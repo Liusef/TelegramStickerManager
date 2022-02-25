@@ -41,7 +41,7 @@ public sealed partial class ProcessingCommand : Page
 
     private async void Continue_Click(object sender, RoutedEventArgs e)
     {
-        Loading.IsIndeterminate = true;
+        Load.IsIndeterminate = true;
         Continue.IsEnabled = false;
 
         await refreshTimer;

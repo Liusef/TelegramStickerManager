@@ -35,7 +35,7 @@ public abstract class CommandRunner : INotifyPropertyChanged
 
     public virtual async Task PreTasksAsync()
     {
-        // This is where tasks that need to run before running go. I can't think of any so there aren't any
+        await Task.Run (async () => await Task.Delay(0)); // This is a placeholder
     }
 
     public virtual async Task PostTasksAsync()

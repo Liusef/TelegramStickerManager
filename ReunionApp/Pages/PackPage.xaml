@@ -27,12 +27,12 @@
                        Height="100"
                        VerticalAlignment="Stretch"
                        HorizontalAlignment="Center" />
-                <TextBlock x:Name="Title"
+                <TextBlock x:Name="PackTitle"
                            FontSize="24"
                            FontWeight="Bold"
                            TextTrimming="CharacterEllipsis"
                            TextWrapping="Wrap" />
-                <TextBlock x:Name="Name"
+                <TextBlock x:Name="PackName"
                            FontWeight="Light"
                            TextTrimming="CharacterEllipsis" />
             </StackPanel>
@@ -62,13 +62,13 @@
 
         </StackPanel>
 
-        <StackPanel x:Name="Loading"
+        <StackPanel x:Name="Load"
                     Grid.Column="1"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center"
                     Visibility="Visible">
 
-            <ProgressBar x:Name="PB"
+            <ProgressBar x:Name="LoadBar"
                          IsIndeterminate="True"
                          Width="200"
                          Margin="24" />

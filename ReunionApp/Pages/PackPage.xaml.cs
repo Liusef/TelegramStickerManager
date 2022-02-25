@@ -34,13 +34,13 @@ public sealed partial class PackPage : Page
         if (update)
         {
             StickerGrid.Visibility = Visibility.Collapsed;
-            Loading.Visibility = Visibility.Visible;
+            Load.Visibility = Visibility.Visible;
             DisableAllButtons();
 
             pack = e.Parameter as StickerPack;
             PackThumb.Source = new BitmapImage(AppUtils.GetUriFromString(pack.EnsuredThumb.BestPath));
-            Title.Text = pack.Title;
-            Name.Text = pack.Name;
+            PackTitle.Text = pack.Title;
+            PackName.Text = pack.Name;
             CleanUp();
 
             await pack.EnsuredThumb.GetPathEnsureDownloaded(App.GetInstance().Client);
@@ -53,7 +53,7 @@ public sealed partial class PackPage : Page
 
         base.OnNavigatedTo(e);
         StickerGrid.Visibility = Visibility.Visible;
-        Loading.Visibility = Visibility.Collapsed;
+        Load.Visibility = Visibility.Collapsed;
         EnableAllButtons();
     }
 
@@ -85,26 +85,15 @@ public sealed partial class PackPage : Page
     private void Back(object sender, RoutedEventArgs e) =>
         App.GetInstance().RootFrame.GoBack();
 
-    private void AddSticker(object sender, RoutedEventArgs e) =>
+    private void CommandButtonPressed(CommandType command) =>
         App.GetInstance().RootFrame.Navigate(typeof(BaseCommand),
-            new BaseCommand.BaseCommandParams(pack,
-            CommandType.AddSticker),
+            new BaseCommand.BaseCommandParams(pack, command),
             new SlideNavigationTransitionInfo { Effect = SlideNavigationTransitionEffect.FromRight });
 
+    private void AddSticker(object sender, RoutedEventArgs e) => CommandButtonPressed(CommandType.AddSticker);
 
-    private void DelSticker(object server, RoutedEventArgs e) =>
-        App.GetInstance().RootFrame.Navigate(typeof(BaseCommand),
-            new BaseCommand.BaseCommandParams(pack,
-            CommandType.DelSticker),
-            new SlideNavigationTransitionInfo { Effect = SlideNavigationTransitionEffect.FromRight });
+    private void DelSticker(object server, RoutedEventArgs e) => CommandButtonPressed(CommandType.DelSticker);
 
-    private void OrderSticker(object sender, RoutedEventArgs e) =>
-        App.GetInstance().RootFrame.Navigate(typeof(BaseCommand),
-            new BaseCommand.BaseCommandParams(pack,
-            CommandType.OrderSticker),
-            new SlideNavigationTransitionInfo { Effect = SlideNavigationTransitionEffect.FromRight });
+    private void OrderSticker(object sender, RoutedEventArgs e) => CommandButtonPressed(CommandType.OrderSticker);
+
 }
-
-
-
-
