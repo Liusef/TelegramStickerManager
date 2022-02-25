@@ -43,7 +43,7 @@
                            Text="Title"
                            HorizontalAlignment="Right"
                            VerticalAlignment="Center" />
-                <TextBox x:Name="Title"
+                <TextBox x:Name="PackTitle"
                          Grid.Row="0"
                          Grid.Column="1"
                          Width="240"
@@ -62,7 +62,7 @@
                            Text="Name"
                            HorizontalAlignment="Right"
                            VerticalAlignment="Center" />
-                <TextBox x:Name="Name"
+                <TextBox x:Name="PackName"
                          Grid.Row="3"
                          Grid.Column="1"
                          Width="240"
@@ -87,7 +87,7 @@
                             HorizontalAlignment="Left"
                             Orientation="Horizontal"
                             Spacing="12">
-                    <SplitButton x:Name="AddThumb"
+                    <SplitButton x:Name="PackThumb"
                                  Click="SplitButton_Click"
                                  Content="Add Thumb">
                         <SplitButton.Flyout>

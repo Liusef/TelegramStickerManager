@@ -40,7 +40,8 @@ public static class AppUtils
             IsSecondaryButtonEnabled = false,
             CloseButtonText = closeText
         };
-        var b = new DialogBody {Body = {Text = body}};
+        var b = new DialogBody();
+        b.Body.Text = body;
         cd.Content = b;
         cd.XamlRoot = app.MainWindow.Content.XamlRoot;
         

@@ -20,7 +20,6 @@ public sealed partial class BaseCommand : Page
 
     private StickerPack pack;
     public bool IsBackEnabled { get; set; } = true;
-    public Frame ContentFrame => Frame;
 
     public record BaseCommandParams(StickerPack pack, CommandType commandType);
 

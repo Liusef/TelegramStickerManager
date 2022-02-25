@@ -48,8 +48,9 @@ public sealed partial class LoginPhone : Page
         }
         catch (Exception ex)
         {
-            App.GetInstance().ShowExceptionDialog(ex);
-            App.GetInstance().RootFrame.Navigate(typeof(Pages.GenericError));
+            var message = $"Something went wrong when passing your phone number to telegram.\n\n{ex.ToString()}";
+            App.GetInstance().RootFrame.Navigate(typeof(Pages.GenericError), message);
+            await App.GetInstance().ShowExceptionDialog(ex);
         }
 
         while (last == auth.LastRequestReceivedAt) await Task.Delay(50);

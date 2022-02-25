@@ -114,12 +114,12 @@
         </StackPanel>
 
         <StackPanel Grid.Row="3"
-                    x:Name="Loading"
+                    x:Name="Load"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center"
                     Spacing="12"
                     Margin="0, 0, 0, 10">
-            <ProgressBar x:Name="LoadingBar"
+            <ProgressBar x:Name="LoadBar"
                          Width="500"
                          IsIndeterminate="True"
                          Value="0" />

@@ -303,7 +303,7 @@ namespace InstallDependencies
 				WindowsPrincipal principal = new WindowsPrincipal(WindowsIdentity.GetCurrent());
 				isAdmin = principal.IsInRole(WindowsBuiltInRole.Administrator);
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
 				isAdmin = false;
 			}

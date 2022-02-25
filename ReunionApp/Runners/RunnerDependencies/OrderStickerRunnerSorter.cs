@@ -35,13 +35,15 @@ public static class OrderStickerRunnerSorter
             }
             s[j + 1] = item;
 
-            if (j == i - 1) ;   // No commands are run when the sticker doesn't move
-            else if (j < 0)     // To move something to the first index, move sticker to the right of the first 
-            {                   // then move first sticker to the right of the target sticker
-                r.Add((item.Item2, s[1].Item2)); // The original 1st item in the pack is now at s[1]
-                r.Add((s[1].Item2, item.Item2));
+            if (j != i - 1) // TODO This hasn't been tested yet
+            {       
+                if (j < 0)                               
+                {                                       // To move something to the first index, move sticker to the right of the first
+                    r.Add((item.Item2, s[1].Item2));    // then move first sticker to the right of the target sticker
+                    r.Add((s[1].Item2, item.Item2));    // The original 1st item in the pack is now at s[1]
+                }
+                else r.Add((item.Item2, s[j].Item2));
             }
-            else r.Add((item.Item2, s[j].Item2));
         }
         return r.ToArray();
     }

@@ -41,7 +41,7 @@ public sealed partial class Home : Page
         {
             packList = new ObservableCollection<StickerPack>();
             Packs.ItemsSource = packList;
-            ShowLoading();
+            ShowLoadOnly();
             if (forceNew) await App.GetInstance().ResetTdClient(false);
             TdClient c = App.GetInstance().Client;
             var nameList = forceNew ? await c.GetOwnedPacksAsync() : await PackList.GetOwnedPacks(c);
@@ -62,8 +62,7 @@ public sealed partial class Home : Page
                 }
                 Packs.Visibility = Visibility.Visible;
             }
-            Loading.Visibility = Visibility.Collapsed;
-            LoadingBar.IsIndeterminate = false;
+            HideLoad();
         }
         catch (Exception ex)
         {
@@ -73,32 +72,39 @@ public sealed partial class Home : Page
 
     private async void Packs_ItemClick(object sender, ItemClickEventArgs e)
     {
+        ShowLoad();
         var pack = e.ClickedItem as StickerPack;
-
         if (pack.Type != StickerType.Standard)
         {
             App.GetInstance().RootFrame.Navigate(typeof(Unsupported), $"Sticker packs of type {pack.Type} are not supported at this time.");
             return;
         }
-        Loading.Visibility = Visibility.Visible;
-        LoadingBar.IsIndeterminate = true;
-
         if (pack.IsCachedCopy) await Task.Run(async () => pack.InjectCompleteInfo(await StickerPack.GenerateFromName(App.GetInstance().Client, pack.Name)));
-
-        Loading.Visibility = Visibility.Collapsed;
+        HideLoad();
         App.GetInstance().RootFrame.Navigate(typeof(PackPage), pack);
     }
 
-    private void ShowLoading()
+    private void ShowLoad()
+    {
+        Load.Visibility = Visibility.Visible;
+        LoadBar.IsIndeterminate = true;
+    }
+
+    private void ShowLoadOnly()
     {
         None.Visibility = Visibility.Collapsed;
         Packs.Visibility = Visibility.Collapsed;
-        Loading.Visibility = Visibility.Visible;
-        LoadingBar.IsIndeterminate = true;
+        Load.Visibility = Visibility.Visible;
+        LoadBar.IsIndeterminate = true;
+    }
+
+    private void HideLoad()
+    {
+        Load.Visibility = Visibility.Collapsed;
+        LoadBar.IsIndeterminate = false;
     }
 
     private async void Refresh(object sender, RoutedEventArgs e) => await LoadStickers(true);
-
 
     private void NewPack(object sender, RoutedEventArgs e) => App.GetInstance().RootFrame.Navigate(typeof(NewPack));
 

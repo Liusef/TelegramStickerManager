@@ -195,6 +195,7 @@ public sealed partial class AddSticker : Page
 
     private async Task<bool> FindWarnings() // TODO Implement Warnings
     {
+        await Task.Delay(0); // This is a placeholder to suppress warnings
         return false;
     }
 

@@ -75,7 +75,7 @@ public static class AppLogic
                 }
             }
 
-            if (app.AuthState == AuthHandler.AuthState.Ready) await app.OnAuthStateReady();
+            if (app.AuthState == AuthHandler.AuthState.Ready) app.OnAuthStateReady();
 
         }
         catch (Exception ex)
@@ -84,7 +84,7 @@ public static class AppLogic
         }
     }
 
-    private static async Task OnAuthStateReady(this App app)
+    private static void OnAuthStateReady(this App app)
     {
         app.Client.UpdateReceived += app.ReadStickerBotMsgs;
     }

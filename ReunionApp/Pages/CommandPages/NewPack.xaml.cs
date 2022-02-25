@@ -91,20 +91,20 @@ public sealed partial class NewPack : Page
         App.GetInstance().RootFrame.Navigate(typeof(BaseCommand), new BaseCommandParams(
             new StickerPack
             {
-                Title = Title.Text,
-                Name = Name.Text,
+                Title = PackTitle.Text,
+                Name = PackName.Text,
                 Thumb = new NewPackThumb { Path = Path }
             }, CommandType.NewPack));
     }
 
     private async Task<bool> FindErrors()
     {
-        if (Title.Text.Length == 0)
+        if (PackTitle.Text.Length == 0)
         {
             await App.GetInstance().ShowBasicDialog("Please enter a title", "Your pack needs to have a title. Please enter one!");
             return true;
         }
-        if (Name.Text.Length == 0)
+        if (PackName.Text.Length == 0)
         {
             await App.GetInstance().ShowBasicDialog("Please give your pack a name", "Your pack needs a name. Please enter one!\n" +
                                                                                     "If the name you enter isn't valid, or already taken we'll let you know later.");

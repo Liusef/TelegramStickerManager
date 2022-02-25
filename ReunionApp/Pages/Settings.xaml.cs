@@ -20,7 +20,7 @@ public sealed partial class Settings : Page
         this.InitializeComponent();
     }
 
-    protected override async void OnNavigatedTo(NavigationEventArgs e)
+    protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
     }
