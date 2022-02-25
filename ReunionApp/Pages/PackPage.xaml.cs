@@ -48,7 +48,7 @@ public sealed partial class PackPage : Page
             stickers = new ObservableCollection<Sticker>(pack.Stickers);
             StickerGrid.ItemsSource = stickers;
             Configuration.Default.MemoryAllocator.ReleaseRetainedResources();
-            GC.Collect();
+            GC.Collect(); // TODO Do i really need to garbage collect this many times
         }
 
         base.OnNavigatedTo(e);

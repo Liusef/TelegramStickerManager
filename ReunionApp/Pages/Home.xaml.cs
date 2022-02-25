@@ -45,10 +45,8 @@ public sealed partial class Home : Page
             if (forceNew) await App.GetInstance().ResetTdClient(false);
             TdClient c = App.GetInstance().Client;
             var nameList = forceNew ? await c.GetOwnedPacksAsync() : await PackList.GetOwnedPacks(c);
-            if (nameList is null || nameList.Length == 0)
-            {
-                None.Visibility = Visibility.Visible;
-            }
+
+            if (nameList is null || nameList.Length == 0) None.Visibility = Visibility.Visible;
             else
             {
                 foreach (string pack in nameList)
@@ -56,10 +54,8 @@ public sealed partial class Home : Page
                     if (forceNew) packList.Add(await Task.Run(async () => await StickerPack.GenerateFromName(c, pack)));
                     else packList.Add(await Task.Run(async () => await StickerPack.GetBasicPack(c, pack)));
                 }
-                foreach (var pack in packList)
-                {
-                    await Task.Run(async () => await pack.EnsuredThumb.GetPathEnsureDownloaded(c));
-                }
+                foreach 
+                    (var pack in packList) await Task.Run(async () => await pack.EnsuredThumb.GetPathEnsureDownloaded(c));
                 Packs.Visibility = Visibility.Visible;
             }
             HideLoad();
@@ -72,13 +68,13 @@ public sealed partial class Home : Page
 
     private async void Packs_ItemClick(object sender, ItemClickEventArgs e)
     {
-        ShowLoad();
         var pack = e.ClickedItem as StickerPack;
         if (pack.Type != StickerType.Standard)
         {
             App.GetInstance().RootFrame.Navigate(typeof(Unsupported), $"Sticker packs of type {pack.Type} are not supported at this time.");
             return;
         }
+        ShowLoad();
         if (pack.IsCachedCopy) await Task.Run(async () => pack.InjectCompleteInfo(await StickerPack.GenerateFromName(App.GetInstance().Client, pack.Name)));
         HideLoad();
         App.GetInstance().RootFrame.Navigate(typeof(PackPage), pack);

@@ -23,9 +23,9 @@ public sealed partial class MainWindow : Window
 
     private void SetWindowIcon(string location)
     {
-        IntPtr hWnd = WinRT.Interop.WindowNative.GetWindowHandle(this); // Get the AppWindow from the XAML Window ("this" is your XAML window)
+        IntPtr hWnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
         WindowId myWndId = Win32Interop.GetWindowIdFromWindow(hWnd);
-        var appWindow = AppWindow.GetFromWindowId(myWndId);
+        var appWindow = AppWindow.GetFromWindowId(myWndId); // Get AppWindow obj of this
 
         appWindow.SetIcon(location); // And then set the icon
     }
@@ -33,12 +33,8 @@ public sealed partial class MainWindow : Window
     private void contentFrame_Navigated(object sender, NavigationEventArgs e)
     {
         ContentFrame.ForwardStack.Clear();
-        CollectLater();
+        AppUtils.CollectLater(2000);
     }
 
-    private static async void CollectLater(int delay = 500)
-    {
-        await Task.Delay(delay);
-        GC.Collect();
-    }
+
 }

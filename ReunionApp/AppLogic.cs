@@ -46,9 +46,6 @@ public static class AppLogic
                     case AuthHandler.AuthState.WaitEncryptionKey:
                         await app.Auth.Handle_WaitEncryptionKey();
                         break;
-                    default:
-                        await Task.Delay(100);
-                        break;
                 }
 
                 while (lastRequest == app.Auth.LastRequestReceivedAt) await Task.Delay(50);

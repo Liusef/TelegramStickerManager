@@ -77,7 +77,7 @@ public sealed partial class NewPack : Page
                 {
                     img.Mutate(x => x.Resize(100, 100));
                     await img.SaveAsync(saveDir);
-                    img.Dispose();
+                    img.Dispose(); // TODO decide whether i need to dispose. Using block should dispose on its own
                 }
                 Configuration.Default.MemoryAllocator.ReleaseRetainedResources();
                 Path = saveDir;

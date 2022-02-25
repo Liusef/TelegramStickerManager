@@ -57,4 +57,11 @@ public static class AppUtils
 
     public static Uri GetUriFromString(string str) => new(str);
 
+    public static async void CollectLater(int delay) =>
+        await Task.Run(async () =>
+        {
+            await Task.Delay(delay);
+            GC.Collect();
+        });
+
 }
