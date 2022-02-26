@@ -107,7 +107,16 @@ public sealed partial class AddSticker : Page
 
         CommandRunner runner;
 
-        if (newPackMode) runner = new NewPackRunner(pack, stickers.ToArray());
+        if (newPackMode)
+        {
+            runner = new NewPackRunner(pack, stickers.ToArray());
+            if (pack.Thumb is not null && File.Exists(pack.Thumb.LocalPath))
+            {
+                var thumb = (NewPackThumb)pack.Thumb;
+                thumb.Path = await AppUtils.ResizeAsync(thumb.Path, 100, 100, true, new[] { "png" });
+            }
+            
+        }
         else runner = new AddStickerRunner(pack, stickers.ToArray());
 
         processing.Visibility = Visibility.Collapsed;
@@ -116,39 +125,19 @@ public sealed partial class AddSticker : Page
 
     private async Task ProcessImgs()
     {
+        const int size = 512;
+        string[] formats = new[] { "png", "webp" };
         await Parallel.ForEachAsync(stickers, new ParallelOptions { MaxDegreeOfParallelism = App.Threads }, async (sticker, ct) =>
         {
             try
             {
-                string temp = TgApi.GlobalVars.TempDir;
-                using (var img = await SixLabors.ImageSharp.Image.LoadAsync(sticker.ImgPath, ct))
-                {
-                    const int maxSize = 512;
-                    if (!(img.Width <= maxSize && img.Height <= maxSize && (img.Width == maxSize || img.Height == maxSize)))
-                    {
-                        bool widthlarger = img.Width > img.Height;
-                        int width = widthlarger ? maxSize : 0;
-                        int height = widthlarger ? 0 : maxSize;
-
-                        if (width > img.Width || height > img.Height) img.Mutate(x => x.Resize(width, height, KnownResamplers.Lanczos3));
-                        else img.Mutate(x => x.Resize(width, height, KnownResamplers.Spline));
-                        
-                        string path = $"{temp}{DateTime.Now.Ticks}.png";
-                        await img.SaveAsync(path, ct);
-                        sticker.TempPath = path;
-                    }
-                    else if (!(TgApi.Utils.GetExtension(sticker.ImgPath) == "png" ||TgApi.Utils.GetExtension(sticker.ImgPath) == "webp"))
-                        await img.SaveAsync($"{temp}{DateTime.Now.Ticks}.png", ct);
-                    img.Dispose(); // TODO img should be disposed automatically from using block. Test if this matters
-                }
-                Configuration.Default.MemoryAllocator.ReleaseRetainedResources(); // TODO decide whether garbage collectio needs to run this often
+                sticker.TempPath = await AppUtils.ResizeFitAsync(sticker.ImgPath, size, size, true, formats);
             }
             catch (Exception ex)
             {
                 await App.GetInstance().ShowBasicDialog("We hit an exception",
                     $"We think the error is because of \"{sticker.ImgPath}\" which likely shows up as a blank image in the add view. " +
-                    $"We'll show the exception dialog so you can make sure.", "Continue");
-                await App.GetInstance().ShowExceptionDialog(ex);
+                    $"We'll show the exception dialog so you can make sure.\n\n{ex}", "Continue");
             }
         });
         CollectImageSharpLater(5000);
@@ -156,10 +145,10 @@ public sealed partial class AddSticker : Page
 
     private static async void CollectImageSharpLater(int delay) =>
         await Task.Run(async () =>
-       {
-           await Task.Delay(delay);
-           Configuration.Default.MemoryAllocator.ReleaseRetainedResources();
-       });
+        {
+            await Task.Delay(delay);
+            Configuration.Default.MemoryAllocator.ReleaseRetainedResources();
+        });
 
     private async Task<bool> FindErrors()
     {

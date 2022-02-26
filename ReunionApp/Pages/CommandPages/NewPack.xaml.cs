@@ -19,7 +19,7 @@ namespace ReunionApp.Pages.CommandPages;
 public sealed partial class NewPack : Page
 {
 
-    private string Path { get; set; } = " ";
+    private string ThumbPath { get; set; } = " ";
 
     public NewPack()
     {
@@ -43,8 +43,8 @@ public sealed partial class NewPack : Page
 
         var file = await picker.PickSingleFileAsync();
         if (file == null || !File.Exists(file.Path)) return;
-        Path = file.Path;
-        Filename.Text = TgApi.Utils.GetPathFilename(Path);
+        ThumbPath = file.Path;
+        Filename.Text = TgApi.Utils.GetPathFilename(ThumbPath);
     }
 
     private async void SplitButton_Click(SplitButton sender, SplitButtonClickEventArgs args) => await ChooseThumb();
@@ -53,47 +53,20 @@ public sealed partial class NewPack : Page
 
     private void ClearThumb(object sender, RoutedEventArgs e)
     {
-        Path = " ";
+        ThumbPath = " ";
         Filename.Text = "No Thumbnail Selected";
-    }
-
-    private class NewPackThumb : StickerPackThumb
-    {
-        public string Path { get; set; }
-        public override string LocalPath => Path;
-        public override string BestPath => Path;
     }
 
     private async void Continue(object sender, RoutedEventArgs e)
     {
         if (await FindErrors()) return;
-        if (File.Exists(Path))
-        {
-            try
-            {
-                string temp = TgApi.GlobalVars.TempDir;
-                string saveDir = temp + DateTime.Now.Ticks + ".png";
-                using (var img = await SixLabors.ImageSharp.Image.LoadAsync(Path))
-                {
-                    img.Mutate(x => x.Resize(100, 100));
-                    await img.SaveAsync(saveDir);
-                    img.Dispose(); // TODO decide whether i need to dispose. Using block should dispose on its own
-                }
-                Configuration.Default.MemoryAllocator.ReleaseRetainedResources();
-                Path = saveDir;
-            }
-            catch (Exception)
-            {
-                Path = " ";
-            }
-        }
 
         App.GetInstance().RootFrame.Navigate(typeof(BaseCommand), new BaseCommandParams(
             new StickerPack
             {
                 Title = PackTitle.Text,
                 Name = PackName.Text,
-                Thumb = new NewPackThumb { Path = Path }
+                Thumb = new NewPackThumb { Path = ThumbPath }
             }, CommandType.NewPack));
     }
 
@@ -110,11 +83,18 @@ public sealed partial class NewPack : Page
                                                                                     "If the name you enter isn't valid, or already taken we'll let you know later.");
             return true;
         }
-        if (!string.IsNullOrWhiteSpace(Path) && !File.Exists(Path))
+        if (!string.IsNullOrWhiteSpace(ThumbPath) && !File.Exists(ThumbPath))
         {
             await App.GetInstance().ShowBasicDialog("Please choose another thumbnail", "We couldn't find the thumbnail you selected, please choose another one.");
             return true;
         }
         return false;
     }
+}
+
+public class NewPackThumb : StickerPackThumb
+{
+    public string Path { get; set; }
+    public override string LocalPath => Path;
+    public override string BestPath => Path;
 }
