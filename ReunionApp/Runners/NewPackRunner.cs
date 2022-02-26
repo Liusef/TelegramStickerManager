@@ -76,6 +76,8 @@ public class NewPackRunner : CommandRunner
 
         await SendAndAddToOutputsAsync(waiter, "/publish");
 
+        await App.GetInstance().ShowBasicDialog("Path", $"LocalPath: {pack.Thumb.LocalPath}, {File.Exists(pack.Thumb.LocalPath)}\nBestPath: {pack.Thumb.BestPath}, {File.Exists(pack.Thumb.BestPath)}");
+
         if (File.Exists(pack.Thumb.LocalPath))
         {
             var upload = await FileUpload.StartUpload(client, pack.Thumb.LocalPath);
