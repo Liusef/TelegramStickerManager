@@ -120,7 +120,7 @@ public static class AppUtils
 
     public static async Task<string> ResizeFitWithAlphaBorderAsync(string path, int width, int height, bool forceFormat, string formats = default)
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException(); //TODO implement this!!
     }
 
 }
