@@ -7,22 +7,73 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <StackPanel Margin="24"
-                Spacing="24">
+    <Grid Margin="24"
+          RowSpacing="6">
 
-        <Button Content="Back"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Button Grid.Row="0"
+                Content="Back"
                 Click="Back" />
+        
+        <ScrollViewer Grid.Row="1"
+                      ZoomMode="Disabled"
+                      VerticalScrollMode="Enabled"
+                      VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="24"
+                        Spacing="6">
 
-        <TextBlock FontWeight="Bold"
-                   FontSize="40"
-                   HorizontalAlignment="Center">
-            Telegram Sticker Manager
-        </TextBlock>
-        <Image Source="../Images/AppIcon.png"
-               Width="200" />
-        <TextBlock Margin="24"
-                   HorizontalAlignment="Center">
-            I am not real :)
-        </TextBlock>
-    </StackPanel>
+                <TextBlock FontWeight="Bold"
+                           FontSize="40"
+                           HorizontalAlignment="Center">
+                    Telegram Sticker Manager
+                </TextBlock>
+                <TextBlock HorizontalAlignment="Center">
+                    v0.2.2-alpha
+                </TextBlock>
+                <Image Source="../Images/AppIcon.png"
+                       Width="200" 
+                       Margin="24"/>
+
+
+                <Expander HorizontalAlignment="Stretch"
+                          HorizontalContentAlignment="Left">
+                    <Expander.Header>
+                        <TextBlock Margin="6"
+                                   FontWeight="SemiBold"
+                                   FontSize="18" >
+                            Attributions
+                        </TextBlock>
+                    </Expander.Header>
+
+                    <StackPanel>
+                        <TextBlock HorizontalAlignment="Left">
+                        TDLib 1.7.9
+                        <LineBreak/> tdlib.native 1.7.9.1
+                        <LineBreak/> Microsoft.Windows.SDK.BuildTools 10.0.22000.197
+                        <LineBreak/> Microsoft.WindowsAppSDK 1.0.0
+                        <LineBreak/> Newtonsoft.Json 13.0.1
+                        <LineBreak/> libphonenumber
+                        <LineBreak/> libphonenumber-csharp 8.12.38
+                        <LineBreak/> SixLabors.ImageSharp 2.0.0
+                        <LineBreak/> Unicode.net 2.0.0
+                        <LineBreak/> GEmojiSharp 1.5.0
+                        <LineBreak/> System.IO.Compression 4.3.0
+                        <LineBreak/> System.IO.Compression.ZipFile 4.3.0
+                        </TextBlock>
+                    </StackPanel>
+
+
+                </Expander>
+                
+                
+
+                
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
 </Page>

@@ -6,8 +6,19 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <StackPanel>
-        <ScrollViewer MaxHeight="360"
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <ScrollViewer Grid.Row="0"
+                      Grid.Column="0"
+                      MaxHeight="360"
                       ZoomMode="Disabled"
                       IsVerticalScrollChainingEnabled="True"
                       VerticalScrollMode="Enabled"
@@ -16,5 +27,5 @@
                        TextWrapping="WrapWholeWords"
                        IsTextSelectionEnabled="True" />
         </ScrollViewer>
-    </StackPanel>
+    </Grid>
 </Page>
