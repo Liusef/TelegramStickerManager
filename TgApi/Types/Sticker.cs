@@ -1,5 +1,4 @@
-﻿using SixLabors.ImageSharp;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using TdLib;
 using TgApi.Telegram;
 
@@ -142,13 +141,7 @@ public class Sticker
 	public async Task<string> DecodeSticker()
 	{
 		if (!LocalCopySaved) throw new FileNotFoundException("The local copy was not downloaded before attempting to decode");
-		using (var img = await Image.LoadAsync(LocalPath))
-		{
-			await img.SaveAsync(DecodedPath);
-			img.Dispose();
-		}
-		Configuration.Default.MemoryAllocator.ReleaseRetainedResources();
-		return DecodedPath;
+		return await ImgUtils.EncodeToFormat(LocalPath, DecodedPath);
 	}
 
 	/// <summary>

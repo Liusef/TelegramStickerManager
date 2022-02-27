@@ -11,8 +11,7 @@ using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 using NeoSmart.Unicode;
 using ReunionApp.Runners;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Processing;
+using TgApi;
 using TgApi.Types;
 using Windows.Storage.Pickers;
 
@@ -111,11 +110,7 @@ public sealed partial class AddSticker : Page
         {
             runner = new NewPackRunner(pack, stickers.ToArray());
             if (pack.Thumb is not null && File.Exists(pack.Thumb.LocalPath))
-            {
-                var thumb = (NewPackThumb)pack.Thumb;
-                thumb.Path = await AppUtils.ResizeAsync(thumb.Path, 100, 100, true, new[] { "png" });
-            }
-            
+                ((NewPackThumb)pack.Thumb).Path = await Task.Run( async () => await TgApi.ImgUtils.ResizeAsync(pack.Thumb.BestPath, 100, 100, true, new[] { "png" }));
         }
         else runner = new AddStickerRunner(pack, stickers.ToArray());
 
@@ -131,7 +126,7 @@ public sealed partial class AddSticker : Page
         {
             try
             {
-                sticker.TempPath = await AppUtils.ResizeFitAsync(sticker.ImgPath, size, size, true, formats);
+                sticker.TempPath = await TgApi.ImgUtils.ResizeFitAsync(sticker.ImgPath, size, size, true, formats);
             }
             catch (Exception ex)
             {
@@ -147,7 +142,7 @@ public sealed partial class AddSticker : Page
         await Task.Run(async () =>
         {
             await Task.Delay(delay);
-            Configuration.Default.MemoryAllocator.ReleaseRetainedResources();
+            ImgUtils.ReleaseImageSharpMemory();
         });
 
     private async Task<bool> FindErrors()
@@ -206,4 +201,3 @@ public class NewSticker
 
     public string EnsuredPath => File.Exists(TempPath) ? TempPath : ImgPath;
 }
-
