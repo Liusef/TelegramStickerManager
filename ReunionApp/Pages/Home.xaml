@@ -19,19 +19,16 @@
         </Grid.RowDefinitions>
 
         <DropDownButton Grid.Row="0"
-                VerticalAlignment="Top"
-                Padding="6">
+                VerticalAlignment="Top">
 
             <StackPanel Orientation="Horizontal"
-                        Spacing="6"
-                        Margin="4">
-                <SymbolIcon Symbol="GlobalNavigationButton"/>
-                <TextBlock>
-                    More Options
-                </TextBlock>
+                            Margin="4">
+                <FontIcon Glyph="&#xE712;"/>
+                <TextBlock Text="More Options"
+                           Margin="8,0,0,0"/>
             </StackPanel>
-
-            <DropDownButton.Flyout>
+            
+                <DropDownButton.Flyout>
                 <MenuFlyout>
                     <MenuFlyoutItem Text="New Pack"
                                     Click="NewPack">
@@ -59,8 +56,7 @@
                     <MenuFlyoutItem Text="About"
                                     Click="About">
                         <MenuFlyoutItem.Icon>
-                            <FontIcon FontFamily="Segoe Fluent Icons"
-                                      Glyph="&#xE946;" />
+                            <FontIcon Glyph="&#xE946;" />
                         </MenuFlyoutItem.Icon>
                     </MenuFlyoutItem>
 
