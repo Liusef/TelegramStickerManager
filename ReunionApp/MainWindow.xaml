@@ -21,11 +21,10 @@
                 <Image Source="../Images/AppIcon.ico"
                        Height="16"
                        Margin="8,0,0,0"/>
-                <TextBlock
-                Margin="8,0,0,0"
-                VerticalAlignment="Center"
-                Style="{StaticResource CaptionTextBlockStyle}"
-                Text="{x:Bind Title, Mode=OneWay}" />
+                <TextBlock Margin="8,0,0,0"
+                           VerticalAlignment="Center"
+                           Style="{StaticResource CaptionTextBlockStyle}"
+                           Text="{x:Bind Title, Mode=OneWay}" />
             </StackPanel>
         </Grid>
 
