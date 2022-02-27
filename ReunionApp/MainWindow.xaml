@@ -17,11 +17,16 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <TextBlock
-                Margin="12,0,0,0"
+            <StackPanel Orientation="Horizontal">
+                <Image Source="../Images/AppIcon.ico"
+                       Height="16"
+                       Margin="8,0,0,0"/>
+                <TextBlock
+                Margin="8,0,0,0"
                 VerticalAlignment="Center"
                 Style="{StaticResource CaptionTextBlockStyle}"
-                Text="{x:Bind Title}" />
+                Text="{x:Bind Title, Mode=OneWay}" />
+            </StackPanel>
         </Grid>
 
         <Frame x:Name="MainWindowContentFrame"
