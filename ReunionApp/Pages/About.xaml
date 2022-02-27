@@ -398,9 +398,10 @@
         <Border Margin="24"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                CornerRadius="4"
-                Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-            <Button Content="Back"
+                CornerRadius="{x:Bind BackButton.CornerRadius}"
+                Background="{x:Bind Background}">
+            <Button x:Name="BackButton"
+                    Content="Back"
                     Click="Back"/>
         </Border>
         

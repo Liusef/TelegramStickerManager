@@ -29,7 +29,7 @@ public sealed partial class ProcessingCommand : Page
         runner.Outputs.CollectionChanged += Outputs_CollectionChanged;
 
         await runner.RunCommandsAsync();
-        refreshTimer = Task.Run(async () => await Task.Delay(1500));
+        refreshTimer = Task.Run(async () => await Task.Delay(2500));
         Continue.IsEnabled = true;
     }
 

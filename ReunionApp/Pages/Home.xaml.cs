@@ -100,7 +100,12 @@ public sealed partial class Home : Page
         LoadBar.IsIndeterminate = false;
     }
 
-    private async void Refresh(object sender, RoutedEventArgs e) => await LoadStickers(true);
+    private async void Refresh(object sender, RoutedEventArgs e) 
+    {
+        RefreshButton.IsEnabled = false;
+        await LoadStickers(true);
+        RefreshButton.IsEnabled = true;
+    }
 
     private void NewPack(object sender, RoutedEventArgs e) => App.GetInstance().RootFrame.Navigate(typeof(NewPack));
 
