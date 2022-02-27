@@ -3,8 +3,6 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Processing;
 using TgApi.Types;
 using Windows.Storage.Pickers;
 using static ReunionApp.Pages.BaseCommand;

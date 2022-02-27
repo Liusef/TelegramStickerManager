@@ -1,5 +1,4 @@
-﻿using SixLabors.ImageSharp;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using TdLib;
 using TgApi.Telegram;
 
@@ -185,7 +184,7 @@ public class StickerPack
 			if (!sticker.DecodedCopySaved) await sticker.DecodeSticker();
 			ct.ThrowIfCancellationRequested();
 		});
-		Configuration.Default.MemoryAllocator.ReleaseRetainedResources();
+		ImgUtils.ReleaseImageSharpMemory();
 		return Stickers.Select(x => x.DecodedPath).ToArray();
 	}
 
