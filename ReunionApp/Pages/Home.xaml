@@ -18,20 +18,20 @@
             <RowDefinition Height="48" />
         </Grid.RowDefinitions>
 
-        <Button Grid.Row="0"
+        <DropDownButton Grid.Row="0"
                 VerticalAlignment="Top"
                 Padding="6">
 
             <StackPanel Orientation="Horizontal"
                         Spacing="6"
                         Margin="4">
-                <SymbolIcon Symbol="GlobalNavigationButton" />
+                <SymbolIcon Symbol="GlobalNavigationButton"/>
                 <TextBlock>
                     More Options
                 </TextBlock>
             </StackPanel>
 
-            <Button.Flyout>
+            <DropDownButton.Flyout>
                 <MenuFlyout>
                     <MenuFlyoutItem Text="New Pack"
                                     Click="NewPack">
@@ -65,8 +65,8 @@
                     </MenuFlyoutItem>
 
                 </MenuFlyout>
-            </Button.Flyout>
-        </Button>
+            </DropDownButton.Flyout>
+        </DropDownButton>
 
         <TextBlock Grid.Row="0"
                    Text="Welcome Back!"
