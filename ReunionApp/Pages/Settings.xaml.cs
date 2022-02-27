@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
@@ -30,8 +31,10 @@ public sealed partial class Settings : Page
     private async void Clear_Click(object sender, RoutedEventArgs e) => await App.GetInstance().Client.OptimizeStorageAsync();
     
 
-    private void Logout_Click(object sender, RoutedEventArgs e)
+    private async void Logout_Click(object sender, RoutedEventArgs e)
     {
+        await App.GetInstance().Client.LogOutAsync();
+        await Task.Delay(100); // TODO Make this wait for a logout reply
         Directory.Delete(TgApi.GlobalVars.TdDir, true);
         Environment.Exit(0);
     }
