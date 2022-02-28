@@ -58,22 +58,22 @@ public sealed partial class BaseCommand : Page
         {
             case CommandType.AddSticker:
                 ContentFrame.Navigate(typeof(CommandPages.AddSticker), new AddStickerParams(pack, false, BackButton));
-                InfoFrame.Navigate(typeof(CommandPages.InfoPages.AddInfo));
+                InfoFrame.Navigate(typeof(CommandPages.SidePanels.AddInfo));
                 Op.Text = "Add New Stickers";
                 break;
             case CommandType.DelSticker:
                 ContentFrame.Navigate(typeof(CommandPages.DelSticker), new DelStickerParams(pack, BackButton));
-                InfoFrame.Navigate(typeof(CommandPages.InfoPages.DelInfo));
+                InfoFrame.Navigate(typeof(CommandPages.SidePanels.DelInfo));
                 Op.Text = "Delete Stickers";
                 break;
             case CommandType.NewPack:
                 ContentFrame.Navigate(typeof(CommandPages.AddSticker), new AddStickerParams(pack, true, BackButton));
-                InfoFrame.Navigate(typeof(CommandPages.InfoPages.AddInfo));
+                InfoFrame.Navigate(typeof(CommandPages.SidePanels.AddInfo));
                 Op.Text = "Add Some Stickers!";
                 break;
             case CommandType.OrderSticker:
                 ContentFrame.Navigate(typeof(CommandPages.OrderSticker), new OrderStickerParams(pack, BackButton));
-                InfoFrame.Navigate(typeof(CommandPages.InfoPages.OrderInfo));
+                InfoFrame.Navigate(typeof(CommandPages.SidePanels.OrderInfo));
                 Op.Text = "Reorder Stickers";
                 break;
             default:

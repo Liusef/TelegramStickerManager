@@ -49,9 +49,9 @@
     <None Remove="Pages\BaseCommand.xaml" />
     <None Remove="Pages\CommandPages\AddSticker.xaml" />
     <None Remove="Pages\CommandPages\DelSticker.xaml" />
-    <None Remove="Pages\CommandPages\InfoPages\AddInfo.xaml" />
-    <None Remove="Pages\CommandPages\InfoPages\DelInfo.xaml" />
-    <None Remove="Pages\CommandPages\InfoPages\OrderInfo.xaml" />
+    <None Remove="Pages\CommandPages\SidePanels\AddInfo.xaml" />
+    <None Remove="Pages\CommandPages\SidePanels\DelInfo.xaml" />
+    <None Remove="Pages\CommandPages\SidePanels\OrderInfo.xaml" />
     <None Remove="Pages\CommandPages\NewPack.xaml" />
     <None Remove="Pages\CommandPages\OrderSticker.xaml" />
     <None Remove="Pages\CommandPages\ProcessingCommand.xaml" />
@@ -179,7 +179,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="Pages\CommandPages\ProcessingCommand.xaml">
+    <Page Update="Pages\ProcessingCommand.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
