@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:tgapi="using:TgApi"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -32,7 +33,7 @@
                             Telegram Sticker Manager
                         </TextBlock>
                         <TextBlock Text="Developed by Joseph Liu." />
-                        <TextBlock Text="v0.2.2-alpha" />
+                        <TextBlock Text="{x:Bind tgapi:GlobalVars.ApplicationVersion}" />
                         <HyperlinkButton Content="Report Issues and View Source Code"
                                          NavigateUri="https://github.com/Liusef/TelegramStickerManager"
                                          Margin="-12,-6,0,0"/>
@@ -398,9 +399,10 @@
         <Border Margin="24"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                CornerRadius="4"
-                Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-            <Button Content="Back"
+                CornerRadius="{x:Bind BackButton.CornerRadius}"
+                Background="{x:Bind Background}">
+            <Button x:Name="BackButton"
+                    Content="Back"
                     Click="Back"/>
         </Border>
         

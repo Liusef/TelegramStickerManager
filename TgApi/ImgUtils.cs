@@ -47,7 +47,7 @@ public static class ImgUtils
                 int newHeight = widthPriority ? 0 : height;
 
                 if (width > img.Width || height > img.Height) img.Mutate(x => x.Resize(newWidth, newHeight, KnownResamplers.Lanczos3));
-                else img.Mutate(x => x.Resize(width, height, KnownResamplers.Spline));
+                else img.Mutate(x => x.Resize(newWidth, newHeight, KnownResamplers.Spline));
 
                 await img.SaveAsync(savePath);
             }

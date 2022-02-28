@@ -18,55 +18,54 @@
             <RowDefinition Height="48" />
         </Grid.RowDefinitions>
 
-        <DropDownButton Grid.Row="0"
-                VerticalAlignment="Top"
-                Padding="6">
+        <StackPanel Orientation="Horizontal"
+                    Spacing="6">
+        
+            <DropDownButton Grid.Row="0">
 
-            <StackPanel Orientation="Horizontal"
-                        Spacing="6"
-                        Margin="4">
-                <SymbolIcon Symbol="GlobalNavigationButton"/>
-                <TextBlock>
-                    More Options
-                </TextBlock>
-            </StackPanel>
+                <StackPanel Orientation="Horizontal"
+                                Margin="4">
+                    <FontIcon Glyph="&#xE712;"/>
+                    <TextBlock Text="More Options"
+                               Margin="8,0,0,0"/>
+                </StackPanel>
+            
+                    <DropDownButton.Flyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem Text="New Pack"
+                                        Click="NewPack">
+                            <MenuFlyoutItem.Icon>
+                                <SymbolIcon Symbol="Add" />
+                            </MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
 
-            <DropDownButton.Flyout>
-                <MenuFlyout>
-                    <MenuFlyoutItem Text="New Pack"
-                                    Click="NewPack">
-                        <MenuFlyoutItem.Icon>
-                            <SymbolIcon Symbol="Add" />
-                        </MenuFlyoutItem.Icon>
-                    </MenuFlyoutItem>
+                        <MenuFlyoutSeparator />
 
-                    <MenuFlyoutItem Text="Refresh"
-                                    Click="Refresh">
-                        <MenuFlyoutItem.Icon>
-                            <SymbolIcon Symbol="Refresh" />
-                        </MenuFlyoutItem.Icon>
-                    </MenuFlyoutItem>
+                        <MenuFlyoutItem Text="Settings"
+                                        Click="Settings">
+                            <MenuFlyoutItem.Icon>
+                                <SymbolIcon Symbol="Setting" />
+                            </MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
 
-                    <MenuFlyoutSeparator />
+                        <MenuFlyoutItem Text="About"
+                                        Click="About">
+                            <MenuFlyoutItem.Icon>
+                                <FontIcon Glyph="&#xE946;" />
+                            </MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
 
-                    <MenuFlyoutItem Text="Settings"
-                                    Click="Settings">
-                        <MenuFlyoutItem.Icon>
-                            <SymbolIcon Symbol="Setting" />
-                        </MenuFlyoutItem.Icon>
-                    </MenuFlyoutItem>
+                    </MenuFlyout>
+                </DropDownButton.Flyout>
+            </DropDownButton>
 
-                    <MenuFlyoutItem Text="About"
-                                    Click="About">
-                        <MenuFlyoutItem.Icon>
-                            <FontIcon FontFamily="Segoe Fluent Icons"
-                                      Glyph="&#xE946;" />
-                        </MenuFlyoutItem.Icon>
-                    </MenuFlyoutItem>
+            <Button x:Name="RefreshButton" 
+                    Click="Refresh">
+                <SymbolIcon Symbol="Refresh"
+                            Margin="4"/>
+            </Button>
 
-                </MenuFlyout>
-            </DropDownButton.Flyout>
-        </DropDownButton>
+        </StackPanel>
 
         <TextBlock Grid.Row="0"
                    Text="Welcome Back!"
