@@ -21,7 +21,7 @@ public static class ImgUtils
                 img.Mutate(x => x.Resize(100, 100));
                 await img.SaveAsync(savePath);
             }
-            else if (forceFormat && !formats.Contains(TgApi.Utils.GetExtension(path)))
+            else if (forceFormat && !formats.Contains(Path.GetExtension(path)[1..]))
                 await img.SaveAsync(savePath);
             else
                 savePath = path;
@@ -51,7 +51,7 @@ public static class ImgUtils
 
                 await img.SaveAsync(savePath);
             }
-            else if (forceFormat && !formats.Contains(TgApi.Utils.GetExtension(path)))
+            else if (forceFormat && !formats.Contains(Path.GetExtension(path)[1..]))
                 await img.SaveAsync(savePath);
             else
                 savePath = path;

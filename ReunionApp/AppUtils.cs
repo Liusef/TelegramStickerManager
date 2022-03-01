@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media.Imaging;
 using ReunionApp.Pages;
 using TdLib;
 using TgApi.Telegram;
@@ -53,10 +52,6 @@ public static class AppUtils
 
     public static async Task ShowExceptionDialog(this App app, Exception exception) => 
         await app.ShowBasicDialog($"Oops! The program hit a(n) {exception.GetType()} Exception", exception.ToString());
-
-    public static BitmapImage GetBitmapFromPath(string path) => new(new Uri(path));
-
-    public static Uri GetUriFromString(string str) => new(str);
 
     public static async void CollectLater(int delay) =>
         await Task.Run(async () =>

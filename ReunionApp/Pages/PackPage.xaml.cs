@@ -38,7 +38,7 @@ public sealed partial class PackPage : Page
             DisableAllButtons();
 
             pack = e.Parameter as StickerPack;
-            PackThumb.Source = new BitmapImage(AppUtils.GetUriFromString(pack.EnsuredThumb.BestPath));
+            PackThumb.Source = new BitmapImage(new Uri(pack.EnsuredThumb.BestPath));
             PackTitle.Text = pack.Title;
             PackName.Text = pack.Name;
             CleanUp();

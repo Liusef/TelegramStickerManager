@@ -84,7 +84,7 @@ public class StickerPack
 
 		if (input.IsMasks) s.Type = StickerType.Mask;
 		else if (input.IsAnimated) s.Type = StickerType.Animated;
-		else if (Utils.GetExtension(s.Stickers[0].Filename).Equals("webm")) s.Type = StickerType.Video;
+		else if (Path.GetExtension(s.Stickers[0].Filename).Equals(".webm")) s.Type = StickerType.Video;
 		else s.Type = StickerType.Standard;
 
 		s.Cache();

@@ -59,7 +59,7 @@ public class Sticker
 	/// Gets the path of the pre-decoded PNG version of the sticker
 	/// </summary>
 	[JsonIgnore]
-	public string DecodedPath => $"{GlobalVars.DecodedDir}{Utils.RemoveExtension(Filename)}.png";
+	public string DecodedPath => $"{GlobalVars.DecodedDir}{Path.GetFileNameWithoutExtension(Filename)}.png";
 
 	/// <summary>
 	/// Whether or not the decoded version of the sticker is downloaded to the system
@@ -99,7 +99,7 @@ public class Sticker
 
 		if (input.IsMask) s.Type = StickerType.Mask;
 		else if (input.IsAnimated) s.Type = StickerType.Animated;
-		else if (Utils.GetExtension(s.Filename).Equals("webm")) s.Type = StickerType.Video;
+		else if (Path.GetExtension(s.Filename).Equals(".webm")) s.Type = StickerType.Video;
 		else s.Type = StickerType.Standard;
 
 		return s;
