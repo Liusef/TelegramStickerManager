@@ -15,8 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Output" />
-    <Folder Include="Resources" />
+    <ProjectReference Include="..\TgApi\TgApi.csproj" />
   </ItemGroup>
 
 </Project>

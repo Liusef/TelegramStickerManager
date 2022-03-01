@@ -67,7 +67,7 @@ public static class Utils
 	/// </summary>
 	/// <param name="input">The input string to extract the extension from</param>
 	/// <returns>The extension from the file</returns>
-	public static string GetExtension(string input)
+	public static string GetExtension(string input) // TODO use built in Path.GetExtension and modify return value
 	{
 		int i = input.LastIndexOf('.');
 		return i < input.Length - 1 ? input[(i + 1)..] : "";
@@ -78,7 +78,7 @@ public static class Utils
 	/// </summary>
 	/// <param name="input">The input string to remove the extension from</param>
 	/// <returns>The filename without the extension</returns>
-	public static string RemoveExtension(string input)
+	public static string RemoveExtension(string input) // TODO replace usages with built in methods in Path class
 	{
 		int i = input.LastIndexOf('.');
 		return input[..i];
@@ -89,7 +89,7 @@ public static class Utils
 	/// </summary>
 	/// <param name="path">The path in question</param>
 	/// <returns>The name of the file in the path</returns>
-	public static string GetPathFilename(string path)
+	public static string GetPathFilename(string path) // TODO replace usages with Path.GetFileName
 	{
 		int i = path.LastIndexOf(Path.DirectorySeparatorChar);
 		return path[(i + 1)..];
@@ -100,7 +100,7 @@ public static class Utils
 	/// </summary>
 	/// <param name="path">The path in question</param>
 	/// <returns>The directory in the path</returns>
-	public static string GetPathDirectory(string path)
+	public static string GetPathDirectory(string path) // TODO use built in Path.GetDirectoryName and modify return value
 	{
 		int i = path.LastIndexOf(Path.DirectorySeparatorChar);
 		return path[..(i + 1)];
@@ -140,15 +140,21 @@ public static class Utils
 		return parser.Format(parser.Parse(phone, "GB"), PhoneNumbers.PhoneNumberFormat.INTERNATIONAL);
 	}
 
-	/// <summary>
-	/// Clears the temp directory of the program
-	/// </summary>
-	public static void ClearTemp()
-	{
-		if (!Directory.Exists(GlobalVars.TempDir)) return;
-		foreach (var file in new DirectoryInfo(GlobalVars.TempDir).EnumerateFiles())
-		{
-			file.Delete();
-		}
-	}
+    /// <summary>
+    /// Clears a directory of all files and subdirectories
+    /// <param name="dir">The directory to clear</param>
+    /// </summary>
+    public static void ClearDirectory(string dir)
+    {
+        if (!Directory.Exists(dir)) return;
+        foreach (var file in new DirectoryInfo(dir).EnumerateFiles())
+        {
+            file.Delete();
+        }
+    }
+
+    /// <summary>
+    /// Clears the temp directory of the program
+    /// </summary>
+    public static void ClearTemp() => ClearDirectory(GlobalVars.TempDir);
 }
