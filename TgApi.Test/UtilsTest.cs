@@ -9,26 +9,20 @@ namespace TgApi.Test;
 public class UtilsTest
 {
 
+    public static string UtilsTestDir = $"{Constants.OutputDir}UtilsTestDirectory{Path.DirectorySeparatorChar}";
+    
     [AssemblyInitialize]
     public static void AssemblyInitialize(TestContext context)
     {
-        if (Directory.Exists(Constants.OutputDir))
-        {
-            foreach (var file in new DirectoryInfo(Constants.OutputDir).EnumerateFiles())
-            {
-                file.Delete();
-            }
-        }
-        else
-        {
-            Directory.CreateDirectory(Constants.OutputDir);
-        }
+        var path = UtilsTestDir;
+        if (Directory.Exists(path)) foreach (var file in new DirectoryInfo(path).EnumerateFiles()) file.Delete();
+        else Directory.CreateDirectory(path);
     }
     
 	[TestMethod]
 	public void EnsureFile_TestExistingFile()
     {
-        var path = $"{Constants.OutputDir}ensurefile_testexistingfile";
+        var path = $"{UtilsTestDir}ensurefile_testexistingfile";
         File.Create(path);
         var rval = Utils.EnsureFile(path);
         Assert.IsTrue(File.Exists(path));
@@ -38,7 +32,7 @@ public class UtilsTest
     [TestMethod]
     public void EnsureFile_TestNonexistentFile()
     {
-        var path = $"{Constants.OutputDir}ensurefile_testnonexistentpath";
+        var path = $"{UtilsTestDir}ensurefile_testnonexistentpath";
         var rval = Utils.EnsureFile(path);
         Assert.IsTrue(File.Exists(path));
         Assert.AreEqual(path, rval);
@@ -47,7 +41,7 @@ public class UtilsTest
     [TestMethod]
     public void EnsurePath_TestExistingPath()
     {
-        var path = $"{Constants.OutputDir}ensurefile_testexistingpath";
+        var path = $"{UtilsTestDir}ensurefile_testexistingpath";
         Directory.CreateDirectory(path);
         var rval = Utils.EnsurePath(path);
         Assert.IsTrue(Directory.Exists(path));
@@ -57,7 +51,7 @@ public class UtilsTest
     [TestMethod]
     public void EnsurePath_TestNonexistentPath()
     {
-        var path = $"{Constants.OutputDir}ensurefile_testnonexistentfile";
+        var path = $"{UtilsTestDir}ensurefile_testnonexistentfile";
         var rval = Utils.EnsurePath(path);
         Assert.IsTrue(Directory.Exists(path));
         Assert.AreEqual(path, rval);
@@ -70,7 +64,7 @@ public class UtilsTest
         {
             "hi", "hello", "this", "is", "a", "test", "!!!!", "richard"
         };
-        var path = $"{Constants.OutputDir}serializedeserialize_testlist.json";
+        var path = $"{UtilsTestDir}serializedeserialize_testlist.json";
         Utils.Serialize(testList, path);
         Assert.IsTrue(File.Exists(path));
         var returnValue = Utils.Deserialize<string[]>(path);

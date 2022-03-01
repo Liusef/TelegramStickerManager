@@ -2,7 +2,6 @@
 
 namespace TgApi;
 
-
 /// <summary>
 /// A static class containing miscellaneous utility methods
 /// </summary>
@@ -62,51 +61,7 @@ public static class Utils
 		return Console.ReadLine() ?? "";
 	}
 
-	/// <summary>
-	/// Gets the extension of a filename or path
-	/// </summary>
-	/// <param name="input">The input string to extract the extension from</param>
-	/// <returns>The extension from the file</returns>
-	public static string GetExtension(string input) // TODO use built in Path.GetExtension and modify return value
-	{
-		int i = input.LastIndexOf('.');
-		return i < input.Length - 1 ? input[(i + 1)..] : "";
-	}
-
-	/// <summary>
-	/// Removes the file extension from a filename or path
-	/// </summary>
-	/// <param name="input">The input string to remove the extension from</param>
-	/// <returns>The filename without the extension</returns>
-	public static string RemoveExtension(string input) // TODO replace usages with built in methods in Path class
-	{
-		int i = input.LastIndexOf('.');
-		return input[..i];
-	}
-
-	/// <summary>
-	/// Gets the filename of a path
-	/// </summary>
-	/// <param name="path">The path in question</param>
-	/// <returns>The name of the file in the path</returns>
-	public static string GetPathFilename(string path) // TODO replace usages with Path.GetFileName
-	{
-		int i = path.LastIndexOf(Path.DirectorySeparatorChar);
-		return path[(i + 1)..];
-	}
-
-	/// <summary>
-	/// Gets the directory in a path
-	/// </summary>
-	/// <param name="path">The path in question</param>
-	/// <returns>The directory in the path</returns>
-	public static string GetPathDirectory(string path) // TODO use built in Path.GetDirectoryName and modify return value
-	{
-		int i = path.LastIndexOf(Path.DirectorySeparatorChar);
-		return path[..(i + 1)];
-	}
-
-	/// <summary>
+    /// <summary>
 	/// Checks if a phone number is valid in any region
 	/// </summary>
 	/// <param name="phone">String containing the phone number in question</param>
@@ -123,11 +78,7 @@ public static class Utils
 		{
 			return false;
 		}
-		finally
-		{
-			parser = null;
-		}
-	}
+    }
 
 	/// <summary>
 	/// Formats a phone number to the International number format
@@ -137,7 +88,7 @@ public static class Utils
 	public static string FormatPhone(string phone)
 	{
 		var parser = PhoneNumbers.PhoneNumberUtil.GetInstance();
-		return parser.Format(parser.Parse(phone, "GB"), PhoneNumbers.PhoneNumberFormat.INTERNATIONAL);
+		return parser.Format(parser.Parse(phone, "US"), PhoneNumbers.PhoneNumberFormat.INTERNATIONAL);
 	}
 
     /// <summary>

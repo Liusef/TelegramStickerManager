@@ -42,7 +42,7 @@ public sealed partial class NewPack : Page
         var file = await picker.PickSingleFileAsync();
         if (file == null || !File.Exists(file.Path)) return;
         ThumbPath = file.Path;
-        Filename.Text = TgApi.Utils.GetPathFilename(ThumbPath);
+        Filename.Text = Path.GetFileName(ThumbPath);
     }
 
     private async void SplitButton_Click(SplitButton sender, SplitButtonClickEventArgs args) => await ChooseThumb();

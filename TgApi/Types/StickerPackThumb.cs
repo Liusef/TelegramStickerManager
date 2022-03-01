@@ -57,7 +57,7 @@ public class StickerPackThumb
 		get
 		{
 			if (IsDesignatedThumb) return LocalPath;
-			var decPath = $"{GlobalVars.DecodedDir}{Utils.RemoveExtension(Filename)}.png";
+            var decPath = $"{GlobalVars.DecodedDir}{Path.GetFileNameWithoutExtension(Filename)}.png";
 			return File.Exists(decPath) ? decPath : LocalPath;
 		}
 	}
@@ -84,7 +84,7 @@ public class StickerPackThumb
 		};
 		
 		if (isAnimated) t.Type = StickerType.Animated;
-		else if (Utils.GetExtension(t.Filename).Equals("webm")) t.Type = StickerType.Video;
+		else if (Path.GetExtension(t.Filename).Equals(".webm")) t.Type = StickerType.Video;
 		else t.Type = StickerType.Standard;
 
 		return t;
@@ -142,8 +142,8 @@ public class StickerPackThumb
 	{
 		var fd = await CompleteDownload(client, priority, delay);
 		Console.WriteLine("Thumb downloaded to:" + fd.LocalPath);
-		if (Filename.Equals(Utils.GetPathFilename(fd.LocalPath))) return LocalPath;
-		var desired = $"{Utils.GetPathDirectory(fd.LocalPath)}{Filename}";
+		if (Filename.Equals(Path.GetFileName(fd.LocalPath))) return LocalPath;
+		var desired = $"{Path.GetDirectoryName(fd.LocalPath)}{Path.DirectorySeparatorChar}{Filename}";
 		File.Move(fd.LocalPath, desired);
 		return desired;
 	}
