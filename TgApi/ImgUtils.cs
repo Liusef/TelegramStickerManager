@@ -10,15 +10,15 @@ namespace TgApi;
 
 public static class ImgUtils
 {
-    public static async Task<string> ResizeAsync(string path, int width, int height, bool forceFormat, string[] formats = null)
+    public static async Task<string> ResizeAsync(string path, int width, int height, bool forceFormat, string[]? formats = null)
     {
-        formats ??= new string[] { "png" };
-        string savePath = $"{TgApi.GlobalVars.TempDir}{DateTime.Now.Ticks}.{formats[0]}";
-        using (var img = await SixLabors.ImageSharp.Image.LoadAsync(path))
+        formats ??= new[] { "png" };
+        string savePath = $"{TgApi.GlobalVars.TempDir}{Guid.NewGuid()}.{formats[0]}";
+        using (var img = await Image.LoadAsync(path))
         {
             if (img.Height != height || img.Width != width)
             {
-                img.Mutate(x => x.Resize(100, 100));
+                img.Mutate(x => x.Resize(width, height));
                 await img.SaveAsync(savePath);
             }
             else if (forceFormat && !formats.Contains(Path.GetExtension(path)[1..]))
@@ -30,18 +30,18 @@ public static class ImgUtils
         return savePath;
     }
 
-    public static async Task<string> ResizeFitAsync(string path, int width, int height, bool forceFormat, string[] formats = null)
+    public static async Task<string> ResizeFitAsync(string path, int width, int height, bool forceFormat, string[]? formats = null)
     {
-        formats ??= new string[] { "png" };
-        string savePath = $"{TgApi.GlobalVars.TempDir}{DateTime.Now.Ticks}.{formats[0]}";
-        using (var img = await SixLabors.ImageSharp.Image.LoadAsync(path))
+        formats ??= new[] { "png" };
+        string savePath = $"{TgApi.GlobalVars.TempDir}{Guid.NewGuid()}.{formats[0]}";
+        using (var img = await Image.LoadAsync(path))
         {
             if (!(img.Width <= width && img.Height <= height && (img.Width == width || img.Height == height)))
             {
                 double widthRatio = (img.Width + 0.0) / width;
                 double heightRatio = (img.Height + 0.0) / height;
 
-                bool widthPriority = img.Width > img.Height;
+                bool widthPriority = widthRatio >= heightRatio;
 
                 int newWidth = widthPriority ? width : 0;
                 int newHeight = widthPriority ? 0 : height;
@@ -61,7 +61,7 @@ public static class ImgUtils
         return savePath;
     }
 
-    public static async Task<string> ResizeFitWithAlphaBorderAsync(string path, int width, int height, bool forceFormat, string formats = default)
+    public static async Task<string> ResizeFitWithAlphaBorderAsync(string path, int width, int height, bool forceFormat, string[]? formats = null)
     {
         throw new NotImplementedException(); //TODO implement this!!
     }
