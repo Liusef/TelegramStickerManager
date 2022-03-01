@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:ReunionApp.Pages"
     xmlns:tgapi="using:TgApi"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -147,248 +148,36 @@
                                        Grid.Column="4" HorizontalAlignment="Right" Margin="12"/>
                         </Grid>
 
-                        <Grid>
-                            <!--dotnet core-->
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text=".NET Core"
+                        <ItemsRepeater ItemsSource="{x:Bind attributions}">
+                            <ItemsRepeater.Layout>
+                                <StackLayout Orientation="Vertical"/>
+                            </ItemsRepeater.Layout>
+                            <ItemsRepeater.ItemTemplate>
+                                <DataTemplate x:DataType="local:Attribution">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{x:Bind Name}"
                                        Grid.Column="0" VerticalAlignment="Center"/>
-                            <TextBlock Text="6.0.2"
+                                        <TextBlock Text="{x:Bind Version}"
                                        Grid.Column="1" VerticalAlignment="Center"/>
-                            <TextBlock Text="©️ .NET Foundation"
+                                        <TextBlock Text="{x:Bind Copyright}"
                                        Grid.Column="2" VerticalAlignment="Center"/>
-                            <TextBlock Text="MIT License"
+                                        <TextBlock Text="{x:Bind License}"
                                        Grid.Column="3" VerticalAlignment="Center"/>
-                            <HyperlinkButton Content="Repository" 
-                                             NavigateUri="https://github.com/dotnet/core" 
+                                        <HyperlinkButton Content="Repository" 
+                                             NavigateUri="{x:Bind link}" 
                                              Grid.Column="4" HorizontalAlignment="Right"/>
-                        </Grid>
-
-                        <Grid>
-                            <!--WinAppSDK-->
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="Windows App SDK"
-                                       Grid.Column="0" VerticalAlignment="Center"/>
-                            <TextBlock Text="1.0.0"
-                                       Grid.Column="1" VerticalAlignment="Center"/>
-                            <TextBlock Text="Microsoft Corporation"
-                                       Grid.Column="2" VerticalAlignment="Center"/>
-                            <TextBlock Text="Creative Commons 4.0"
-                                       Grid.Column="3" VerticalAlignment="Center"/>
-                            <HyperlinkButton Content="Repository" 
-                                             NavigateUri="https://github.com/microsoft/WindowsAppSDK" 
-                                             Grid.Column="4" HorizontalAlignment="Right"/>
-                        </Grid>
-
-                        <Grid>
-                            <!--Winui 3-->
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="microsoft-ui-xaml"
-                                       Grid.Column="0" VerticalAlignment="Center"/>
-                            <TextBlock Text="WinUI 3"
-                                       Grid.Column="1" VerticalAlignment="Center"/>
-                            <TextBlock Text="©️ Microsoft Corporation"
-                                       Grid.Column="2" VerticalAlignment="Center"/>
-                            <TextBlock Text="MIT License"
-                                       Grid.Column="3" VerticalAlignment="Center"/>
-                            <HyperlinkButton Content="Repository" 
-                                             NavigateUri="https://github.com/microsoft/microsoft-ui-xaml" 
-                                             Grid.Column="4" HorizontalAlignment="Right"/>
-                        </Grid>
-
-                        <Grid>
-                            <!--TDLib-->
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="TDLib"
-                                       Grid.Column="0" VerticalAlignment="Center"/>
-                            <TextBlock Text="1.7.9.1"
-                                       Grid.Column="1" VerticalAlignment="Center"/>
-                            <TextBlock Text="Telegram"
-                                       Grid.Column="2" VerticalAlignment="Center"/>
-                            <TextBlock Text="BSL 1.0"
-                                       Grid.Column="3" VerticalAlignment="Center"/>
-                            <HyperlinkButton Content="Repository" 
-                                             NavigateUri="https://github.com/tdlib/td" 
-                                             Grid.Column="4" HorizontalAlignment="Right"/>
-                        </Grid>
-
-                        <Grid>
-                            <!--TDSharp-->
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="TDSharp"
-                                       Grid.Column="0" VerticalAlignment="Center"/>
-                            <TextBlock Text="1.7.9"
-                                       Grid.Column="1" VerticalAlignment="Center"/>
-                            <TextBlock Text="©️ 2018 Sergey Khabibullin"
-                                       Grid.Column="2" VerticalAlignment="Center"/>
-                            <TextBlock Text="MIT License"
-                                       Grid.Column="3" VerticalAlignment="Center"/>
-                            <HyperlinkButton Content="Repository" 
-                                             NavigateUri="https://github.com/egramtel/tdsharp" 
-                                             Grid.Column="4" HorizontalAlignment="Right"/>
-                        </Grid>
-
-                        <Grid>
-                            <!--Newtonsoft.Json-->
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="Newtonsoft.Json"
-                                       Grid.Column="0" VerticalAlignment="Center"/>
-                            <TextBlock Text="13.0.1"
-                                       Grid.Column="1" VerticalAlignment="Center"/>
-                            <TextBlock Text="©️ 2007 James Newton-King"
-                                       Grid.Column="2" VerticalAlignment="Center"/>
-                            <TextBlock Text="MIT License"
-                                       Grid.Column="3" VerticalAlignment="Center"/>
-                            <HyperlinkButton Content="Repository" 
-                                             NavigateUri="https://github.com/JamesNK/Newtonsoft.Json" 
-                                             Grid.Column="4" HorizontalAlignment="Right"/>
-                        </Grid>
-
-                        <Grid>
-                            <!--libphonenumber-->
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="libphonenumber"
-                                       Grid.Column="0" VerticalAlignment="Center"/>
-                            <TextBlock Text="8.12.38"
-                                       Grid.Column="1" VerticalAlignment="Center"/>
-                            <TextBlock Text="Google LLC"
-                                       Grid.Column="2" VerticalAlignment="Center"/>
-                            <TextBlock Text="Apache-2.0 License"
-                                       Grid.Column="3" VerticalAlignment="Center"/>
-                            <HyperlinkButton Content="Repository" 
-                                             NavigateUri="https://github.com/google/libphonenumber" 
-                                             Grid.Column="4" HorizontalAlignment="Right"/>
-                        </Grid>
-
-                        <Grid>
-                            <!--libphonenumber-csharp-->
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="libphonenumber-csharp"
-                                       Grid.Column="0" VerticalAlignment="Center"/>
-                            <TextBlock Text="8.12.38"
-                                       Grid.Column="1" VerticalAlignment="Center"/>
-                            <TextBlock Text="twcclegg"
-                                       Grid.Column="2" VerticalAlignment="Center"/>
-                            <TextBlock Text="Apache-2.0 License"
-                                       Grid.Column="3" VerticalAlignment="Center"/>
-                            <HyperlinkButton Content="Repository" 
-                                             NavigateUri="https://github.com/twcclegg/libphonenumber-csharp" 
-                                             Grid.Column="4" HorizontalAlignment="Right"/>
-                        </Grid>
-
-                        <Grid>
-                            <!--ImageSharp-->
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="ImageSharp"
-                                       Grid.Column="0" VerticalAlignment="Center"/>
-                            <TextBlock Text="2.0.0"
-                                       Grid.Column="1" VerticalAlignment="Center"/>
-                            <TextBlock Text="©️ SixLabors"
-                                       Grid.Column="2" VerticalAlignment="Center"/>
-                            <TextBlock Text="Apache-2.0 License"
-                                       Grid.Column="3" VerticalAlignment="Center"/>
-                            <HyperlinkButton Content="Repository" 
-                                             NavigateUri="https://github.com/SixLabors/ImageSharp" 
-                                             Grid.Column="4" HorizontalAlignment="Right"/>
-                        </Grid>
-
-                        <Grid>
-                            <!--Unicode.net-->
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="unicode.net"
-                                       Grid.Column="0" VerticalAlignment="Center"/>
-                            <TextBlock Text="2.0.0"
-                                       Grid.Column="1" VerticalAlignment="Center"/>
-                            <TextBlock Text="©️ 2017 Neosmart"
-                                       Grid.Column="2" VerticalAlignment="Center"/>
-                            <TextBlock Text="MIT License"
-                                       Grid.Column="3" VerticalAlignment="Center"/>
-                            <HyperlinkButton Content="Repository" 
-                                             NavigateUri="https://github.com/neosmart/unicode.net" 
-                                             Grid.Column="4" HorizontalAlignment="Right"/>
-                        </Grid>
-
-                        <Grid>
-                            <!--GEmojiSharp-->
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="GEmojiSharp"
-                                       Grid.Column="0" VerticalAlignment="Center"/>
-                            <TextBlock Text="1.5.0"
-                                       Grid.Column="1" VerticalAlignment="Center"/>
-                            <TextBlock Text="©️ 2019 Henrik Lau Eriksson"
-                                       Grid.Column="2" VerticalAlignment="Center"/>
-                            <TextBlock Text="MIT License"
-                                       Grid.Column="3" VerticalAlignment="Center"/>
-                            <HyperlinkButton Content="Repository" 
-                                             NavigateUri="https://github.com/hlaueriksson/GEmojiSharp" 
-                                             Grid.Column="4" HorizontalAlignment="Right"/>
-                        </Grid>
-
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsRepeater.ItemTemplate>
+                        </ItemsRepeater>
+                        
                     </StackPanel>
 
                 </Expander>
