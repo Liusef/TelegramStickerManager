@@ -47,9 +47,16 @@ public class StickerPack
 	public int Count => Stickers is null ? 0 : Stickers.Length;
 
 	/// <summary>
+	/// The uri the add the sticker directly to any telegram desktop application
+	/// </summary>
+	[JsonIgnore]
+	public Uri AddUri => new($"tg://addstickers/?set={Name}");
+
+	/// <summary>
 	/// The uri to add the sticker through your browser
 	/// </summary>
-	[JsonIgnore] public Uri AddStickerUri => new($"https://t.me/addstickers/{Name}");
+	[JsonIgnore] 
+	public Uri ShareUri => new($"https://t.me/addstickers/{Name}");
 
 	/// <summary>
 	/// Always returns a thumbnail. If the pack has no designated thumb it returns the first sticker in the pack.
