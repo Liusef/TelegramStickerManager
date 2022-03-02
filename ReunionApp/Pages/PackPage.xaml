@@ -16,12 +16,22 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="0"
-                    Margin="24, 24, 0, 0"
-                    Spacing="12">
-            <Button Content="Back"
+        <Grid Grid.Column="0"
+              Margin="24, 24, 0, 16"
+              RowSpacing="4">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <Button Grid.Row="0"
+                    Content="Back"
                     Click="Back" />
-            <StackPanel Spacing="8">
+
+            <StackPanel Grid.Row="1"
+                        Spacing="4">
                 <Image x:Name="PackThumb"
                        Width="100"
                        Height="100"
@@ -37,30 +47,54 @@
                            TextTrimming="CharacterEllipsis" />
             </StackPanel>
 
-            <StackPanel Margin="0, 24, 0, 0"
-                        HorizontalAlignment="Stretch"
-                        Spacing="12">
-                <Button x:Name="Add"
-                        Content="Add Stickers"
-                        Click="AddSticker"
-                        HorizontalContentAlignment="Center"
-                        HorizontalAlignment="Stretch"
-                        IsEnabled="False" />
-                <Button x:Name="Del"
-                        Content="Delete Stickers"
-                        Click="DelSticker"
-                        HorizontalContentAlignment="Center"
-                        HorizontalAlignment="Stretch"
-                        IsEnabled="False" />
-                <Button x:Name="Order"
-                        Content="Reorder Stickers"
-                        Click="OrderSticker"
-                        HorizontalContentAlignment="Center"
-                        HorizontalAlignment="Stretch"
-                        IsEnabled="False" />
-            </StackPanel>
+            <Grid Grid.Row="2">
+                <ScrollViewer>
+                    <StackPanel Margin="0, 16, 16, 0"
+                                HorizontalAlignment="Stretch"
+                                Spacing="8">
+                        <Button x:Name="Open"
+                                Content="Open In Telegram"
+                                Click="OpenInTelegram"
+                                HorizontalAlignment="Stretch"/>
+                        <Button x:Name="Copy" 
+                                Content="Copy Link"
+                                Click="CopyLink"
+                                HorizontalAlignment="Stretch">
+                            <Button.Flyout>
+                                <Flyout>
+                                    <TextBlock>
+                                        Copied to clipboard!
+                                    </TextBlock>
+                                </Flyout>
+                            </Button.Flyout>
+                        </Button>
 
-        </StackPanel>
+                        <!-- This is a spacer -->
+                        <Grid CornerRadius="2" 
+                              Height="2" 
+                              Background="Gray" 
+                              Opacity="0.5"/>
+
+                        <Button x:Name="Add"
+                                Content="Add Stickers"
+                                Click="AddSticker"
+                                HorizontalAlignment="Stretch"
+                                IsEnabled="False" />
+                        <Button x:Name="Del"
+                                Content="Delete Stickers"
+                                Click="DelSticker"
+                                HorizontalAlignment="Stretch"
+                                IsEnabled="False" />
+                        <Button x:Name="Order"
+                                Content="Reorder Stickers"
+                                Click="OrderSticker"
+                                HorizontalAlignment="Stretch"
+                                IsEnabled="False" />
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+            
+        </Grid>
 
         <StackPanel x:Name="Load"
                     Grid.Column="1"
@@ -111,6 +145,6 @@
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
-
+        
     </Grid>
 </Page>
