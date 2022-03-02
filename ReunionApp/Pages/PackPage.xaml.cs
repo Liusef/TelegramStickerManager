@@ -7,6 +7,7 @@ using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Navigation;
 using SixLabors.ImageSharp;
 using TgApi.Types;
+using Windows.ApplicationModel.DataTransfer;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -96,4 +97,15 @@ public sealed partial class PackPage : Page
 
     private void OrderSticker(object sender, RoutedEventArgs e) => CommandButtonPressed(CommandType.OrderSticker);
 
+    private async void OpenInTelegram(object sender, RoutedEventArgs e) =>
+        await Windows.System.Launcher.LaunchUriAsync(pack.AddUri);
+    
+
+    private void CopyLink(object sender, RoutedEventArgs e)
+    {
+        var dp = new DataPackage();
+        dp.SetText(pack.ShareUri.OriginalString);
+        Clipboard.SetContent(dp);
+    }
+        
 }
