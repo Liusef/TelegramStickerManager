@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml.Controls;
 using ReunionApp.Pages;
 using TdLib;
 using TgApi.Telegram;
+using Windows.Foundation;
 
 namespace ReunionApp;
 
@@ -33,17 +34,19 @@ public static class AppUtils
     {
         if (app.IsCdOpen) return;
         app.IsCdOpen = true;
+
+        var b = new DialogBody();
+        b.Body.Text = body;
+
         var cd = new ContentDialog
         {
             Title = title,
             IsPrimaryButtonEnabled = false,
             IsSecondaryButtonEnabled = false,
-            CloseButtonText = closeText
+            CloseButtonText = closeText,
+            Content = b,
+            XamlRoot = app.MainWindow.Content.XamlRoot
         };
-        var b = new DialogBody();
-        b.Body.Text = body;
-        cd.Content = b;
-        cd.XamlRoot = app.MainWindow.Content.XamlRoot;
         
         cd.CloseButtonClick += (sender, args) => app.IsCdOpen = false;
 
@@ -52,6 +55,32 @@ public static class AppUtils
 
     public static async Task ShowExceptionDialog(this App app, Exception exception) => 
         await app.ShowBasicDialog($"Oops! The program hit a(n) {exception.GetType()} Exception", exception.ToString());
+
+    public static async Task ShowAreYouSure(this App app, string title, string body, string yesText, Action yesClick, string noText, Action noClick)
+    {
+        if (app.IsCdOpen) return;
+        app.IsCdOpen = true;
+
+        var b = new DialogBody();
+        b.Body.Text = body;
+
+        var cd = new ContentDialog
+        {
+            Title = title,
+            IsPrimaryButtonEnabled = true,
+            IsSecondaryButtonEnabled = false,
+            PrimaryButtonText = yesText,
+            CloseButtonText = noText,
+            Content = b,
+            XamlRoot = app.MainWindow.Content.XamlRoot
+        };
+
+        cd.PrimaryButtonClick += (sender, args) => yesClick();
+        cd.CloseButtonClick += (sender, args) => noClick();
+        cd.CloseButtonClick += (sender, args) => app.IsCdOpen = false;
+
+        await cd.ShowAsync();
+    }
 
     public static async void CollectLater(int delay) =>
         await Task.Run(async () =>
