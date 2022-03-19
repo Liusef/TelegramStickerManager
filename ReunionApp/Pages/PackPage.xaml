@@ -80,7 +80,7 @@
                             </SplitButton.Flyout>
                         </SplitButton>
 
-                        
+                        <controls:StackDivider/>
 
                         <Button x:Name="Add"
                                 Content="Add Stickers"
