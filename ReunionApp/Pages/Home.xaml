@@ -108,7 +108,7 @@
                     Visibility="Collapsed">
             <TextBlock HorizontalTextAlignment="Center">
                 You don't have any stickers!
-                <LineBreak />Open the Hamburger menu on the top left to Refresh or make a new pack!
+                <LineBreak />Refresh the page or open the hamburger menu on the top left to make a new pack!
             </TextBlock>
         </StackPanel>
 

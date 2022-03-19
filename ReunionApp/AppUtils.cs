@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml.Controls;
 using ReunionApp.Pages;
 using TdLib;
 using TgApi.Telegram;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 
 namespace ReunionApp;
@@ -88,5 +89,12 @@ public static class AppUtils
             await Task.Delay(delay);
             GC.Collect();
         });
+
+    public static void AddToClipboard(string content)
+    {
+        var dp = new DataPackage();
+        dp.SetText(content);
+        Clipboard.SetContent(dp);
+    }
 
 }

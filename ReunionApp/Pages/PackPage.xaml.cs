@@ -97,15 +97,13 @@ public sealed partial class PackPage : Page
 
     private void OrderSticker(object sender, RoutedEventArgs e) => CommandButtonPressed(CommandType.OrderSticker);
 
-    private async void OpenInTelegram(object sender, RoutedEventArgs e) =>
-        await Windows.System.Launcher.LaunchUriAsync(pack.AddUri);
-    
+    private async void OpenInTelegram() => await Windows.System.Launcher.LaunchUriAsync(pack.AddUri);
 
-    private void CopyLink(object sender, RoutedEventArgs e)
-    {
-        var dp = new DataPackage();
-        dp.SetText(pack.ShareUri.OriginalString);
-        Clipboard.SetContent(dp);
-    }
-        
+    private void CopyLink() => AppUtils.AddToClipboard(pack.ShareUri.OriginalString);
+
+    private void OpenButton(SplitButton sender, SplitButtonClickEventArgs args) => OpenInTelegram();
+
+    private void OpenFlyout(object sender, RoutedEventArgs e) => OpenInTelegram();
+
+    private void CopyFlyout(object sender, RoutedEventArgs e) => CopyLink();
 }
