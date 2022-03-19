@@ -14,11 +14,12 @@ namespace InstallDependencies
 		private const string WinART64 = "Microsoft.WindowsAppRuntime.1.0";
 		private const string WinARTMain = "MicrosoftCorporationII.WindowsAppRuntime.Main.1.0";
 		private const string WinARTSingleton = "Microsoft.WindowsAppRuntime.Singleton";
-		private const string WinARTDDLM = "Microsoft.WinAppRuntime.DDLM.0.319.455.0-x6";
+		private const string WinARTDDLM = "Microsoft.WinAppRuntime.DDLM.1.440.209.0-x6";
 		private const string AppRT = "*appruntime*";
+		private const string WinARTVer = "1.440.209.0";
 
 		private const string NET6Download = "https://download.visualstudio.microsoft.com/download/pr/7fbe3ce3-4082-4995-93de-674038ac919b/56d3fa94d78dc3f39fc70d73ef174c93/windowsdesktop-runtime-6.0.2-win-x64.exe";
-		private const string WinAppRTDownload = "https://download.microsoft.com/download/7/4/1/7411b780-569f-4d46-b332-5a5619127239/Microsoft.WindowsAppRuntime.Redist.1.0.0.zip";
+		private const string WinAppRTDownload = "https://aka.ms/windowsappsdk/1.0/1.0.1/windowsappruntimeinstall-1.0.1-x64.exe";
 
 		public static async Task Main(string[] args)
 		{
@@ -162,7 +163,7 @@ namespace InstallDependencies
 			foreach (string output in new[] { WinART64, WinARTMain, WinARTSingleton, WinARTDDLM })
 			{
 				var s = Utils.GetConsoleOut("powershell", $"-Command Get-AppxPackage {output}");
-				if (s.Length == 0) return false;
+				if (!s.Contains(WinARTVer)) return false;
 			}
 			return true;
 		}
@@ -227,32 +228,28 @@ namespace InstallDependencies
 
 		public static async Task<bool> InstallWART()
 		{
-			var localpath = $"{Path.GetTempPath()}{Path.DirectorySeparatorChar}winapprt_1.0.zip";
-			var unzipped = $"{Path.GetTempPath()}{Path.DirectorySeparatorChar}winapprt_1.0{Path.DirectorySeparatorChar}";
-			var x64installer = $"{unzipped}{Path.DirectorySeparatorChar}WindowsAppSDK-Installer-x64{Path.DirectorySeparatorChar}WindowsAppRuntimeInstall.exe";
+			var localpath = $"{Path.GetTempPath()}{Path.DirectorySeparatorChar}winapprt_1.0.1_x64.exe";
 			var t = Task.Run(async () =>
 			{
 				using (var wc = new WebClient())
 				{
 					await wc.DownloadFileTaskAsync(WinAppRTDownload, localpath);
 				}
-				Directory.CreateDirectory(unzipped);
-				System.IO.Compression.ZipFile.ExtractToDirectory(localpath, unzipped);
 			});
-			Console.Write("Downloading the Windows App Runtime (215 MB). This may take a while");
+			Console.Write("Downloading the Windows App Runtime (54.2 MB). This may take a while");
 			while (!t.IsCompleted)
 			{
 				Console.Write(".");
 				await Task.Delay(1000);
 			}
 			Console.WriteLine();
-			if (!File.Exists(x64installer))
+			if (!File.Exists(localpath))
 			{
 				var c1 = Utils.PromptYesNo("The Windows App Runtime was not downloaded successfully. Would you like to continue anyways? (y/n):");
 				if (c1) return false;
 				Environment.Exit(1);
 			}
-			t = Task.Run(() => Utils.RunAsAdmin(x64installer, ""));
+			t = Task.Run(() => Utils.RunAsAdmin(localpath, ""));
 			Console.Write("Installing the Windows App Runtime. This may take a while");
 			while (!t.IsCompleted)
 			{
