@@ -46,15 +46,23 @@ public sealed partial class DelSticker : Page
     {
         if (await FindErrors()) return;
 
-        processing.Visibility = Visibility.Visible;
-        back.IsEnabled = false;
+        var yesClick = () =>
+        {
+            processing.Visibility = Visibility.Visible;
+            back.IsEnabled = false;
 
-        var l = new List<Sticker>();
-        foreach (var s in Grid.SelectedItems) if (s is Sticker sticker) l.Add(sticker);
-        var runner = new DelStickerRunner(l.ToArray());
+            var l = new List<Sticker>();
+            foreach (var s in Grid.SelectedItems) if (s is Sticker sticker) l.Add(sticker);
+            var runner = new DelStickerRunner(l.ToArray());
 
-        processing.Visibility = Visibility.Collapsed;
-        ((Frame)Parent).Navigate(typeof(ProcessingCommand), runner, new DrillInNavigationTransitionInfo());
+            processing.Visibility = Visibility.Collapsed;
+            ((Frame)Parent).Navigate(typeof(ProcessingCommand), runner, new DrillInNavigationTransitionInfo());
+        };
+
+        await App.GetInstance().ShowAreYouSureDialog("Are you sure?",
+            "Deleting stickers cannot be undone. Are you sure you would like to continue?",
+            "Yes", yesClick,
+            "No", null);
     }
 
     private async Task<bool> FindErrors()
