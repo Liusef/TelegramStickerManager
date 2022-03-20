@@ -14,6 +14,8 @@ namespace ReunionApp.Pages;
 /// </summary>
 public sealed partial class ProcessingCommand : Page
 {
+    public record ProcessingCommandParams(CommandRunner runner, Button back);
+
     CommandRunner runner;
     private Task refreshTimer;
 
@@ -25,7 +27,8 @@ public sealed partial class ProcessingCommand : Page
     protected override async void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        runner = e.Parameter as CommandRunner;
+        (runner, var back) = e.Parameter as ProcessingCommandParams;
+        back.IsEnabled = false;
         runner.Outputs.CollectionChanged += Outputs_CollectionChanged;
 
         await runner.RunCommandsAsync();

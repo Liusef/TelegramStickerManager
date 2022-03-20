@@ -21,10 +21,12 @@ public sealed partial class PackPage : Page
 
     private StickerPack pack;
     private ObservableCollection<Sticker> stickers = new ObservableCollection<Sticker>();
+    private Button[] buttons;
 
     public PackPage()
     {
         this.InitializeComponent();
+        buttons = new []{ Add, Del, Order, SPI};
     }
 
     protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -68,18 +70,13 @@ public sealed partial class PackPage : Page
         GC.Collect();
     }
 
-    private void EnableAllButtons()
-    {
-        Add.IsEnabled = true;
-        Del.IsEnabled = true;
-        Order.IsEnabled = true;
+    private void EnableAllButtons() {
+        foreach (Button b in buttons) b.IsEnabled = true;
     }
 
     private void DisableAllButtons()
     {
-        Add.IsEnabled = false;
-        Del.IsEnabled = false;
-        Order.IsEnabled = false;
+        foreach (Button b in buttons) b.IsEnabled = false;
     }
 
     private void Back(object sender, RoutedEventArgs e) =>
@@ -90,19 +87,22 @@ public sealed partial class PackPage : Page
             new BaseCommand.BaseCommandParams(pack, command),
             new SlideNavigationTransitionInfo { Effect = SlideNavigationTransitionEffect.FromRight });
 
-    private void AddSticker(object sender, RoutedEventArgs e) => CommandButtonPressed(CommandType.AddSticker);
-
-    private void DelSticker(object server, RoutedEventArgs e) => CommandButtonPressed(CommandType.DelSticker);
-
-    private void OrderSticker(object sender, RoutedEventArgs e) => CommandButtonPressed(CommandType.OrderSticker);
-
     private async void OpenInTelegram() => await Windows.System.Launcher.LaunchUriAsync(pack.AddUri);
 
     private void CopyLink() => AppUtils.AddToClipboard(pack.ShareUri.OriginalString);
+
 
     private void OpenButton(SplitButton sender, SplitButtonClickEventArgs args) => OpenInTelegram();
 
     private void OpenFlyout(object sender, RoutedEventArgs e) => OpenInTelegram();
 
     private void CopyFlyout(object sender, RoutedEventArgs e) => CopyLink();
+
+    private void AddSticker(object sender, RoutedEventArgs e) => CommandButtonPressed(CommandType.AddSticker);
+
+    private void DelSticker(object server, RoutedEventArgs e) => CommandButtonPressed(CommandType.DelSticker);
+
+    private void OrderSticker(object sender, RoutedEventArgs e) => CommandButtonPressed(CommandType.OrderSticker);
+
+    private void SetIcon(object sender, RoutedEventArgs e) => CommandButtonPressed(CommandType.SetPackIcon);
 }

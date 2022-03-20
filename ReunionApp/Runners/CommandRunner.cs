@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
+using TdLib;
 using TgApi.Telegram;
 using TgApi.Types;
 using static TdLib.TdApi;
@@ -54,6 +55,15 @@ public abstract class CommandRunner : INotifyPropertyChanged
         Outputs.Add(new CommandOutput(message, null, true));
         AddReplyToOutputs(await waiter.SendMsgAndAwaitNext(message));
     }
+
+    protected virtual async Task SendImageAndAddToOutputsAsync(MessageWaiter waiter, string path)
+    {
+        Outputs.Add(new CommandOutput(null, path, true));
+        var upload = await FileUpload.StartUpload(App.GetInstance().Client, path);
+        await upload.WaitForCompletion();
+        var r = await waiter.SendDocumentAndAwaitNext(new InputFile.InputFileId { Id = upload.LocalId });
+        AddReplyToOutputs(r);
+    }   
 }
 
 public record CommandOutput(string Content, string ImgPath, bool Right)
