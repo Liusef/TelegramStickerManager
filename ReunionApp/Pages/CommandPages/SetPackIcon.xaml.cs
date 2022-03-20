@@ -28,10 +28,7 @@ namespace ReunionApp.Pages.CommandPages;
 /// </summary>
 public sealed partial class SetPackIcon : Page
 {
-
-    public record SetPackIconParams(StickerPack pack, Button back);
     private StickerPack pack;
-    private Button back;
 
     public SetPackIcon()
     {
@@ -41,7 +38,7 @@ public sealed partial class SetPackIcon : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        (pack, back) = e.Parameter as SetPackIconParams;
+        pack = e.Parameter as StickerPack;
     }
 
     private async void ClearIcon(object sender, RoutedEventArgs e) 
@@ -74,7 +71,7 @@ public sealed partial class SetPackIcon : Page
         "Changing the icon of a sticker pack cannot be undone.",
         "Yes", yes, "No", null);
 
-    private void Continue(string path) => ((Frame)Parent).Navigate(typeof(ProcessingCommand),
-        new ProcessingCommandParams(new SetPackIconRunner(pack, path), back),
+    private void Continue(string path) => Frame.Navigate(typeof(ProcessingCommand),
+        new SetPackIconRunner(pack, path),
         new DrillInNavigationTransitionInfo());
 }

@@ -18,9 +18,6 @@ namespace ReunionApp.Pages.CommandPages;
 public sealed partial class DelSticker : Page
 {
     private StickerPack pack;
-    private Button back;
-
-    public record DelStickerParams(StickerPack stickerPack, Button back);
 
     public DelSticker()
     {
@@ -30,11 +27,7 @@ public sealed partial class DelSticker : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        if (e.Parameter is DelStickerParams (var stickerPack, var backButton))
-        {
-            pack = stickerPack;
-            back = backButton;
-        }
+        pack = e.Parameter as StickerPack;
     }
 
     protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -56,7 +49,7 @@ public sealed partial class DelSticker : Page
             var runner = new DelStickerRunner(l.ToArray());
 
             processing.Visibility = Visibility.Collapsed;
-            ((Frame)Parent).Navigate(typeof(ProcessingCommand), new ProcessingCommandParams(runner, back), new DrillInNavigationTransitionInfo());
+            Frame.Navigate(typeof(ProcessingCommand), runner, new DrillInNavigationTransitionInfo());
         };
 
         await App.GetInstance().ShowAreYouSureDialog("Are you sure?",

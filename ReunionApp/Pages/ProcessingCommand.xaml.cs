@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 using ReunionApp.Runners;
@@ -14,8 +16,6 @@ namespace ReunionApp.Pages;
 /// </summary>
 public sealed partial class ProcessingCommand : Page
 {
-    public record ProcessingCommandParams(CommandRunner runner, Button back);
-
     CommandRunner runner;
     private Task refreshTimer;
 
@@ -27,8 +27,10 @@ public sealed partial class ProcessingCommand : Page
     protected override async void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        (runner, var back) = e.Parameter as ProcessingCommandParams;
-        back.IsEnabled = false;
+        runner = e.Parameter as CommandRunner;
+
+        ((BaseCommand)((FrameworkElement)Frame.Parent).Parent).IsBackEnabled = false;
+
         runner.Outputs.CollectionChanged += Outputs_CollectionChanged;
 
         await runner.RunCommandsAsync();

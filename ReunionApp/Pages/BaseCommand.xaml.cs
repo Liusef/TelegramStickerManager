@@ -20,7 +20,11 @@ public sealed partial class BaseCommand : Page
 {
 
     private StickerPack pack;
-    public bool IsBackEnabled { get; set; } = true;
+    public bool IsBackEnabled
+    {
+        get => BackButton.IsEnabled;
+        set => BackButton.IsEnabled = value;
+    }
 
     public record BaseCommandParams(StickerPack pack, CommandType commandType);
 
@@ -58,27 +62,27 @@ public sealed partial class BaseCommand : Page
         switch (type)
         {
             case CommandType.AddSticker:
-                ContentFrame.Navigate(typeof(CommandPages.AddSticker), new AddStickerParams(pack, false, BackButton));
+                ContentFrame.Navigate(typeof(CommandPages.AddSticker), new AddStickerParams(pack, false));
                 InfoFrame.Navigate(typeof(CommandPages.SidePanels.AddInfo));
                 Op.Text = "Add New Stickers";
                 break;
             case CommandType.DelSticker:
-                ContentFrame.Navigate(typeof(CommandPages.DelSticker), new DelStickerParams(pack, BackButton));
+                ContentFrame.Navigate(typeof(CommandPages.DelSticker), pack);
                 InfoFrame.Navigate(typeof(CommandPages.SidePanels.DelInfo));
                 Op.Text = "Delete Stickers";
                 break;
             case CommandType.NewPack:
-                ContentFrame.Navigate(typeof(CommandPages.AddSticker), new AddStickerParams(pack, true, BackButton));
+                ContentFrame.Navigate(typeof(CommandPages.AddSticker), new AddStickerParams(pack, true));
                 InfoFrame.Navigate(typeof(CommandPages.SidePanels.AddInfo));
                 Op.Text = "Add Some Stickers!";
                 break;
             case CommandType.OrderSticker:
-                ContentFrame.Navigate(typeof(CommandPages.OrderSticker), new OrderStickerParams(pack, BackButton));
+                ContentFrame.Navigate(typeof(CommandPages.OrderSticker), pack);
                 InfoFrame.Navigate(typeof(CommandPages.SidePanels.OrderInfo));
                 Op.Text = "Reorder Stickers";
                 break;
             case CommandType.SetPackIcon:
-                ContentFrame.Navigate(typeof(CommandPages.SetPackIcon), new SetPackIconParams(pack, BackButton));
+                ContentFrame.Navigate(typeof(CommandPages.SetPackIcon), pack);
                 Op.Text = "Set Pack Icon";
                 break;
             default:
