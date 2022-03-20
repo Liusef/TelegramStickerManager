@@ -9,15 +9,15 @@ public class StickerPackThumb
 	/// <summary>
 	/// The height of the thumb in pixels
 	/// </summary>
-	public int Width { get; init; }
+	public int Width { get; set; }
 	/// <summary>
 	/// The height of the thumb in pixels
 	/// </summary>
-	public int Height { get; init; }
+	public int Height { get; set; }
 	/// <summary>
 	/// The Remote File ID of the thumbnail document. This shouldn't be used.
 	/// </summary>
-	public string RemoteFileId { get; init; }
+	public string RemoteFileId { get; set; }
 	/// <summary>
 	/// The filename of the thumbnail document
 	/// </summary>
