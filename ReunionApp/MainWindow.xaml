@@ -13,7 +13,8 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Grid x:Name="AppTitleBar">
+        <Grid x:Name="AppTitleBar"
+              Margin="-1, 0, 0, 0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>

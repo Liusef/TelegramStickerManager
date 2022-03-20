@@ -17,7 +17,7 @@ public sealed partial class About : Page
     private Attribution[] attributions =
     {
         new(".NET Core"             , "6.0.2"   , "©️ .NET Foundation"           , "MIT License"         , new("https://github.com/dotnet/core")),
-        new("Windows App SDK"       , "1.0.1"   , "Microsoft Corporation"       , "Creative Commons 4.0", new("https://github.com/microsoft/WindowsAppSDK")),
+        new("Windows App SDK"       , "1.0.0"   , "Microsoft Corporation"       , "Creative Commons 4.0", new("https://github.com/microsoft/WindowsAppSDK")),
         new("microsoft-ui-xaml"     , "WinUI 3" , "©️ Microsoft Corporation"     , "MIT License"         , new("https://github.com/microsoft/microsoft-ui-xaml")),
         new("MSTest"                , "2.2.8"   , "©️ Microsoft Corporation"     , "MIT License"         , new("https://github.com/microsoft/testfx")),
         new("coverlet"              , "3.1.2"   , "©️ 2018 Toni Solarin-Sodara"  , "MIT License"         , new("https://github.com/coverlet-coverage/coverlet")),

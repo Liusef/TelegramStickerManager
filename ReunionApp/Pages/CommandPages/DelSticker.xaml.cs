@@ -6,6 +6,7 @@ using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 using ReunionApp.Runners;
 using TgApi.Types;
+using static ReunionApp.Pages.ProcessingCommand;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -49,14 +50,13 @@ public sealed partial class DelSticker : Page
         var yesClick = () =>
         {
             processing.Visibility = Visibility.Visible;
-            back.IsEnabled = false;
 
             var l = new List<Sticker>();
             foreach (var s in Grid.SelectedItems) if (s is Sticker sticker) l.Add(sticker);
             var runner = new DelStickerRunner(l.ToArray());
 
             processing.Visibility = Visibility.Collapsed;
-            ((Frame)Parent).Navigate(typeof(ProcessingCommand), runner, new DrillInNavigationTransitionInfo());
+            ((Frame)Parent).Navigate(typeof(ProcessingCommand), new ProcessingCommandParams(runner, back), new DrillInNavigationTransitionInfo());
         };
 
         await App.GetInstance().ShowAreYouSureDialog("Are you sure?",

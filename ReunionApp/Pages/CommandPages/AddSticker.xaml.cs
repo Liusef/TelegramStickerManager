@@ -14,6 +14,7 @@ using ReunionApp.Runners;
 using TgApi;
 using TgApi.Types;
 using Windows.Storage.Pickers;
+using static ReunionApp.Pages.ProcessingCommand;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -100,7 +101,6 @@ public sealed partial class AddSticker : Page
         if (await FindWarnings()) return;
 
         processing.Visibility = Visibility.Visible;
-        backButton.IsEnabled = false;
 
         await Task.Run(async () => await ProcessImgs());
 
@@ -115,7 +115,7 @@ public sealed partial class AddSticker : Page
         else runner = new AddStickerRunner(pack, stickers.ToArray());
 
         processing.Visibility = Visibility.Collapsed;
-        ((Frame)Parent).Navigate(typeof(ProcessingCommand), runner, new DrillInNavigationTransitionInfo());
+        ((Frame)Parent).Navigate(typeof(ProcessingCommand), new ProcessingCommandParams(runner, backButton), new DrillInNavigationTransitionInfo());
     }
 
     private async Task ProcessImgs()

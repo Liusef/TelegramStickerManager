@@ -16,7 +16,6 @@ namespace ReunionApp.Pages.CommandPages;
 /// </summary>
 public sealed partial class NewPack : Page
 {
-
     private string ThumbPath { get; set; } = " ";
 
     public NewPack()

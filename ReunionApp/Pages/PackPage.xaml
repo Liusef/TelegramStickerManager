@@ -97,6 +97,11 @@
                                 Click="OrderSticker"
                                 HorizontalAlignment="Stretch"
                                 IsEnabled="False" />
+                        <Button x:Name="SPI"
+                                Content="Set Pack Icon"
+                                Click="SetIcon"
+                                HorizontalAlignment="Stretch"
+                                IsEnabled="False" />
                     </StackPanel>
                 </ScrollViewer>
             </Grid>

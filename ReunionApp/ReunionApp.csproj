@@ -49,6 +49,7 @@
     <None Remove="Pages\BaseCommand.xaml" />
     <None Remove="Pages\CommandPages\AddSticker.xaml" />
     <None Remove="Pages\CommandPages\DelSticker.xaml" />
+    <None Remove="Pages\CommandPages\SetPackIcon.xaml" />
     <None Remove="Pages\CommandPages\SidePanels\AddInfo.xaml" />
     <None Remove="Pages\CommandPages\SidePanels\DelInfo.xaml" />
     <None Remove="Pages\CommandPages\SidePanels\OrderInfo.xaml" />
@@ -69,7 +70,7 @@
 
   <ItemGroup>
     <PackageReference Include="GEmojiSharp" Version="1.5.0" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.1" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.0" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22000.197" />
     <PackageReference Include="Unicode.net" Version="2.0.0" />
     <Manifest Include="$(ApplicationManifest)" />
@@ -132,6 +133,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="C:\Users\josep\Stuff\Projects\dotnet\TelegramSticker\ReunionApp\.editorconfig" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\CommandPages\SetPackIcon.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Pages\CommandPages\InfoPages\OrderInfo.xaml">

@@ -1,4 +1,5 @@
 ﻿using TdLib;
+using static TdLib.TdApi.InputFile;
 
 namespace TgApi.Telegram;
 
@@ -91,6 +92,18 @@ public class MessageWaiter
 		await _client.SendBasicMessageAsync(_chatId, contents);
 		return await WaitForMsgAsync(target, delay);
 	}
+
+    /// <summary>
+    /// Sends a document and waits for the next message to be sent
+    /// </summary>
+    /// <param name="input">The InputFileId corresponding to the document</param>
+    /// <param name="delay">The delay between polling Telegram for a new message</param>
+    /// <returns>A TdApi.Message object</returns>
+    public async Task<TdApi.Message> SendDocumentAndAwaitNext(InputFileId input, int delay = 25)
+    {
+        long id = (await _client.SendBasicDocumentAsync(_chatId, input)).Id;
+        return await WaitNextMsgAsync(id, delay);
+    }
 
 	/// <summary>
 	/// Gets rid of references so that the garbage collector hopefully gets rid of stuff

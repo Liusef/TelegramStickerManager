@@ -8,6 +8,7 @@ using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 using ReunionApp.Runners;
 using TgApi.Types;
+using static ReunionApp.Pages.ProcessingCommand;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -52,7 +53,6 @@ public sealed partial class OrderSticker : Page
         if (await FindErrors()) return;
 
         processing.Visibility = Visibility.Visible;
-        back.IsEnabled = false;
 
         (Sticker, Sticker)[] swaps = null;
 
@@ -67,7 +67,7 @@ public sealed partial class OrderSticker : Page
         var runner = new OrderStickerRunner(swaps);
 
         processing.Visibility = Visibility.Collapsed;
-        ((Frame)Parent).Navigate(typeof(ProcessingCommand), runner, new DrillInNavigationTransitionInfo());
+        ((Frame)Parent).Navigate(typeof(ProcessingCommand), new ProcessingCommandParams(runner, back), new DrillInNavigationTransitionInfo());
     }
 
     private void Reset(object sender, RoutedEventArgs e)
