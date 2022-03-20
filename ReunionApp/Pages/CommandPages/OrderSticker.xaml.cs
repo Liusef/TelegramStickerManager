@@ -60,7 +60,7 @@ public sealed partial class OrderSticker : Page
         var runner = new OrderStickerRunner(swaps);
 
         processing.Visibility = Visibility.Collapsed;
-        ((Frame)Parent).Navigate(typeof(ProcessingCommand), runner, new DrillInNavigationTransitionInfo());
+        Frame.Navigate(typeof(ProcessingCommand), runner, new DrillInNavigationTransitionInfo());
     }
 
     private void Reset(object sender, RoutedEventArgs e)

@@ -71,7 +71,7 @@ public sealed partial class SetPackIcon : Page
         "Changing the icon of a sticker pack cannot be undone.",
         "Yes", yes, "No", null);
 
-    private void Continue(string path) => ((Frame)Parent).Navigate(typeof(ProcessingCommand),
+    private void Continue(string path) => Frame.Navigate(typeof(ProcessingCommand),
         new SetPackIconRunner(pack, path),
         new DrillInNavigationTransitionInfo());
 }

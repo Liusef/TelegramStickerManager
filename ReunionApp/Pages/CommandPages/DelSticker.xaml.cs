@@ -49,7 +49,7 @@ public sealed partial class DelSticker : Page
             var runner = new DelStickerRunner(l.ToArray());
 
             processing.Visibility = Visibility.Collapsed;
-            ((Frame)Parent).Navigate(typeof(ProcessingCommand), runner, new DrillInNavigationTransitionInfo());
+            Frame.Navigate(typeof(ProcessingCommand), runner, new DrillInNavigationTransitionInfo());
         };
 
         await App.GetInstance().ShowAreYouSureDialog("Are you sure?",

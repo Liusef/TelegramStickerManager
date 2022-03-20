@@ -113,7 +113,7 @@ public sealed partial class AddSticker : Page
         else runner = new AddStickerRunner(pack, stickers.ToArray());
 
         processing.Visibility = Visibility.Collapsed;
-        ((Frame)Parent).Navigate(typeof(ProcessingCommand), runner, new DrillInNavigationTransitionInfo());
+        Frame.Navigate(typeof(ProcessingCommand), runner, new DrillInNavigationTransitionInfo());
     }
 
     private async Task ProcessImgs()
