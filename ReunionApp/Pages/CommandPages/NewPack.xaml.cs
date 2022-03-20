@@ -18,27 +18,13 @@ public sealed partial class NewPack : Page
 {
     private string ThumbPath { get; set; } = " ";
 
-    public NewPack()
-    {
-        this.InitializeComponent();
-    }
-
+    public NewPack() => this.InitializeComponent();
+    
     private void Back(object sender, RoutedEventArgs e) => App.GetInstance().RootFrame.GoBack();
     
     private async Task ChooseThumb()
     {
-        var picker = new FileOpenPicker {ViewMode = PickerViewMode.Thumbnail};
-        picker.FileTypeFilter.Add(".jpg");
-        picker.FileTypeFilter.Add(".jpeg");
-        picker.FileTypeFilter.Add(".png");
-        picker.FileTypeFilter.Add(".webp");
-        picker.FileTypeFilter.Add(".bmp");
-        picker.FileTypeFilter.Add(".tga");
-
-        var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.GetInstance().MainWindow);
-        WinRT.Interop.InitializeWithWindow.Initialize(picker, hwnd);
-
-        var file = await picker.PickSingleFileAsync();
+        var file = await AppUtils.PickSingleFileAsync(AppUtils.ImageSharpFormats);
         if (file == null || !File.Exists(file.Path)) return;
         ThumbPath = file.Path;
         Filename.Text = Path.GetFileName(ThumbPath);

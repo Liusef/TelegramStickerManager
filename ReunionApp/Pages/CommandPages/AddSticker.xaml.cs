@@ -31,11 +31,8 @@ public sealed partial class AddSticker : Page
 
     public record AddStickerParams(StickerPack pack, bool NewPackMode);
 
-    public AddSticker()
-    {
-        this.InitializeComponent();
-    }
-
+    public AddSticker() => this.InitializeComponent();
+    
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
@@ -46,11 +43,7 @@ public sealed partial class AddSticker : Page
 
     protected override void OnNavigatedFrom(NavigationEventArgs e)
     {
-        // This block is to ensure that bitmaps and other large objects are garbage collected, as pages aren't disposed by the garbage collector
-        // NOTE: Lots of objects that need to be garbage collected are RefCounted from Unmanaged memory
-        // TODO This is not a good solution for memory management. Find a way to dispose of pages instead.
         Grid.ItemsSource = new ObservableCollection<NewSticker>();
-        Grid.ItemsSource = null;
         Bindings.StopTracking();
         base.OnNavigatedFrom(e);
     }
@@ -60,18 +53,7 @@ public sealed partial class AddSticker : Page
 
     private async void Add(object sender, RoutedEventArgs e)
     {
-        var picker = new FileOpenPicker {ViewMode = PickerViewMode.Thumbnail};
-        picker.FileTypeFilter.Add(".jpg");
-        picker.FileTypeFilter.Add(".jpeg");
-        picker.FileTypeFilter.Add(".png");
-        picker.FileTypeFilter.Add(".webp");
-        picker.FileTypeFilter.Add(".bmp");
-        picker.FileTypeFilter.Add(".tga");
-
-        var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.GetInstance().MainWindow);
-        WinRT.Interop.InitializeWithWindow.Initialize(picker, hwnd);
-
-        var files = await picker.PickMultipleFilesAsync();
+        var files = await AppUtils.PickMultipleFileAsync(AppUtils.ImageSharpFormats);
         if (files.Count == 0) return;
         foreach (var file in files) stickers.Add(new NewSticker { ImgPath = file.Path });
     }
@@ -79,16 +61,8 @@ public sealed partial class AddSticker : Page
     private void Delete(object sender, RoutedEventArgs e)
     {
         var selected = Grid.SelectedItems;
-        if (selected.Count == 0) return;
         for (int i = selected.Count - 1; i >= 0; i--)
-        {
-            var ns = (NewSticker)selected[i];
-            stickers.Remove(ns);
-        }
-        selected = null;
-        stickers = new ObservableCollection<NewSticker>(stickers);
-        Grid.ItemsSource = stickers;
-        AppUtils.CollectLater(5000);  // TODO Memory is only freed after navigating off the page
+            stickers.Remove((NewSticker)selected[i]);
     }
 
     private async void Finish(object sender, RoutedEventArgs e)

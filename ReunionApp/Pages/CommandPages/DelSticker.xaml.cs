@@ -19,11 +19,8 @@ public sealed partial class DelSticker : Page
 {
     private StickerPack pack;
 
-    public DelSticker()
-    {
-        this.InitializeComponent();
-    }
-
+    public DelSticker() =>  this.InitializeComponent();
+    
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
