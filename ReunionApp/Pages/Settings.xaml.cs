@@ -38,4 +38,6 @@ public sealed partial class Settings : Page
         Directory.Delete(TgApi.GlobalVars.TdDir, true);
         Environment.Exit(0);
     }
+
+    private async void Local_Click(object sender, RoutedEventArgs e) => await Windows.System.Launcher.LaunchUriAsync(new(TgApi.GlobalVars.TdDir));
 }
