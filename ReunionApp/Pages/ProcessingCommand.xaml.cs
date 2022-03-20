@@ -27,9 +27,9 @@ public sealed partial class ProcessingCommand : Page
     protected override async void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        (runner, var back) = e.Parameter as ProcessingCommandParams;
+        runner = e.Parameter as CommandRunner;
 
-        ((BaseCommand)((FrameworkElement)Frame.Parent).Parent).PublicBackButton.IsEnabled = false;
+        ((BaseCommand)((FrameworkElement)Frame.Parent).Parent).IsBackEnabled = false;
 
         runner.Outputs.CollectionChanged += Outputs_CollectionChanged;
 

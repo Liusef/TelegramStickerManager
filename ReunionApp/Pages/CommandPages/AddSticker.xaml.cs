@@ -25,11 +25,10 @@ namespace ReunionApp.Pages.CommandPages;
 public sealed partial class AddSticker : Page
 {
     private StickerPack pack;
-    private Button backButton;
     private ObservableCollection<NewSticker> stickers = new ObservableCollection<NewSticker>();
     private bool newPackMode;
 
-    public record AddStickerParams(StickerPack pack, bool NewPackMode, Button back);
+    public record AddStickerParams(StickerPack pack, bool NewPackMode);
 
     public AddSticker()
     {
@@ -39,10 +38,9 @@ public sealed partial class AddSticker : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        var (stickerPack, b, back) = (AddStickerParams) e.Parameter;
+        var (stickerPack, b) = (AddStickerParams) e.Parameter;
         newPackMode = b;
         pack = stickerPack;
-        backButton = back;
     }
 
     protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -100,7 +98,6 @@ public sealed partial class AddSticker : Page
         if (await FindWarnings()) return;
 
         processing.Visibility = Visibility.Visible;
-        backButton.IsEnabled = false;
 
         await Task.Run(async () => await ProcessImgs());
 

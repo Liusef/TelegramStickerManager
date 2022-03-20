@@ -19,9 +19,6 @@ namespace ReunionApp.Pages.CommandPages;
 public sealed partial class OrderSticker : Page
 {
     private StickerPack pack;
-    private Button back;
-
-    public record OrderStickerParams(StickerPack packParam, Button backParam);
 
     public ObservableCollection<Sticker> stickers;
 
@@ -33,11 +30,7 @@ public sealed partial class OrderSticker : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        if (e.Parameter is OrderStickerParams(var packParam, var backParam))
-        {
-            pack = packParam;
-            back = backParam;
-        }
+        pack = e.Parameter as StickerPack;
         stickers = new ObservableCollection<Sticker>(pack.Stickers);
     }
 
@@ -52,7 +45,6 @@ public sealed partial class OrderSticker : Page
         if (await FindErrors()) return;
 
         processing.Visibility = Visibility.Visible;
-        back.IsEnabled = false;
 
         (Sticker, Sticker)[] swaps = null;
 
