@@ -43,11 +43,7 @@ public sealed partial class AddSticker : Page
 
     protected override void OnNavigatedFrom(NavigationEventArgs e)
     {
-        // This block is to ensure that bitmaps and other large objects are garbage collected, as pages aren't disposed by the garbage collector
-        // NOTE: Lots of objects that need to be garbage collected are RefCounted from Unmanaged memory
-        // TODO This is not a good solution for memory management. Find a way to dispose of pages instead.
         Grid.ItemsSource = new ObservableCollection<NewSticker>();
-        Grid.ItemsSource = null;
         Bindings.StopTracking();
         base.OnNavigatedFrom(e);
     }
