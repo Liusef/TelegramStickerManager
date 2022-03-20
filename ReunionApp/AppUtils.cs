@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml.Controls;
@@ -7,11 +8,15 @@ using TdLib;
 using TgApi.Telegram;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
+using Windows.Storage;
+using Windows.Storage.Pickers;
 
 namespace ReunionApp;
 
 public static class AppUtils
 {
+    public static readonly string[] ImageSharpFormats = new string[]{ "jpg", "jpeg", "png", "webp", "bmp", "tga" };
+
     public static async Task ResetTdClient(this App app, bool autoNavigate)
     {
         app.Client.Dispose();
@@ -96,6 +101,35 @@ public static class AppUtils
         var dp = new DataPackage();
         dp.SetText(content);
         Clipboard.SetContent(dp);
+    }
+
+    public static async Task<StorageFile> PickSingleFileAsync(string[] formats)
+    {
+        var picker = new FileOpenPicker();
+        SetupPicker(picker, formats);
+
+        var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.GetInstance().MainWindow);
+        WinRT.Interop.InitializeWithWindow.Initialize(picker, hwnd);
+        return await picker.PickSingleFileAsync();
+    }
+
+    public static async Task<IReadOnlyList<StorageFile>> PickMultipleFileAsync(string[] formats)
+    {
+        var picker = new FileOpenPicker();
+        SetupPicker(picker, formats);
+
+        var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.GetInstance().MainWindow);
+        WinRT.Interop.InitializeWithWindow.Initialize(picker, hwnd);
+        return await picker.PickMultipleFilesAsync();
+    }
+
+    private static void SetupPicker(FileOpenPicker picker, string[] formats)
+    {
+        picker.ViewMode = PickerViewMode.Thumbnail;
+        foreach (var format in formats)
+        {
+            picker.FileTypeFilter.Add('.' + format);
+        }
     }
 
 }

@@ -49,20 +49,9 @@ public sealed partial class SetPackIcon : Page
 
     private async void UploadNew(object sender, RoutedEventArgs e)
     {
-        var picker = new FileOpenPicker { ViewMode = PickerViewMode.Thumbnail };
-        picker.FileTypeFilter.Add(".jpg");
-        picker.FileTypeFilter.Add(".jpeg");
-        picker.FileTypeFilter.Add(".png");
-        picker.FileTypeFilter.Add(".webp");
-        picker.FileTypeFilter.Add(".bmp");
-        picker.FileTypeFilter.Add(".tga");
-
-        var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.GetInstance().MainWindow);
-        WinRT.Interop.InitializeWithWindow.Initialize(picker, hwnd);
-
-        var file = await picker.PickSingleFileAsync();
+        var file = await AppUtils.PickSingleFileAsync(AppUtils.ImageSharpFormats);
         if (file == null || !File.Exists(file.Path)) return;
-        var path = await TgApi.ImgUtils.ResizeAsync(file.Path, 100, 100, true, new[] { "png", "webp" });
+        var path = await Task.Run(async()=>await TgApi.ImgUtils.ResizeAsync(file.Path, 100, 100, true, new[] { "png", "webp" }));
 
         await AreYouSure(() => Continue(path));
     }

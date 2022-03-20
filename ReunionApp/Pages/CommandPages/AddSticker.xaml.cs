@@ -60,18 +60,7 @@ public sealed partial class AddSticker : Page
 
     private async void Add(object sender, RoutedEventArgs e)
     {
-        var picker = new FileOpenPicker {ViewMode = PickerViewMode.Thumbnail};
-        picker.FileTypeFilter.Add(".jpg");
-        picker.FileTypeFilter.Add(".jpeg");
-        picker.FileTypeFilter.Add(".png");
-        picker.FileTypeFilter.Add(".webp");
-        picker.FileTypeFilter.Add(".bmp");
-        picker.FileTypeFilter.Add(".tga");
-
-        var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.GetInstance().MainWindow);
-        WinRT.Interop.InitializeWithWindow.Initialize(picker, hwnd);
-
-        var files = await picker.PickMultipleFilesAsync();
+        var files = await AppUtils.PickMultipleFileAsync(AppUtils.ImageSharpFormats);
         if (files.Count == 0) return;
         foreach (var file in files) stickers.Add(new NewSticker { ImgPath = file.Path });
     }
@@ -79,16 +68,8 @@ public sealed partial class AddSticker : Page
     private void Delete(object sender, RoutedEventArgs e)
     {
         var selected = Grid.SelectedItems;
-        if (selected.Count == 0) return;
         for (int i = selected.Count - 1; i >= 0; i--)
-        {
-            var ns = (NewSticker)selected[i];
-            stickers.Remove(ns);
-        }
-        selected = null;
-        stickers = new ObservableCollection<NewSticker>(stickers);
-        Grid.ItemsSource = stickers;
-        AppUtils.CollectLater(5000);  // TODO Memory is only freed after navigating off the page
+            stickers.Remove((NewSticker)selected[i]);
     }
 
     private async void Finish(object sender, RoutedEventArgs e)
