@@ -31,11 +31,8 @@ public sealed partial class AddSticker : Page
 
     public record AddStickerParams(StickerPack pack, bool NewPackMode);
 
-    public AddSticker()
-    {
-        this.InitializeComponent();
-    }
-
+    public AddSticker() => this.InitializeComponent();
+    
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);

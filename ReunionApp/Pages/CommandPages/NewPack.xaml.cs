@@ -18,11 +18,8 @@ public sealed partial class NewPack : Page
 {
     private string ThumbPath { get; set; } = " ";
 
-    public NewPack()
-    {
-        this.InitializeComponent();
-    }
-
+    public NewPack() => this.InitializeComponent();
+    
     private void Back(object sender, RoutedEventArgs e) => App.GetInstance().RootFrame.GoBack();
     
     private async Task ChooseThumb()

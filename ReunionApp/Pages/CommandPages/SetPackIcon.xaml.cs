@@ -30,10 +30,7 @@ public sealed partial class SetPackIcon : Page
 {
     private StickerPack pack;
 
-    public SetPackIcon()
-    {
-        this.InitializeComponent();
-    }
+    public SetPackIcon() => this.InitializeComponent();
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {

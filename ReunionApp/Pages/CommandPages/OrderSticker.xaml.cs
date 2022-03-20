@@ -23,10 +23,7 @@ public sealed partial class OrderSticker : Page
 
     public ObservableCollection<Sticker> stickers;
 
-    public OrderSticker()
-    {
-        this.InitializeComponent();
-    }
+    public OrderSticker() => this.InitializeComponent();
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
