@@ -53,7 +53,7 @@ public sealed partial class AddSticker : Page
 
     private async void Add(object sender, RoutedEventArgs e)
     {
-        var files = await AppUtils.PickMultipleFileAsync(AppUtils.ImageSharpFormats);
+        var files = await AppUtils.PickMultipleFilesAsync(AppUtils.ImageSharpFormats);
         if (files.Count == 0) return;
         foreach (var file in files) stickers.Add(new NewSticker { ImgPath = file.Path });
     }
