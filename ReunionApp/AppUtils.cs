@@ -76,8 +76,8 @@ public static class AppUtils
             XamlRoot = app.MainWindow.Content.XamlRoot
         };
 
-        cd.PrimaryButtonClick += (sender, args) => yesClick();
-        cd.CloseButtonClick += (sender, args) => noClick();
+        if (yesClick is not null) cd.PrimaryButtonClick += (sender, args) => yesClick();
+        if (noClick is not null) cd.CloseButtonClick += (sender, args) => noClick();
         cd.CloseButtonClick += (sender, args) => app.IsCdOpen = false;
 
         await cd.ShowAsync();
