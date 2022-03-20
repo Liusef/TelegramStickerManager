@@ -50,9 +50,13 @@
     <None Remove="Pages\BaseCommand.xaml" />
     <None Remove="Pages\CommandPages\AddSticker.xaml" />
     <None Remove="Pages\CommandPages\DelSticker.xaml" />
+    <None Remove="Pages\CommandPages\EditReplaceSelector.xaml" />
+    <None Remove="Pages\CommandPages\EditSticker.xaml" />
+    <None Remove="Pages\CommandPages\ReplaceSticker.xaml" />
     <None Remove="Pages\CommandPages\SetPackIcon.xaml" />
     <None Remove="Pages\CommandPages\SidePanels\AddInfo.xaml" />
     <None Remove="Pages\CommandPages\SidePanels\DelInfo.xaml" />
+    <None Remove="Pages\CommandPages\SidePanels\EditReplaceInfo.xaml" />
     <None Remove="Pages\CommandPages\SidePanels\OrderInfo.xaml" />
     <None Remove="Pages\CommandPages\NewPack.xaml" />
     <None Remove="Pages\CommandPages\OrderSticker.xaml" />
@@ -134,6 +138,26 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="C:\Users\josep\Stuff\Projects\dotnet\TelegramSticker\ReunionApp\.editorconfig" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\CommandPages\ReplaceSticker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\CommandPages\EditSticker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\CommandPages\SidePanels\EditReplaceInfo.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\CommandPages\EditReplaceSelector.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\StickerGrid.xaml">

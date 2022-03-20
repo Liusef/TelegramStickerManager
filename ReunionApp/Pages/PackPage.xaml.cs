@@ -26,7 +26,7 @@ public sealed partial class PackPage : Page
     public PackPage()
     {
         this.InitializeComponent();
-        buttons = new []{ Add, Del, Order, SPI};
+        buttons = new []{ Add, Del, Order, SPI, EditReplace};
     }
 
     protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -105,4 +105,6 @@ public sealed partial class PackPage : Page
     private void OrderSticker(object sender, RoutedEventArgs e) => CommandButtonPressed(CommandType.OrderSticker);
 
     private void SetIcon(object sender, RoutedEventArgs e) => CommandButtonPressed(CommandType.SetPackIcon);
+
+    private void EditReplaceSelect(object sender, RoutedEventArgs e) => CommandButtonPressed(CommandType.EditReplaceSticker);
 }
