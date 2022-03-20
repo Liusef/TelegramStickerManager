@@ -7,6 +7,7 @@ using TgApi.Types;
 using static ReunionApp.Pages.CommandPages.AddSticker;
 using static ReunionApp.Pages.CommandPages.DelSticker;
 using static ReunionApp.Pages.CommandPages.OrderSticker;
+using static ReunionApp.Pages.CommandPages.SetPackIcon;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -80,6 +81,10 @@ public sealed partial class BaseCommand : Page
                 InfoFrame.Navigate(typeof(CommandPages.SidePanels.OrderInfo));
                 Op.Text = "Reorder Stickers";
                 break;
+            case CommandType.SetPackIcon:
+                ContentFrame.Navigate(typeof(CommandPages.SetPackIcon), pack);
+                Op.Text = "Set Pack Icon";
+                break;
             default:
                 await App.GetInstance().ShowBasicDialog("No command was selected",
                     "Somehow, no command for modifying the stickerpack was selected. Please click back.");
@@ -96,5 +101,6 @@ public enum CommandType
     AddSticker = 1,
     DelSticker = 2,
     NewPack = 3,
-    OrderSticker = 4
+    OrderSticker = 4,
+    SetPackIcon =5,
 }
