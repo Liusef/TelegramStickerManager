@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 using ReunionApp.Runners;
@@ -25,7 +27,10 @@ public sealed partial class ProcessingCommand : Page
     protected override async void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        runner = e.Parameter as CommandRunner;
+        (runner, var back) = e.Parameter as ProcessingCommandParams;
+
+        ((BaseCommand)((FrameworkElement)Frame.Parent).Parent).PublicBackButton.IsEnabled = false;
+
         runner.Outputs.CollectionChanged += Outputs_CollectionChanged;
 
         await runner.RunCommandsAsync();
