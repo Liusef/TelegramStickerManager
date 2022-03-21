@@ -41,7 +41,9 @@ public sealed partial class DelSticker : Page
         var yesClick = () =>
         {
             processing.Visibility = Visibility.Visible;
-            var runner = new DelStickerRunner(Grid.SelectedItems.Where(s => s is Sticker).ToArray());
+            var l = new List<Sticker>();
+            foreach (object s in Grid.SelectedItems) if (s is Sticker sticker) l.Add(sticker);
+            var runner = new DelStickerRunner(l.ToArray());
             Frame.Navigate(typeof(ProcessingCommand), runner, new DrillInNavigationTransitionInfo());
         };
 
