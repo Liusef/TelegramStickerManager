@@ -44,6 +44,7 @@
 
 
   <ItemGroup>
+    <None Remove="Controls\StickerGrid.xaml" />
     <None Remove="Images\AppIcon.png" />
     <None Remove="Pages\About.xaml" />
     <None Remove="Pages\BaseCommand.xaml" />
@@ -133,6 +134,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="C:\Users\josep\Stuff\Projects\dotnet\TelegramSticker\ReunionApp\.editorconfig" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\StickerGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Pages\CommandPages\SetPackIcon.xaml">
