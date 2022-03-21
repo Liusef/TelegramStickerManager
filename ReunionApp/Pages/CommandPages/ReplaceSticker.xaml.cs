@@ -53,7 +53,7 @@ public sealed partial class ReplaceSticker : Page
         if (await FindErrors()) return;
 
         processing.Visibility = Visibility.Visible;
-        await Task.Run(async () => await StickerLogic.ResizeAllToStickerParallelAsync(stickers.ToArray(), ScaleImages.IsChecked ?? false));
+        await StickerLogic.ResizeAllToStickerParallelAsync(stickers.ToArray(), ScaleImages.IsChecked ?? false);
         ImgUtils.CollectImageSharpLater(5000);
         var runner = new ReplaceStickerRunner(stickers.ToArray());
         Frame.Navigate(typeof(ProcessingCommand), runner, new DrillInNavigationTransitionInfo());
