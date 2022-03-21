@@ -4,25 +4,28 @@ using TgApi;
 using TgApi.Telegram;
 using TgApi.Types;
 
-Console.OutputEncoding = Encoding.Unicode;
+//Console.OutputEncoding = Encoding.Unicode;
 
-GlobalVars.EnsureDirectories();
+//GlobalVars.EnsureDirectories();
 
-var client = new TdClient();
-client.Bindings.SetLogVerbosityLevel(0);
+//var client = new TdClient();
+//client.Bindings.SetLogVerbosityLevel(0);
 
-var auth = new AuthHandler(client);
+//var auth = new AuthHandler(client);
 
-await auth.SigninCLI();
+//await auth.SigninCLI();
 
-var pack = await StickerPack.GenerateFromName(client, "RichardYohan");
+//var pack = await StickerPack.GenerateFromName(client, "RichardYohan");
 
-foreach (var s in pack.Stickers)
-{
-	await s.GetPathEnsureDownloaded(client);
-	Console.WriteLine(s.Emojis + "\n");
-}
+//foreach (var s in pack.Stickers)
+//{
+//	await s.GetPathEnsureDownloaded(client);
+//	Console.WriteLine(s.Emojis + "\n");
+//}
 
-Console.WriteLine("Done!");
+//Console.WriteLine("Done!");
+
+var path = @"C:\Users\josep\Downloads\FNCQOM_XoAIKHSe.jpg";
+await ImgUtils.ResizePadAsync(path, 100, 100, true, null);
 
 
