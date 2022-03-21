@@ -54,8 +54,11 @@ public sealed partial class EditReplaceSelector : Page
         Frame.Navigate(typeof(EditSticker), sts.ToArray(), new SlideNavigationTransitionInfo { Effect = SlideNavigationTransitionEffect.FromRight });
     }
 
-    private void Replace(object sender, RoutedEventArgs e)
+    private async void Replace(object sender, RoutedEventArgs e)
     {
-
+        if (await FindErrors()) return;
+        var sts = new List<Sticker>();
+        foreach (var s in Grid.SelectedItems) if (s is Sticker sticker) sts.Add(sticker);
+        Frame.Navigate(typeof(ReplaceSticker), sts.ToArray(), new SlideNavigationTransitionInfo { Effect = SlideNavigationTransitionEffect.FromRight });
     }
 }

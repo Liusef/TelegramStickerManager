@@ -50,25 +50,30 @@ public abstract class CommandRunner : INotifyPropertyChanged
     protected virtual void AddReplyToOutputs(Message msg) =>
         Outputs.Add(new CommandOutput(msg.GetMessageString(), null, false));
 
-    protected virtual async Task SendAndAddToOutputsAsync(MessageWaiter waiter, string message)
+    protected virtual async Task<string> SendAndAddToOutputsAsync(MessageWaiter waiter, string message)
     {
         Outputs.Add(new CommandOutput(message, null, true));
-        AddReplyToOutputs(await waiter.SendMsgAndAwaitNext(message));
+        var reply = await waiter.SendMsgAndAwaitNext(message);
+        AddReplyToOutputs(reply);
+        return reply.GetMessageString();
     }
 
-    protected virtual async Task SendImageAndAddToOutputsAsync(MessageWaiter waiter, string path)
+    protected virtual async Task<string> SendImageAndAddToOutputsAsync(MessageWaiter waiter, string path)
     {
         Outputs.Add(new CommandOutput(null, path, true));
         var upload = await FileUpload.StartUpload(App.GetInstance().Client, path);
         await upload.WaitForCompletion();
         var r = await waiter.SendDocumentAndAwaitNext(new InputFile.InputFileId { Id = upload.LocalId });
         AddReplyToOutputs(r);
+        return r.GetMessageString();
     }   
 
-    protected virtual async Task SendDocumentAndAddToOutputsAsync(MessageWaiter waiter, InputFile input, CommandOutput display)
+    protected virtual async Task<string> SendDocumentAndAddToOutputsAsync(MessageWaiter waiter, InputFile input, CommandOutput display)
     {
         Outputs.Add(display);
-        AddReplyToOutputs(await waiter.SendDocumentAndAwaitNext(input));
+        var reply = await waiter.SendDocumentAndAwaitNext(input);
+        AddReplyToOutputs(reply);
+        return reply.GetMessageString();
     }
 }
 

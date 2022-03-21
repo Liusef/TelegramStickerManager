@@ -71,12 +71,25 @@ public static class StickerLogic
         return " ";
     }
 
+
     public static async Task ResizeToStickerAsync(NewSticker sticker)
     {
         sticker.TempPath = await ResizeToStickerAsync(sticker.ImgPath);
     }
 
     public static async Task ResizeAllToStickerParallelAsync(NewSticker[] stickers)
+    {
+        await Parallel.ForEachAsync(stickers, new ParallelOptions { MaxDegreeOfParallelism = App.Threads },
+            async (sticker, ct) => await ResizeToStickerAsync(sticker));
+        ImgUtils.CollectImageSharpLater(5000);
+    }
+
+    public static async Task ResizeToStickerAsync(ReplaceStickerUpdate sticker)
+    {
+        if (File.Exists(sticker.NewPath)) sticker.ThreadsafeNewPath = await ResizeToStickerAsync(sticker.NewPath);
+    }
+
+    public static async Task ResizeAllToStickerParallelAsync(ReplaceStickerUpdate[] stickers)
     {
         await Parallel.ForEachAsync(stickers, new ParallelOptions { MaxDegreeOfParallelism = App.Threads },
             async (sticker, ct) => await ResizeToStickerAsync(sticker));
