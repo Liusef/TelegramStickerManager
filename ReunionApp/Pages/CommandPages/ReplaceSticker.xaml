@@ -70,6 +70,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
             <Button Grid.Column="0"
@@ -81,6 +82,40 @@
             </Button>
 
             <Button Grid.Column="1"
+                    Margin="0,0,6,0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch">
+                Options
+                <Button.Flyout>
+                    <Flyout>
+                        <StackPanel Margin="12">
+                            <TextBlock HorizontalTextAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       FontWeight="Bold">
+                                Options
+                            </TextBlock>
+                            <StackPanel HorizontalAlignment="Left"
+                                        Orientation="Horizontal"
+                                        Spacing="6">
+                                <CheckBox x:Name="ScaleImages"
+                                          IsChecked="True">
+                                    <RichTextBlock>
+                                        <Paragraph>
+                                            <Run>Upscale Images to Maximum Possible Size</Run>
+
+                                            <LineBreak/>
+                                            <Run FontSize="12" FontWeight="Light" CharacterSpacing="25">Stickers will appear larger, but blurrier</Run>
+                                        </Paragraph>
+
+                                    </RichTextBlock>
+                                </CheckBox>
+                            </StackPanel>
+                        </StackPanel>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+
+            <Button Grid.Column="2"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
                     Margin="0, 0, 6, 0"

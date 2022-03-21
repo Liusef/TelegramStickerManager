@@ -58,11 +58,12 @@ public static class StickerLogic
     }
 
 
-    public static async Task<string> ResizeToStickerAsync(string path)
+    public static async Task<string> ResizeToStickerAsync(string path, bool scale)
     {
         try
         {
-            return await TgApi.ImgUtils.ResizeFitAsync(path, LogicConsts.StickerSize, LogicConsts.StickerSize, true, LogicConsts.formats);
+            if (scale) return await TgApi.ImgUtils.ResizeFitAsync(path, LogicConsts.StickerSize, LogicConsts.StickerSize, true, LogicConsts.formats);
+            else return await TgApi.ImgUtils.ResizeFitPadWidthPriorityAsync(path, LogicConsts.StickerSize, LogicConsts.StickerSize, true, LogicConsts.formats);
         }
         catch (Exception ex)
         {
@@ -72,27 +73,27 @@ public static class StickerLogic
     }
 
 
-    public static async Task ResizeToStickerAsync(NewSticker sticker)
+    public static async Task ResizeToStickerAsync(NewSticker sticker, bool scale)
     {
-        sticker.TempPath = await ResizeToStickerAsync(sticker.ImgPath);
+        sticker.TempPath = await ResizeToStickerAsync(sticker.ImgPath, scale);
     }
 
-    public static async Task ResizeAllToStickerParallelAsync(NewSticker[] stickers)
+    public static async Task ResizeAllToStickerParallelAsync(NewSticker[] stickers, bool scale)
     {
         await Parallel.ForEachAsync(stickers, new ParallelOptions { MaxDegreeOfParallelism = App.Threads },
-            async (sticker, ct) => await ResizeToStickerAsync(sticker));
+            async (sticker, ct) => await ResizeToStickerAsync(sticker, scale));
         ImgUtils.CollectImageSharpLater(5000);
     }
 
-    public static async Task ResizeToStickerAsync(ReplaceStickerUpdate sticker)
+    public static async Task ResizeToStickerAsync(ReplaceStickerUpdate sticker, bool scale)
     {
-        if (File.Exists(sticker.NewPath)) sticker.ThreadsafeNewPath = await ResizeToStickerAsync(sticker.NewPath);
+        if (File.Exists(sticker.NewPath)) sticker.ThreadsafeNewPath = await ResizeToStickerAsync(sticker.NewPath, scale);
     }
 
-    public static async Task ResizeAllToStickerParallelAsync(ReplaceStickerUpdate[] stickers)
+    public static async Task ResizeAllToStickerParallelAsync(ReplaceStickerUpdate[] stickers, bool scale)
     {
         await Parallel.ForEachAsync(stickers, new ParallelOptions { MaxDegreeOfParallelism = App.Threads },
-            async (sticker, ct) => await ResizeToStickerAsync(sticker));
+            async (sticker, ct) => await ResizeToStickerAsync(sticker, scale));
         ImgUtils.CollectImageSharpLater(5000);
     }
 
@@ -101,7 +102,7 @@ public static class StickerLogic
         try
         {
             // TODO update this to be the one that doesn't distort everything
-            return await TgApi.ImgUtils.ResizeAsync(path, LogicConsts.ThumbSize, LogicConsts.ThumbSize, true, LogicConsts.formats);
+            return await TgApi.ImgUtils.ResizePadAsync(path, LogicConsts.ThumbSize, LogicConsts.ThumbSize, true, LogicConsts.formats);
         }
         catch (Exception ex)
         {
