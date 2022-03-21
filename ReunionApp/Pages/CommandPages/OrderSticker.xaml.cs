@@ -41,22 +41,9 @@ public sealed partial class OrderSticker : Page
     private async void Finish(object sender, RoutedEventArgs e)
     {
         if (await FindErrors()) return;
-
         processing.Visibility = Visibility.Visible;
-
-        (Sticker, Sticker)[] swaps = null;
-
-        try
-        {
-            swaps = Runners.RunnerDependencies.OrderStickerRunnerSorter.GetSwaps(pack, stickers.ToArray());
-        }
-        catch (Exception ex)
-        {
-            await App.GetInstance().ShowExceptionDialog(ex);
-        }
+        (Sticker, Sticker)[] swaps = Runners.RunnerDependencies.OrderStickerRunnerSorter.GetSwaps(pack, stickers.ToArray());
         var runner = new OrderStickerRunner(swaps);
-
-        processing.Visibility = Visibility.Collapsed;
         Frame.Navigate(typeof(ProcessingCommand), runner, new DrillInNavigationTransitionInfo());
     }
 
