@@ -48,7 +48,7 @@ public sealed partial class SetPackIcon : Page
     {
         var file = await AppUtils.PickSingleFileAsync(AppUtils.ImageSharpFormats);
         if (file == null || !File.Exists(file.Path)) return;
-        var path = await Task.Run(async()=>await TgApi.ImgUtils.ResizeAsync(file.Path, 100, 100, true, new[] { "png", "webp" }));
+        var path = await Task.Run(async()=>await StickerLogic.ResizeToThumbAsync(file.Path));
 
         await AreYouSure(() => Continue(path));
     }
