@@ -73,40 +73,21 @@ public sealed partial class AddSticker : Page
         processing.Visibility = Visibility.Visible;
 
         await Task.Run(() => Utils.ClearTemp());
-        await Task.Run(async () => await ProcessImgs());
+        await Task.Run(async () => await StickerLogic.ResizeAllToStickerParallelAsync(stickers.ToArray()));
+
 
         CommandRunner runner;
         if (newPackMode)
         {
             runner = new NewPackRunner(pack, stickers.ToArray());
             if (pack.Thumb is not null && File.Exists(pack.Thumb.LocalPath))
-                ((NewPackThumb)pack.Thumb).Path = await Task.Run( async () => await TgApi.ImgUtils.ResizeAsync(pack.Thumb.BestPath, 100, 100, true, new[] { "png" }));
+                ((NewPackThumb)pack.Thumb).Path = await Task.Run( async () => await StickerLogic.ResizeToThumbAsync(pack.Thumb.BestPath));
         }
         else runner = new AddStickerRunner(pack, stickers.ToArray());
 
         Frame.Navigate(typeof(ProcessingCommand), runner, new DrillInNavigationTransitionInfo());
     }
-
-    private async Task ProcessImgs()
-    {
-        const int size = 512;
-        string[] formats = new[] { "png", "webp" };
-        await Parallel.ForEachAsync(stickers, new ParallelOptions { MaxDegreeOfParallelism = App.Threads }, async (sticker, ct) =>
-        {
-            try
-            {
-                sticker.TempPath = await TgApi.ImgUtils.ResizeFitAsync(sticker.ImgPath, size, size, true, formats);
-            }
-            catch (Exception ex)
-            {
-                await App.GetInstance().ShowBasicDialog("We hit an exception",
-                    $"We think the error is because of \"{sticker.ImgPath}\" which likely shows up as a blank image in the add view. " +
-                    $"We'll show the exception dialog so you can make sure.\n\n{ex}", "Continue");
-            }
-        });
-        ImgUtils.CollectImageSharpLater(5000);
-    }
-
+    
     private async Task<bool> FindErrors()
     {
         if (stickers.Count == 0)
@@ -121,7 +102,7 @@ public sealed partial class AddSticker : Page
                                                                                     $"Total: {pack.Count + stickers.Count}");
             return true;
         }
-        StickerError[] errs = StickerLogic.GetStickerErrors(stickers.ToArray());
+        StickerError[] errs = await Task.Run(() => StickerLogic.GetStickerErrors(stickers.ToArray()));
         if (errs.Length > 0)
         {
             await App.GetInstance().ShowBasicDialog("We found some errors", string.Join("\n", errs.Select((x) => x.ToString())));
@@ -131,10 +112,8 @@ public sealed partial class AddSticker : Page
     }
 
     private async Task<bool> FindWarnings() // TODO Implement Warnings
-    {
-        await Task.Delay(0); // This is a placeholder to suppress warnings
-        return false;
-    }
+        => false;
+    
 
     private void SplitButton_Click(SplitButton sender, SplitButtonClickEventArgs args) => Add(sender, default);
     
