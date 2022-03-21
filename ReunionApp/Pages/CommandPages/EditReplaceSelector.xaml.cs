@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -35,8 +36,19 @@ public sealed partial class EditReplaceSelector : Page
         pack = e.Parameter as StickerPack;
     }
 
-    private void Edit(object sender, RoutedEventArgs e)
+    private async Task<bool> FindErrors()
     {
+        if (Grid.SelectedItems.Count == 0)
+        {
+            await App.GetInstance().ShowBasicDialog("You can't do that!", "You must select at least 1 item in order to continue");
+            return true;
+        }
+        return false;
+    }
+
+    private async void Edit(object sender, RoutedEventArgs e)
+    {
+        if (await FindErrors()) return;
         var sts = new List<Sticker>();
         foreach (var s in Grid.SelectedItems) if (s is Sticker sticker) sts.Add(sticker);
         Frame.Navigate(typeof(EditSticker), sts.ToArray(), new SlideNavigationTransitionInfo { Effect = SlideNavigationTransitionEffect.FromRight });

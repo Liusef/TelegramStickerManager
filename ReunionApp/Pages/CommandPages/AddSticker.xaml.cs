@@ -120,7 +120,7 @@ public sealed partial class AddSticker : Page
 
     private void Emojis_TextChanged(object sender, RoutedEventArgs args)
     {
-        var send = sender as TextBox;
+        var send = sender as TextBox; // TODO Find out how to replace this with dedicated autosuggest control
         send.Text = GEmojiSharp.Emoji.Emojify(send.Text);
         send.Select(send.Text.Length, send.Text.Length);
     }

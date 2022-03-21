@@ -46,7 +46,6 @@ public sealed partial class BaseCommand : Page
         // This block is to ensure that bitmaps and other large objects are garbage collected, as pages aren't disposed by the garbage collector
         // NOTE: Lots of objects that need to be garbage collected are RefCounted from Unmanaged memory
         // TODO This is not a good solution for memory management. Find a way to dispose of pages instead.
-        NavigationCacheMode = NavigationCacheMode.Disabled;
         ContentFrame.Navigate(typeof(Page));
         Bindings.StopTracking();
         AppUtils.CollectLater(5000);   // This code ensures that when this method is called and images aren't being displayed,

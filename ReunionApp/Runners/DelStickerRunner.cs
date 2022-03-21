@@ -32,11 +32,8 @@ public class DelStickerRunner : CommandRunner
         for (Index = 0; Index < stickers.Length; Index++)
         {
             await SendAndAddToOutputsAsync(waiter, "/delsticker");
-
-            Outputs.Add(new CommandOutput(null, stickers[Index].DecodedPath, true));
-            var msg = await client.SendBasicDocumentAsync(botId, new InputFileRemote { Id = stickers[Index].RemoteFileId });
-            var reply = await waiter.WaitNextMsgAsync(msg.Id);
-            AddReplyToOutputs(reply);
+            await SendDocumentAndAddToOutputsAsync(waiter, new InputFileRemote { Id = stickers[Index].RemoteFileId },
+                new CommandOutput(null, stickers[Index].BestPath, true));
         }
     }
 }

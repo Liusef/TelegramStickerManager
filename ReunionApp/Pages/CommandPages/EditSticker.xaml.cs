@@ -4,13 +4,17 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
+using NeoSmart.Unicode;
+using ReunionApp.Runners;
 using TgApi.Types;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -33,6 +37,36 @@ public sealed partial class EditSticker : Page
         base.OnNavigatedTo(e);
         var p = e.Parameter as Sticker[];
         foreach (var s in p) stickers.Add(new EditStickerUpdate { sticker = s});
+    }
+
+    private void Back(object sender, RoutedEventArgs e) => Frame.GoBack();
+
+    private async Task<bool> FindErrors()
+    {
+        var sl = new List<string>();
+        foreach (var s in stickers) sl.Add(s.newEmoji);
+        var errs = StickerLogic.GetEmojiErrorsList(sl.ToArray());
+        if (errs.Length > 0)
+        {
+            await App.GetInstance().ShowBasicDialog("Please fix the following issues", string.Join("\n", errs.Select(x => x.ToString())));
+            return true;
+        }
+
+        return false;
+    }
+
+    private async void Finish(object sender, RoutedEventArgs e)
+    {
+        if (await FindErrors()) return;
+        var runner = new EditStickerRunner(stickers.ToArray());
+        Frame.Navigate(typeof(ProcessingCommand), runner, new DrillInNavigationTransitionInfo());
+    }
+
+    private void Emojis_TextChanged(object sender, RoutedEventArgs args)
+    {
+        var send = sender as TextBox; // TODO Find out how to replace this with dedicated autosuggest control
+        send.Text = GEmojiSharp.Emoji.Emojify(send.Text);
+        send.Select(send.Text.Length, send.Text.Length);
     }
 }
 
