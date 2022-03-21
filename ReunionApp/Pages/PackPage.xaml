@@ -97,6 +97,11 @@
                                 Click="OrderSticker"
                                 HorizontalAlignment="Stretch"
                                 IsEnabled="False" />
+                        <Button x:Name="EditReplace"
+                                Content="Edit or Replace Stickers"
+                                Click="EditReplaceSelect"
+                                HorizontalAlignment="Stretch"
+                                IsEnabled="False" />
                         <Button x:Name="SPI"
                                 Content="Set Pack Icon"
                                 Click="SetIcon"
@@ -127,36 +132,15 @@
 
         </StackPanel>
 
-        <GridView
-            x:Name="StickerGrid"
-            Grid.Column="1"
-            ItemsSource="{x:Bind stickers}"
-            HorizontalAlignment="Center"
-            Margin="16"
-            Padding="8"
-            CornerRadius="16"
-            ShowsScrollingPlaceholders="True"
-            Background="{ThemeResource SystemRevealListLowColor}"
-            Visibility="Collapsed">
-            <GridView.ItemTemplate>
-                <DataTemplate x:DataType="types:Sticker">
-                    <StackPanel Padding="12"
-                                Spacing="12"
-                                MinHeight="163">
-                        <Image x:Name="StickerImg"
-                               Source="{x:Bind BestPath}"
-                               Width="124"
-                               Height="160"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Stretch" />
-                        <TextBlock Text="{x:Bind Emojis}"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Bottom"
-                                   TextTrimming="CharacterEllipsis" />
-                    </StackPanel>
-                </DataTemplate>
-            </GridView.ItemTemplate>
-        </GridView>
+        <Grid x:Name="StickerGridContainer"
+              Grid.Column="1"
+              HorizontalAlignment="Center"
+              Margin="16" Padding="8" CornerRadius="16"
+              Visibility="Collapsed"
+              Background="{ThemeResource SystemRevealListLowColor}">
+            <controls:StickerGrid x:Name="StickerGrid"
+                                  ItemsSource="{x:Bind stickers}"/>
+        </Grid>
         
     </Grid>
 </Page>

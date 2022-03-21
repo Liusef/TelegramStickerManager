@@ -44,14 +44,19 @@
 
 
   <ItemGroup>
+    <None Remove="Controls\StickerGrid.xaml" />
     <None Remove="Images\AppIcon.png" />
     <None Remove="Pages\About.xaml" />
     <None Remove="Pages\BaseCommand.xaml" />
     <None Remove="Pages\CommandPages\AddSticker.xaml" />
     <None Remove="Pages\CommandPages\DelSticker.xaml" />
+    <None Remove="Pages\CommandPages\EditReplaceSelector.xaml" />
+    <None Remove="Pages\CommandPages\EditSticker.xaml" />
+    <None Remove="Pages\CommandPages\ReplaceSticker.xaml" />
     <None Remove="Pages\CommandPages\SetPackIcon.xaml" />
     <None Remove="Pages\CommandPages\SidePanels\AddInfo.xaml" />
     <None Remove="Pages\CommandPages\SidePanels\DelInfo.xaml" />
+    <None Remove="Pages\CommandPages\SidePanels\EditReplaceInfo.xaml" />
     <None Remove="Pages\CommandPages\SidePanels\OrderInfo.xaml" />
     <None Remove="Pages\CommandPages\NewPack.xaml" />
     <None Remove="Pages\CommandPages\OrderSticker.xaml" />
@@ -70,7 +75,7 @@
 
   <ItemGroup>
     <PackageReference Include="GEmojiSharp" Version="1.5.0" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.0" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.1" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22000.197" />
     <PackageReference Include="Unicode.net" Version="2.0.0" />
     <Manifest Include="$(ApplicationManifest)" />
@@ -133,6 +138,31 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="C:\Users\josep\Stuff\Projects\dotnet\TelegramSticker\ReunionApp\.editorconfig" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\CommandPages\ReplaceSticker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\CommandPages\EditSticker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\CommandPages\SidePanels\EditReplaceInfo.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\CommandPages\EditReplaceSelector.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\StickerGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Pages\CommandPages\SetPackIcon.xaml">

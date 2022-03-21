@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -40,12 +41,9 @@ public sealed partial class DelSticker : Page
         var yesClick = () =>
         {
             processing.Visibility = Visibility.Visible;
-
             var l = new List<Sticker>();
-            foreach (var s in Grid.SelectedItems) if (s is Sticker sticker) l.Add(sticker);
+            foreach (object s in Grid.SelectedItems) if (s is Sticker sticker) l.Add(sticker);
             var runner = new DelStickerRunner(l.ToArray());
-
-            processing.Visibility = Visibility.Collapsed;
             Frame.Navigate(typeof(ProcessingCommand), runner, new DrillInNavigationTransitionInfo());
         };
 

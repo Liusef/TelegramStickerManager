@@ -1,10 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NeoSmart.Unicode;
+using TgApi;
+
 
 namespace ReunionApp.Pages.CommandPages;
+
+public static class LogicConsts
+{
+    public const int StickerSize = 512;
+    public const int ThumbSize = 100;
+
+    public const string EmptyEmoji = "The Emojis string cannot be empty!";
+    public const string InvalidEmoji = "The Emojis string contains non-emoji characters";
+    public const string FileNotFound = "The file associated with this sticker could not be found";
+
+    public static readonly string[] formats = new[] { "png", "webp" };
+}
+
 public static class StickerLogic
 {
     public static StickerError[] GetStickerErrors(NewSticker[] stickers)
@@ -84,6 +101,7 @@ public static class StickerLogic
     {
         try
         {
+            // TODO update this to be the one that doesn't distort everything
             return await TgApi.ImgUtils.ResizePadAsync(path, LogicConsts.ThumbSize, LogicConsts.ThumbSize, true, LogicConsts.formats);
         }
         catch (Exception ex)

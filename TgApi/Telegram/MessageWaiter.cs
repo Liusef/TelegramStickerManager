@@ -1,4 +1,5 @@
 ﻿using TdLib;
+using static TdLib.TdApi;
 using static TdLib.TdApi.InputFile;
 
 namespace TgApi.Telegram;
@@ -99,7 +100,7 @@ public class MessageWaiter
     /// <param name="input">The InputFileId corresponding to the document</param>
     /// <param name="delay">The delay between polling Telegram for a new message</param>
     /// <returns>A TdApi.Message object</returns>
-    public async Task<TdApi.Message> SendDocumentAndAwaitNext(InputFileId input, int delay = 25)
+    public async Task<TdApi.Message> SendDocumentAndAwaitNext(InputFile input, int delay = 25)
     {
         long id = (await _client.SendBasicDocumentAsync(_chatId, input)).Id;
         return await WaitNextMsgAsync(id, delay);

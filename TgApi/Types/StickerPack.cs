@@ -9,7 +9,7 @@ public class StickerPack
 	/// <summary>
 	/// The ID of this sticker pack
 	/// </summary>
-	public long Id { get; init; }
+	public long Id { get; set; }
 	/// <summary>
 	/// The title of this sticker pack
 	/// </summary>

@@ -42,17 +42,15 @@
 
             <Frame x:Name="InfoFrame"
                    Grid.Row="1"
-                   Margin="24, 0, 0, 24" />
+                   Margin="24, 0, 0, 24"/>
 
         </Grid>
 
         <Frame x:Name="ContentFrame"
                Grid.Column="1"
-               Margin="24"
+               Margin="16"
                Padding="12"
                CornerRadius="16"
-               Background="{ThemeResource SystemRevealListLowColor}"
-               IsNavigationStackEnabled="False"
-               CacheSize="0" />
+               Background="{ThemeResource SystemRevealListLowColor}"/>
     </Grid>
 </Page>

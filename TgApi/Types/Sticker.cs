@@ -13,11 +13,11 @@ public class Sticker
 	/// <summary>
 	/// The width of the sticker in pixels
 	/// </summary>
-	public int Width { get; init; }
+	public int Width { get; set; }
 	/// <summary>
 	/// The Height of the sticker in pixels
 	/// </summary>
-	public int Height { get; init; }
+	public int Height { get; set; }
 	/// <summary>
 	/// The Primary emoji associated with this sticker
 	/// </summary>
@@ -37,11 +37,11 @@ public class Sticker
 	/// <summary>
 	/// The Remote File ID of the sticker document.
 	/// </summary>
-	public string RemoteFileId { get; init; }
+	public string RemoteFileId { get; set; }
 	/// <summary>
 	/// The size of the sticker
 	/// </summary>
-	public int Size { get; init; }
+	public int Size { get; set; }
 
 	/// <summary>
 	/// The local path of the sticker on the system
