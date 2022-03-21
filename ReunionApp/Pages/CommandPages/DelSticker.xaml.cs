@@ -31,6 +31,7 @@ public sealed partial class DelSticker : Page
     protected override void OnNavigatedFrom(NavigationEventArgs e)
     {
         Bindings.StopTracking();
+        Grid.ItemsSource = new Sticker[0]; // TODO decide if this is necessary
         base.OnNavigatedFrom(e);
     }
 

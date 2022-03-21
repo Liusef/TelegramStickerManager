@@ -77,10 +77,9 @@ public static class ImgUtils
                 img.Mutate(x => x.Resize(new ResizeOptions
                 {
                     Size = new Size(width, height),
-                    Mode = ResizeMode.Pad,
-                    Sampler = KnownResamplers.Spline
+                    Mode = ResizeMode.Pad
                 }));
-                await img.SaveAsync(savePath, new PngEncoder { ColorType = PngColorType.RgbWithAlpha});
+                await img.SaveAsync(savePath);
             }
             else if (forceFormat && !formats.Contains(Path.GetExtension(path)[1..]))
                 await img.SaveAsync(savePath);
@@ -106,8 +105,7 @@ public static class ImgUtils
                 img.Mutate(x => x.Resize(new ResizeOptions
                 {
                     Size = new Size(maxWidth, maxHeight),
-                    Mode = ResizeMode.Max,
-                    Sampler = KnownResamplers.Spline
+                    Mode = ResizeMode.Max
                 }));
                 await img.SaveAsync(savePath);
             }
@@ -117,7 +115,6 @@ public static class ImgUtils
                 {
                     Size = new Size(maxWidth, img.Height),
                     Mode = ResizeMode.Pad,
-                    Sampler = KnownResamplers.Lanczos3,
                 }));
                 await img.SaveAsync(savePath);
             }
