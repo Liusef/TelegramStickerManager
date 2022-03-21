@@ -67,17 +67,15 @@ public sealed partial class AddSticker : Page
 
     private async void Finish(object sender, RoutedEventArgs e)
     {
-        TgApi.Utils.ClearTemp();
-
         if (await FindErrors()) return;
         if (await FindWarnings()) return;
 
         processing.Visibility = Visibility.Visible;
 
+        await Task.Run(() => Utils.ClearTemp());
         await Task.Run(async () => await ProcessImgs());
 
         CommandRunner runner;
-
         if (newPackMode)
         {
             runner = new NewPackRunner(pack, stickers.ToArray());
@@ -86,7 +84,6 @@ public sealed partial class AddSticker : Page
         }
         else runner = new AddStickerRunner(pack, stickers.ToArray());
 
-        processing.Visibility = Visibility.Collapsed;
         Frame.Navigate(typeof(ProcessingCommand), runner, new DrillInNavigationTransitionInfo());
     }
 
@@ -107,15 +104,8 @@ public sealed partial class AddSticker : Page
                     $"We'll show the exception dialog so you can make sure.\n\n{ex}", "Continue");
             }
         });
-        CollectImageSharpLater(5000);
+        ImgUtils.CollectImageSharpLater(5000);
     }
-
-    private static async void CollectImageSharpLater(int delay) =>
-        await Task.Run(async () =>
-        {
-            await Task.Delay(delay);
-            ImgUtils.ReleaseImageSharpMemory();
-        });
 
     private async Task<bool> FindErrors()
     {
@@ -131,18 +121,10 @@ public sealed partial class AddSticker : Page
                                                                                     $"Total: {pack.Count + stickers.Count}");
             return true;
         }
-        List<string> errs = new List<string>();
-        for (int i = 0; i < stickers.Count; i++)
+        StickerError[] errs = StickerLogic.GetStickerErrors(stickers.ToArray());
+        if (errs.Length > 0)
         {
-            var s = stickers[i];
-            if (!File.Exists(s.ImgPath)) errs.Add($"- Error at Index {i}: File {s.ImgPath} not found.");
-            if (string.IsNullOrWhiteSpace(s.Emojis)) errs.Add($"- Error at Index {i}: Emojis list cannot be empty.");
-            else if (!Emoji.IsEmoji(s.Emojis)) errs.Add($"- Error at Index {i}: Emojis list contains non-emoji characters.");
-        }
-        if (errs.Count > 0)
-        {
-            errs.Insert(0, "Please remember that indices are 0 based. The first item is 0.");
-            await App.GetInstance().ShowBasicDialog("We found some errors", String.Join("\n", errs));
+            await App.GetInstance().ShowBasicDialog("We found some errors", string.Join("\n", errs.Select((x) => x.ToString())));
             return true;
         }
         return false;
