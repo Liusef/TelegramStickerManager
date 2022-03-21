@@ -30,7 +30,7 @@ public sealed partial class StickerGrid : UserControl
     public ListViewSelectionMode SelectionMode { get; set; } = ListViewSelectionMode.None;
     public new bool AllowDrop { get; set; } = false;
 
-    public IList<Sticker> SelectedItems => (IList<Sticker>) this.Grid.SelectedItems;
+    public IList<object> SelectedItems => Grid.SelectedItems;
 
     public StickerGrid() 
     { 

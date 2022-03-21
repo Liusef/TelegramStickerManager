@@ -132,13 +132,14 @@
 
         </StackPanel>
 
-        <Grid Grid.Column="1"
+        <Grid x:Name="StickerGridContainer"
+              Grid.Column="1"
               HorizontalAlignment="Center"
               Margin="16" Padding="8" CornerRadius="16"
+              Visibility="Collapsed"
               Background="{ThemeResource SystemRevealListLowColor}">
             <controls:StickerGrid x:Name="StickerGrid"
-                                  ItemsSource="{x:Bind stickers}"
-                                  Visibility="Collapsed"/>
+                                  ItemsSource="{x:Bind stickers}"/>
         </Grid>
         
     </Grid>

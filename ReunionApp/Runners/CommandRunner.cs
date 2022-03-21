@@ -64,6 +64,12 @@ public abstract class CommandRunner : INotifyPropertyChanged
         var r = await waiter.SendDocumentAndAwaitNext(new InputFile.InputFileId { Id = upload.LocalId });
         AddReplyToOutputs(r);
     }   
+
+    protected virtual async Task SendDocumentAndAddToOutputsAsync(MessageWaiter waiter, InputFile input, CommandOutput display)
+    {
+        Outputs.Add(display);
+        AddReplyToOutputs(await waiter.SendDocumentAndAwaitNext(input));
+    }
 }
 
 public record CommandOutput(string Content, string ImgPath, bool Right)

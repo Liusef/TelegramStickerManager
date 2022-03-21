@@ -35,7 +35,7 @@ public sealed partial class PackPage : Page
 
         if (update)
         {
-            StickerGrid.Visibility = Visibility.Collapsed;
+            StickerGridContainer.Visibility = Visibility.Collapsed;
             Load.Visibility = Visibility.Visible;
             DisableAllButtons();
 
@@ -54,7 +54,7 @@ public sealed partial class PackPage : Page
         }
 
         base.OnNavigatedTo(e);
-        StickerGrid.Visibility = Visibility.Visible;
+        StickerGridContainer.Visibility = Visibility.Visible;
         Load.Visibility = Visibility.Collapsed;
         EnableAllButtons();
     }

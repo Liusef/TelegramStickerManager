@@ -30,7 +30,7 @@ namespace InstallDependencies
 		private const string WinARTPackageVer = "1.440.209.0";
 
 		private const string WinAppRTInfoUri = "https://docs.microsoft.com/en-us/windows/apps/windows-app-sdk/downloads";
-		private const string WinAppRTDownloadName = "The Windows App Runtime 1.0.1";
+		private const string WinAppRTDownloadName = "The Windows App Runtime v1.0.1";
 		private const string WinAppRTDownloadUri = "https://aka.ms/windowsappsdk/1.0/1.0.1/windowsappruntimeinstall-1.0.1-x64.exe";
 		private const string WinAppRTDownloadSize = "53.2 MB";
 
@@ -49,7 +49,7 @@ namespace InstallDependencies
 			{
 				try
 				{
-					NET = NetDRTInstalled();
+					NET = Net6DRTInstalled();
 				}
 				catch
 				{
@@ -165,7 +165,7 @@ namespace InstallDependencies
 			Utils.Pause();
 		}
 
-		public static bool NetDRTInstalled(string exe = "dotnet")
+		public static bool Net6DRTInstalled(string exe = "dotnet")
 		{
 			var s = Utils.GetConsoleOut(exe, "--list-runtimes");
 			return s.Contains(NetDRTPackage);
@@ -176,7 +176,7 @@ namespace InstallDependencies
 			foreach (string output in new[] { WinART64, WinARTMain, WinARTSingleton, WinARTDDLM })
 			{
 				var s = Utils.GetConsoleOut("powershell", $"-Command Get-AppxPackage {output}");
-				if (!s.Contains(WinARTPackageVer)) return false;
+				if (!s.Contains(": " + WinARTPackageVer)) return false; // TODO this is stupid and awful find a better solution
 			}
 			return true;
 		}
@@ -219,7 +219,7 @@ namespace InstallDependencies
 			bool done = false;
 			try
 			{
-				done = NetDRTInstalled("C:\\Program Files\\dotnet\\dotnet.exe");
+				done = Net6DRTInstalled("C:\\Program Files\\dotnet\\dotnet.exe");
 			}
 			catch (Exception ex)
 			{
