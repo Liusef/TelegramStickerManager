@@ -10,23 +10,36 @@ namespace InstallDependencies
 	internal static class InstallDependencies
 	{
 		private const string Sep = "=========================================================";
-		private const string Net6DRT = "Microsoft.WindowsDesktop.App 6.0";
+
+		private const string NetDRTName = "The .NET 6 Desktop Runtime";
+		private const string NetDRTPackage = "Microsoft.WindowsDesktop.App 6.0";
+
+		private const string NETInfoUri = "https://dotnet.microsoft.com/en-us/download/dotnet/6.0/runtime";
+		private const string NETDownloadName = "The .NET Desktop Runtime 6.0.2";
+		private const string NETDownloadUri = "https://download.visualstudio.microsoft.com/download/pr/7fbe3ce3-4082-4995-93de-674038ac919b/56d3fa94d78dc3f39fc70d73ef174c93/windowsdesktop-runtime-6.0.2-win-x64.exe";
+		private const string NETDownloadSize = "54.5 MB";
+
+
+
+		private const string WinARTName = "The Windows App Runtime";
 		private const string WinART64 = "Microsoft.WindowsAppRuntime.1.0";
 		private const string WinARTMain = "MicrosoftCorporationII.WindowsAppRuntime.Main.1.0";
 		private const string WinARTSingleton = "Microsoft.WindowsAppRuntime.Singleton";
 		private const string WinARTDDLM = "Microsoft.WinAppRuntime.DDLM.1.440.209.0-x6";
 		private const string AppRT = "*appruntime*";
-		private const string WinARTVer = "1.440.209.0";
+		private const string WinARTPackageVer = "1.440.209.0";
 
-		private const string NET6Download = "https://download.visualstudio.microsoft.com/download/pr/7fbe3ce3-4082-4995-93de-674038ac919b/56d3fa94d78dc3f39fc70d73ef174c93/windowsdesktop-runtime-6.0.2-win-x64.exe";
-		private const string WinAppRTDownload = "https://aka.ms/windowsappsdk/1.0/1.0.1/windowsappruntimeinstall-1.0.1-x64.exe";
+		private const string WinAppRTInfoUri = "https://docs.microsoft.com/en-us/windows/apps/windows-app-sdk/downloads";
+		private const string WinAppRTDownloadName = "The Windows App Runtime 1.0.1";
+		private const string WinAppRTDownloadUri = "https://aka.ms/windowsappsdk/1.0/1.0.1/windowsappruntimeinstall-1.0.1-x64.exe";
+		private const string WinAppRTDownloadSize = "53.2 MB";
 
 		public static async Task Main(string[] args)
 		{
 			Console.Write("\nChecking if you have required dependencies installed");
 
-			bool NET6 = false;
-			bool NET6Canceled = false;
+			bool NET = false;
+			bool NETCanceled = false;
 			bool WARTFull = false;
 			bool WARTCanceled = false;
 			bool WARTAny = false;
@@ -36,11 +49,11 @@ namespace InstallDependencies
 			{
 				try
 				{
-					NET6 = Net6DRTInstalled();
+					NET = NetDRTInstalled();
 				}
 				catch
 				{
-					NET6 = false;
+					NET = false;
 				}
 				WARTFull = WinARTFullInstall();
 				WARTAny = WinARTAnyInstall();
@@ -55,31 +68,31 @@ namespace InstallDependencies
 
 			Console.WriteLine("\n");
 
-			if (!NET6)
+			if (!NET)
 			{
 				Console.ForegroundColor = ConsoleColor.Red;
-				Console.WriteLine("We couldn't find the .NET 6 Desktop Runtime on your device\n");
+				Console.WriteLine($"We couldn't find {NetDRTName} on your device\n");
 				Console.ResetColor();
 
-				if (Utils.PromptYesNo("Would you like this program to automatically install the .NET 6 Desktop Runtime (54.5 MB)? (y/n): "))
+				if (Utils.PromptYesNo($"Would you like this program to automatically install {NETDownloadName} ({NETDownloadSize})? (y/n): "))
 				{
-					var s = await InstallNET6DRT();
-					NET6 = s;
-					NET6Canceled = !s;
+					var s = await InstallNETDRT();
+					NET = s;
+					NETCanceled = !s;
 				}
 				else
 				{
-					NET6Canceled = true;
+					NETCanceled = true;
 				}
 			}
 
 			if (!WARTFull && WARTAny)
 			{
 				Console.ForegroundColor = ConsoleColor.Yellow;
-				Console.WriteLine("We found a version a version of the Windows App Runtime, but it may be incompatible.\n");
+				Console.WriteLine($"We found a version a version of {WinARTName}, but it may be incompatible.\n");
 				Console.ResetColor();
 
-				if (Utils.PromptYesNo("Would you like this program to automatically install the Windows App Runtime 1.0 (215 MB)? (y/n): "))
+				if (Utils.PromptYesNo($"Would you like this program to automatically install {WinAppRTDownloadName} ({WinAppRTDownloadSize})? (y/n): "))
 				{
 					var s = await InstallWART();
 					WARTFull = s;
@@ -94,10 +107,10 @@ namespace InstallDependencies
 			else if (!WARTFull && !WARTAny)
 			{
 				Console.ForegroundColor = ConsoleColor.Red;
-				Console.WriteLine("We couldn't find the Windows App Runtime on your device\n");
+				Console.WriteLine($"We couldn't find {WinARTName} on your device\n");
 				Console.ResetColor();
 
-				if (Utils.PromptYesNo("Would you like this program to automatically install the Windows App Runtime 1.0 (215 MB)? (y/n): "))
+				if (Utils.PromptYesNo($"Would you like this program to automatically install {WinAppRTDownloadName} ({WinAppRTDownloadSize})? (y/n): "))
 				{
 					var s = await InstallWART();
 					WARTFull = s;
@@ -110,13 +123,13 @@ namespace InstallDependencies
 			}
 
 
-			if (NET6Canceled)
+			if (NETCanceled)
 			{
 				Console.ForegroundColor = ConsoleColor.Red;
-				Console.WriteLine($"\n{Sep}\nThe .NET 6 Desktop Runtime is required to run the application. Download it here:");
+				Console.WriteLine($"\n{Sep}\n{NetDRTName} is required to run the application. Download it here:");
 				Console.ResetColor();
-				Console.WriteLine("https://dotnet.microsoft.com/en-us/download/dotnet/6.0/runtime\n\n" +
-								  "Please remember to download the .NET 6 Desktop Runtime for running Desktop Apps.");
+				Console.WriteLine($"{NETInfoUri}\n\n" +
+								  "Please remember to download the Desktop Runtime for running Desktop Apps.");
 				Console.ForegroundColor = ConsoleColor.Red;
 				Console.WriteLine(Sep);
 				Console.ResetColor();
@@ -124,9 +137,9 @@ namespace InstallDependencies
 			if (WARTCanceled)
 			{
 				Console.ForegroundColor = ConsoleColor.Red;
-				Console.WriteLine($"\n{Sep}\nThe Windows App Runtime is required to run the application. Download it here:");
+				Console.WriteLine($"\n{Sep}\n{WinARTName} is required to run the application. Download it here:");
 				Console.ResetColor();
-				Console.WriteLine("https://aka.ms/windowsappsdk/1.0-stable/msix-installer");
+				Console.WriteLine(WinAppRTInfoUri);
 				Console.ForegroundColor = ConsoleColor.Red;
 				Console.WriteLine(Sep);
 				Console.ResetColor();
@@ -134,14 +147,14 @@ namespace InstallDependencies
 			else if (WARTAnyCanceled)
 			{
 				Console.ForegroundColor = ConsoleColor.Yellow;
-				Console.WriteLine($"\n{ Sep}\nThe app may not run with your Windows App Runtime installation. Download the recommended version here:");
+				Console.WriteLine($"\n{ Sep}\nThe app may not run with your installation of {WinARTName}. Download the recommended version here:");
 				Console.ResetColor();
-				Console.WriteLine("https://aka.ms/windowsappsdk/1.0-stable/msix-installer");
+				Console.WriteLine(WinAppRTInfoUri);
 				Console.ForegroundColor = ConsoleColor.Yellow;
 				Console.WriteLine(Sep + "\n");
 				Console.ResetColor();
 			}
-			if (NET6 && WARTFull)
+			if (NET && WARTFull)
 			{
 				Console.ForegroundColor = ConsoleColor.Green;
 				Console.WriteLine("\nAll dependencies should be installed! Happy stickering!\n");
@@ -152,10 +165,10 @@ namespace InstallDependencies
 			Utils.Pause();
 		}
 
-		public static bool Net6DRTInstalled(string exe = "dotnet")
+		public static bool NetDRTInstalled(string exe = "dotnet")
 		{
 			var s = Utils.GetConsoleOut(exe, "--list-runtimes");
-			return s.Contains(Net6DRT);
+			return s.Contains(NetDRTPackage);
 		}
 
 		public static bool WinARTFullInstall()
@@ -163,7 +176,7 @@ namespace InstallDependencies
 			foreach (string output in new[] { WinART64, WinARTMain, WinARTSingleton, WinARTDDLM })
 			{
 				var s = Utils.GetConsoleOut("powershell", $"-Command Get-AppxPackage {output}");
-				if (!s.Contains(WinARTVer)) return false;
+				if (!s.Contains(WinARTPackageVer)) return false;
 			}
 			return true;
 		}
@@ -173,17 +186,17 @@ namespace InstallDependencies
 			return Utils.GetConsoleOut("powershell", $"-Command Get-AppxPackage {AppRT}").Length != 0;
 		}
 
-		public static async Task<bool> InstallNET6DRT()
+		public static async Task<bool> InstallNETDRT()
 		{
-			var localPath = $"{Path.GetTempPath()}{Path.DirectorySeparatorChar}net6_0_102_desktop_runtime.exe";
+			var localPath = $"{Path.GetTempPath()}{Path.DirectorySeparatorChar}net_desktop_runtime.exe";
 			var t = Task.Run(async () =>
 			{
 				using (var wc = new WebClient())
 				{
-					await wc.DownloadFileTaskAsync(NET6Download, localPath);
+					await wc.DownloadFileTaskAsync(NETDownloadUri, localPath);
 				}
 			});
-			Console.Write("Downloading the .NET 6 Desktop Runtime (54.5 MB). This may take a while");
+			Console.Write($"Downloading {NETDownloadName} ({NETDownloadSize}). This may take a while");
 			while (!t.IsCompleted)
 			{
 				Console.Write(".");
@@ -192,12 +205,12 @@ namespace InstallDependencies
 			Console.WriteLine();
 			if (!File.Exists(localPath))
 			{
-				var c1 = Utils.PromptYesNo("The .NET 6 Desktop Runtime was not downloaded successfully. Would you like to continue anyways? (y/n):");
+				var c1 = Utils.PromptYesNo($"{NETDownloadName} was not downloaded successfully. Would you like to continue anyways? (y/n):");
 				if (c1) return false;
 				Environment.Exit(1);
 			}
 			t = Task.Run(() => Utils.RunProcess(localPath, "/passive"));
-			Console.Write("Installing the .NET 6 Desktop Runtime. This may take a while");
+			Console.Write($"Installing {NETDownloadName}. This may take a while");
 			while (!t.IsCompleted)
 			{
 				Console.Write(".");
@@ -206,7 +219,7 @@ namespace InstallDependencies
 			bool done = false;
 			try
 			{
-				done = Net6DRTInstalled("C:\\Program Files\\dotnet\\dotnet.exe");
+				done = NetDRTInstalled("C:\\Program Files\\dotnet\\dotnet.exe");
 			}
 			catch (Exception ex)
 			{
@@ -215,7 +228,7 @@ namespace InstallDependencies
 			if (done)
 			{
 				Console.ForegroundColor = ConsoleColor.Green;
-				Console.WriteLine("\n.NET 6 Desktop Runtime installed successfully! Continuing...");
+				Console.WriteLine($"\n.{NETDownloadName} installed successfully! Continuing...");
 				Console.ResetColor();
 				return true;
 			}
@@ -228,15 +241,15 @@ namespace InstallDependencies
 
 		public static async Task<bool> InstallWART()
 		{
-			var localpath = $"{Path.GetTempPath()}{Path.DirectorySeparatorChar}winapprt_1.0.1_x64.exe";
+			var localpath = $"{Path.GetTempPath()}{Path.DirectorySeparatorChar}windowsappruntime.exe";
 			var t = Task.Run(async () =>
 			{
 				using (var wc = new WebClient())
 				{
-					await wc.DownloadFileTaskAsync(WinAppRTDownload, localpath);
+					await wc.DownloadFileTaskAsync(WinAppRTDownloadUri, localpath);
 				}
 			});
-			Console.Write("Downloading the Windows App Runtime (54.2 MB). This may take a while");
+			Console.Write($"Downloading {WinAppRTDownloadName} ({WinAppRTDownloadSize}). This may take a while");
 			while (!t.IsCompleted)
 			{
 				Console.Write(".");
@@ -245,12 +258,12 @@ namespace InstallDependencies
 			Console.WriteLine();
 			if (!File.Exists(localpath))
 			{
-				var c1 = Utils.PromptYesNo("The Windows App Runtime was not downloaded successfully. Would you like to continue anyways? (y/n):");
+				var c1 = Utils.PromptYesNo($"{WinAppRTDownloadName} was not downloaded successfully. Would you like to continue anyways? (y/n):");
 				if (c1) return false;
 				Environment.Exit(1);
 			}
 			t = Task.Run(() => Utils.RunAsAdmin(localpath, ""));
-			Console.Write("Installing the Windows App Runtime. This may take a while");
+			Console.Write($"Installing {WinAppRTDownloadName}. This may take a while");
 			while (!t.IsCompleted)
 			{
 				Console.Write(".");
@@ -260,7 +273,7 @@ namespace InstallDependencies
 			if (done)
 			{
 				Console.ForegroundColor = ConsoleColor.Green;
-				Console.WriteLine("\nWindows App Runtime installed successfully! Continuing...");
+				Console.WriteLine($"\n{WinAppRTDownloadName} was installed successfully! Continuing...");
 				Console.ResetColor();
 				return true;
 			}

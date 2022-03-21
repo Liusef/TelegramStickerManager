@@ -77,5 +77,12 @@ public static class ImgUtils
     }
 
     public static void ReleaseImageSharpMemory() => Configuration.Default.MemoryAllocator.ReleaseRetainedResources();
+
+    public static async void CollectImageSharpLater(int delay) =>
+        await Task.Run(async () =>
+        {
+            await Task.Delay(delay);
+            ReleaseImageSharpMemory();
+        });
 }
 

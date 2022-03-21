@@ -113,7 +113,7 @@ public static class AppUtils
         return await picker.PickSingleFileAsync();
     }
 
-    public static async Task<IReadOnlyList<StorageFile>> PickMultipleFileAsync(string[] formats)
+    public static async Task<IReadOnlyList<StorageFile>> PickMultipleFilesAsync(string[] formats)
     {
         var picker = new FileOpenPicker();
         SetupPicker(picker, formats);

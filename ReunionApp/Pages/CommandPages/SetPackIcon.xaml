@@ -7,50 +7,64 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <StackPanel VerticalAlignment="Center"
-                HorizontalAlignment="Center"
-                Spacing="12">
-        <TextBlock Text="Select an option"
-                   HorizontalAlignment="Center"
-                   FontWeight="Bold"
-                   FontSize="36"/>
-        <TextBlock TextWrapping="WrapWholeWords"
-                   HorizontalAlignment="Center"
-                   HorizontalTextAlignment="Center"
-                   MaxWidth="360">
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Grid.Row="0"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Spacing="12">
+            <TextBlock Text="Select an option"
+                       HorizontalAlignment="Center"
+                       FontWeight="Bold"
+                       FontSize="36"/>
+            <TextBlock TextWrapping="WrapWholeWords"
+                       HorizontalAlignment="Center"
+                       HorizontalTextAlignment="Center"
+                       MaxWidth="360">
             Clearing the pack icon will set the icon to the first sticker.
-        </TextBlock>
-        <Button Width="360"
-                Click="ClearIcon">
-            <StackPanel Orientation="Horizontal"
-                        Margin="16"
-                        Spacing="16">
-                <FontIcon Glyph="&#xE8E6;"/>
-                <TextBlock FontSize="20"
-                           FontWeight="Medium">
+            </TextBlock>
+            <Button Width="360"
+                    Click="ClearIcon">
+                <StackPanel Orientation="Horizontal"
+                            Margin="16"
+                            Spacing="16">
+                    <FontIcon Glyph="&#xE8E6;"/>
+                    <TextBlock FontSize="20"
+                               FontWeight="Medium">
                     Clear Current Pack Icon
-                </TextBlock>
-            </StackPanel>
-        </Button>
-        <Button Width="360"
-                Click="UploadNew">
-            <StackPanel Orientation="Horizontal"
-                        Margin="16"
-                        Spacing="16">
-                <FontIcon Glyph="&#xE8B9;"/>
-                <TextBlock FontSize="20"
-                           FontWeight="Medium">
+                    </TextBlock>
+                </StackPanel>
+            </Button>
+            <Button Width="360"
+                    Click="UploadNew">
+                <StackPanel Orientation="Horizontal"
+                            Margin="16"
+                            Spacing="16">
+                    <FontIcon Glyph="&#xE8B9;"/>
+                    <TextBlock FontSize="20"
+                               FontWeight="Medium">
                     Upload New Pack Icon
-                </TextBlock>
-            </StackPanel>
-        </Button>
-        <TextBlock FontSize="10"
-                   TextWrapping="WrapWholeWords"
-                   HorizontalAlignment="Center"
-                   HorizontalTextAlignment="Center"
-                   MaxWidth="360">
+                    </TextBlock>
+                </StackPanel>
+            </Button>
+            <TextBlock FontSize="10"
+                       TextWrapping="WrapWholeWords"
+                       HorizontalAlignment="Center"
+                       HorizontalTextAlignment="Center"
+                       MaxWidth="360">
             After returning to the homepage, the icon may not update immediately. 
             <LineBreak/>Refresh the page after a bit.
-        </TextBlock>
-    </StackPanel>
+            </TextBlock>
+        </StackPanel>
+
+        <ProgressBar x:Name="Load"
+                     Grid.Row="1"
+                     IsIndeterminate="True"
+                     Visibility="Collapsed"/>
+    </Grid>
 </Page>
