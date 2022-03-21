@@ -85,6 +85,11 @@ public sealed partial class BaseCommand : Page
                 ContentFrame.Navigate(typeof(CommandPages.SetPackIcon), pack);
                 Op.Text = "Set Pack Icon";
                 break;
+            case CommandType.EditReplaceSticker:
+                ContentFrame.Navigate(typeof(CommandPages.EditReplaceSelector), pack);
+                InfoFrame.Navigate(typeof(CommandPages.SidePanels.EditReplaceInfo));
+                Op.Text = "Edit or Replace Sticker";
+                break;
             default:
                 await App.GetInstance().ShowBasicDialog("No command was selected",
                     "Somehow, no command for modifying the stickerpack was selected. Please click back.");
@@ -102,5 +107,6 @@ public enum CommandType
     DelSticker = 2,
     NewPack = 3,
     OrderSticker = 4,
-    SetPackIcon =5,
+    SetPackIcon = 5,
+    EditReplaceSticker = 6,
 }

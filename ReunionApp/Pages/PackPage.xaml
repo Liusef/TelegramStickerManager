@@ -97,6 +97,11 @@
                                 Click="OrderSticker"
                                 HorizontalAlignment="Stretch"
                                 IsEnabled="False" />
+                        <Button x:Name="EditReplace"
+                                Content="Edit or Replace Stickers"
+                                Click="EditReplaceSelect"
+                                HorizontalAlignment="Stretch"
+                                IsEnabled="False" />
                         <Button x:Name="SPI"
                                 Content="Set Pack Icon"
                                 Click="SetIcon"
