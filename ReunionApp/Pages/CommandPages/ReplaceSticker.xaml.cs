@@ -16,6 +16,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 using ReunionApp.Runners;
+using TgApi;
 using TgApi.Types;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -53,6 +54,7 @@ public sealed partial class ReplaceSticker : Page
 
         processing.Visibility = Visibility.Visible;
         await Task.Run(async () => await StickerLogic.ResizeAllToStickerParallelAsync(stickers.ToArray(), ScaleImages.IsChecked ?? false));
+        ImgUtils.CollectImageSharpLater(5000);
         var runner = new ReplaceStickerRunner(stickers.ToArray());
         Frame.Navigate(typeof(ProcessingCommand), runner, new DrillInNavigationTransitionInfo());
     }
