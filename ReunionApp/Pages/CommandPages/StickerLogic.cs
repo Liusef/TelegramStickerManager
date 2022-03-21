@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using NeoSmart.Unicode;
 using TgApi;
 
+
 namespace ReunionApp.Pages.CommandPages;
 
 public static class LogicConsts
@@ -56,6 +57,7 @@ public static class StickerLogic
         return errorList.ToArray();
     }
 
+
     public static async Task<string> ResizeToStickerAsync(string path)
     {
         try
@@ -94,14 +96,10 @@ public static class StickerLogic
         }
         return " ";
     }
-
-
-
 }
 
 public class StickerError
 {
-
     public int Index { get; set; }
     public string Message { get; set; }
     public override string ToString() => $"Error at #{Index+1}: {Message}";

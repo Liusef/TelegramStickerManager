@@ -75,6 +75,7 @@ public sealed partial class AddSticker : Page
         await Task.Run(() => Utils.ClearTemp());
         await Task.Run(async () => await StickerLogic.ResizeAllToStickerParallelAsync(stickers.ToArray()));
 
+
         CommandRunner runner;
         if (newPackMode)
         {
@@ -86,7 +87,7 @@ public sealed partial class AddSticker : Page
 
         Frame.Navigate(typeof(ProcessingCommand), runner, new DrillInNavigationTransitionInfo());
     }
-
+    
     private async Task<bool> FindErrors()
     {
         if (stickers.Count == 0)
