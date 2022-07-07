@@ -16,19 +16,19 @@ public sealed partial class About : Page
 {
     private Attribution[] attributions =
     {
-        new(".NET Core"             , "6.0.2"   , "©️ .NET Foundation"           , "MIT License"         , new("https://github.com/dotnet/core")),
-        new("Windows App SDK"       , "1.0.0"   , "Microsoft Corporation"       , "Creative Commons 4.0", new("https://github.com/microsoft/WindowsAppSDK")),
+        new(".NET Core"             , "6.0.6"   , "©️ .NET Foundation"           , "MIT License"         , new("https://github.com/dotnet/core")),
+        new("Windows App SDK"       , "1.1.2"   , "Microsoft Corporation"       , "Creative Commons 4.0", new("https://github.com/microsoft/WindowsAppSDK")),
         new("microsoft-ui-xaml"     , "WinUI 3" , "©️ Microsoft Corporation"     , "MIT License"         , new("https://github.com/microsoft/microsoft-ui-xaml")),
-        new("MSTest"                , "2.2.8"   , "©️ Microsoft Corporation"     , "MIT License"         , new("https://github.com/microsoft/testfx")),
+        new("MSTest"                , "2.2.10"   , "©️ Microsoft Corporation"     , "MIT License"         , new("https://github.com/microsoft/testfx")),
         new("coverlet"              , "3.1.2"   , "©️ 2018 Toni Solarin-Sodara"  , "MIT License"         , new("https://github.com/coverlet-coverage/coverlet")),
-        new("TDLib"                 , "1.7.9.1" , "Telegram Messenger"          , "BSL 1.0"             , new("https://github.com/tdlib/td")),
-        new("TDSharp"               , "1.7.9"   , "©️ 2018 Sergey Khabibullin"   , "MIT License"         , new("https://github.com/egramtel/tdsharp")),
+        new("TDLib"                 , "1.8.1" , "Telegram Messenger"          , "BSL 1.0"             , new("https://github.com/tdlib/td")),
+        new("TDSharp"               , "1.8.1"   , "©️ 2018 Sergey Khabibullin"   , "MIT License"         , new("https://github.com/egramtel/tdsharp")),
         new("Newtonsoft.Json"       , "13.0.1"  , "©️ 2007 James Newton-King"    , "MIT License"         , new("https://github.com/JamesNK/Newtonsoft.Json")),
-        new("libphonenumber"        , "8.12.45" , "Google LLC"                  , "Apache-2.0 License"  , new("https://github.com/google/libphonenumber")),
-        new("libphonenumber-csharp" , "8.12.45" , "twcclegg"                    , "Apache-2.0 License"  , new("https://github.com/twcclegg/libphonenumber-csharp")),
-        new("ImageSharp"            , "2.1.0"   , "©️ SixLabors"                 , "Apache-2.0 License"  , new("https://github.com/SixLabors/ImageSharp")),
+        new("libphonenumber"        , "8.12.50" , "Google LLC"                  , "Apache-2.0 License"  , new("https://github.com/google/libphonenumber")),
+        new("libphonenumber-csharp" , "8.12.50" , "twcclegg"                    , "Apache-2.0 License"  , new("https://github.com/twcclegg/libphonenumber-csharp")),
+        new("ImageSharp"            , "2.1.3"   , "©️ SixLabors"                 , "Apache-2.0 License"  , new("https://github.com/SixLabors/ImageSharp")),
         new("Unicode.NET"           , "2.0.0"   , "©️ Neosmart"                  , "MIT License"         , new("https://github.com/neosmart/unicode.net")),
-        new("GEmojiSharp"           , "1.5.0"   , "©️ 2019 Henrik Lau Eriksson"  , "MIT License"         , new("https://github.com/hlaueriksson/GEmojiSharp")),
+        new("GEmojiSharp"           , "2.0.0"   , "©️ 2019 Henrik Lau Eriksson"  , "MIT License"         , new("https://github.com/hlaueriksson/GEmojiSharp")),
     };
 
 
