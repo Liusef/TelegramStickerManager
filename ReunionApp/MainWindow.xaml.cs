@@ -8,6 +8,9 @@ using Microsoft.UI.Xaml.Navigation;
 
 namespace ReunionApp;
 
+/// <summary>
+/// The class that describes the MainWindow of the applciation
+/// </summary>
 public sealed partial class MainWindow : Window
 {
     public Frame ContentFrame => MainWindowContentFrame;
@@ -22,6 +25,10 @@ public sealed partial class MainWindow : Window
         ContentFrame.Navigate(typeof(Pages.LoadingApp));
     }
 
+    /// <summary>
+    /// Sets the window icon to a string path. Must be an ICO file
+    /// </summary>
+    /// <param name="location"></param>
     private void SetWindowIcon(string location)
     {
         IntPtr hWnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
@@ -31,6 +38,11 @@ public sealed partial class MainWindow : Window
         appWindow.SetIcon(location); // And then set the icon
     }
 
+    /// <summary>
+    /// An action to be run whenever the main content frame navigates to a new location
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void contentFrame_Navigated(object sender, NavigationEventArgs e)
     {
         ContentFrame.ForwardStack.Clear();

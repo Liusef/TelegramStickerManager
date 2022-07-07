@@ -9,8 +9,17 @@ using TgApi.Telegram;
 
 namespace ReunionApp;
 
+/// <summary>
+/// Some larger logic required by the app
+/// </summary>
 public static class AppLogic
 {
+    /// <summary>
+    /// Handles the backend authentication that the user doesn't need to do anything for (like sending app info and verifying authorization)
+    /// </summary>
+    /// <param name="app">The current app instance</param>
+    /// <param name="autoNavigate">Whether or not to automatically navigate to a new home or error page on authentication completion</param>
+    /// <returns>An awaitable task</returns>
     public static async Task HandleAuth(this App app, bool autoNavigate = true)
     {
         app.Auth ??= new AuthHandler(app.Client);
@@ -81,6 +90,10 @@ public static class AppLogic
         }
     }
 
+    /// <summary>
+    /// An event handler method that is run when the authentication state is ready
+    /// </summary>
+    /// <param name="app"></param>
     private static void OnAuthStateReady(this App app)
     {
         app.Client.UpdateReceived += app.ReadStickerBotMsgs;
