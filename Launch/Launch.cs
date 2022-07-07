@@ -11,6 +11,7 @@ namespace Launch
 {
     internal static class Launch
     {
+        internal const string appPath = ".\\ReunionApp.exe";
         internal static readonly string localPath = $"{Path.GetTempPath()}{Path.DirectorySeparatorChar}net_desktop_runtime.exe";
         internal const string NETRuntimeTitle = ".NET 6 Desktop Runtime";
         internal const string NETRuntimeName = "Microsoft.WindowsDesktop.App 6.0";
@@ -63,7 +64,7 @@ namespace Launch
 
         internal static void Finish() 
         {
-            Utils.RunProcess("notepad", "", false);
+            Utils.RunProcess(appPath, "", false);
             Application.Exit();
         }
     }
