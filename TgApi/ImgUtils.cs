@@ -12,9 +12,20 @@ using System.Threading.Tasks;
 
 namespace TgApi;
 
+/// <summary>
+/// A static class containing utilities for image processing
+/// </summary>
 public static class ImgUtils
 {
-
+    /// <summary>
+    /// Resizes an image to the specified dimensions. Does not respect aspect ratio.
+    /// </summary>
+    /// <param name="path">The path to the image file.</param>
+    /// <param name="width">The desired width of the output image</param>
+    /// <param name="height">The desired height of the output image</param>
+    /// <param name="forceFormat">If the image doesn't need to be resized, convert the image to an allowed format</param>
+    /// <param name="formats">A list of formats that are allowed. If conversion is needed, it will choose the 1st one by default</param>
+    /// <returns>A string path to the output image file.</returns>
     public static async Task<string> ResizeAsync(string path, int width, int height, bool forceFormat, string[]? formats = null)
     {
         formats ??= new[] { "png" };
@@ -35,6 +46,15 @@ public static class ImgUtils
         return savePath;
     }
 
+    /// <summary>
+    /// Resizes the image to fit within the specified dimensions. Respects aspect ratio.
+    /// </summary>
+    /// <param name="path">The path to the image file.</param>
+    /// <param name="width">The desired width of the output image</param>
+    /// <param name="height">The desired height of the output image</param>
+    /// <param name="forceFormat">If the image doesn't need to be resized, convert the image to an allowed format</param>
+    /// <param name="formats">A list of formats that are allowed. If conversion is needed, it will choose the 1st one by default</param>
+    /// <returns>A string path to the output image file.</returns>
     public static async Task<string> ResizeFitAsync(string path, int width, int height, bool forceFormat, string[]? formats = null)
     {
         formats ??= new[] { "png" };
@@ -66,6 +86,16 @@ public static class ImgUtils
         return savePath;
     }
 
+    /// <summary>
+    /// Resizes an image to fit within specified dimensions and pads the image with transparent pixels so that the output
+    /// is the size provided. Respects aspect ratio of original image.
+    /// </summary>
+    /// <param name="path">The path to the image file.</param>
+    /// <param name="width">The desired width of the output image</param>
+    /// <param name="height">The desired height of the output image</param>
+    /// <param name="forceFormat">If the image doesn't need to be resized, convert the image to an allowed format</param>
+    /// <param name="formats">A list of formats that are allowed. If conversion is needed, it will choose the 1st one by default</param>
+    /// <returns>A string path to the output image file.</returns>
     public static async Task<string> ResizePadAsync(string path, int width, int height, bool forceFormat, string[]? formats = null)
     { // TODO see if i can compress this, or have another method to containerize it all
         formats ??= new[] { "png" };
@@ -90,6 +120,15 @@ public static class ImgUtils
         return savePath;
     }
 
+    /// <summary>
+    /// Pads the input image with transparent pixels so that either width or height is the respective maximum
+    /// </summary>
+    /// <param name="path">The path to the image file.</param>
+    /// <param name="maxWidth">The desired width of the output image</param>
+    /// <param name="maxHeight">The desired height of the output image</param>
+    /// <param name="forceFormat">If the image doesn't need to be resized, convert the image to an allowed format</param>
+    /// <param name="formats">A list of formats that are allowed. If conversion is needed, it will choose the 1st one by default</param>
+    /// <returns>A string path to the output image file.</returns>
     public static async Task<string> ResizeFitPadWidthPriorityAsync(string path, int maxWidth, int maxHeight, bool forceFormat, string[]? formats = null)
     { // TODO see if i can compress this, or have another method to containerize it all
         formats ??= new[] { "png" };
@@ -123,6 +162,12 @@ public static class ImgUtils
         return savePath;
     }
 
+    /// <summary>
+    /// Encodes an image to a specified file format. NOTE: The output format is specified in the output file path
+    /// </summary>
+    /// <param name="path">The path to an input image</param>
+    /// <param name="output">The desired output path</param>
+    /// <returns>The path to the output</returns>
     public static async Task<string> EncodeToFormat(string path, string output)
 	{
         using (var img = await Image.LoadAsync(path))
@@ -133,8 +178,15 @@ public static class ImgUtils
         return output;
     }
 
+    /// <summary>
+    /// Calls the ImageSharp memory allocator to release retained resources
+    /// </summary>
     public static void ReleaseImageSharpMemory() => Configuration.Default.MemoryAllocator.ReleaseRetainedResources();
 
+    /// <summary>
+    /// Calls the ImageSharp memory allocator to release retained resources after a certain amount of time
+    /// </summary>
+    /// <param name="delay"></param>
     public static async void CollectImageSharpLater(int delay) =>
         await Task.Run(async () =>
         {
