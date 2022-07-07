@@ -8,7 +8,7 @@ public static class GlobalVars
 	public const int ApiId = ApiKeys.ApiId;
 	public const string ApiHash = ApiKeys.ApiHash;
 
-	public const string ApplicationVersion = "0.2.2-alpha";
+	public const string ApplicationVersion = "0.6.0-beta";
 	public const string DeviceModel = "PC";
 	public const string SystemLanguageCode = "en";
 
