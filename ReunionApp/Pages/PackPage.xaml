@@ -51,6 +51,11 @@
                            HorizontalAlignment="Center"
                            HorizontalTextAlignment="Center"
                            TextTrimming="CharacterEllipsis" />
+                <TextBlock x:Name="StickerCount"
+                           FontWeight="Light"
+                           HorizontalAlignment="Center"
+                           HorizontalTextAlignment="Center"
+                           TextTrimming="CharacterEllipsis" />
             </StackPanel>
 
             <Grid Grid.Row="2">
