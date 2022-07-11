@@ -43,6 +43,7 @@ public sealed partial class PackPage : Page
             PackThumb.Source = new BitmapImage(new Uri(pack.EnsuredThumb.BestPath));
             PackTitle.Text = pack.Title;
             PackName.Text = pack.Name;
+            StickerCount.Text = $"{pack.Count} Stickers";
             CleanUp();
 
             await pack.EnsuredThumb.GetPathEnsureDownloaded(App.GetInstance().Client);
