@@ -62,6 +62,7 @@ public sealed partial class ReplaceSticker : Page
     private async Task SetNewImg(ReplaceStickerUpdate update)
     {
         var file = await AppUtils.PickSingleFileAsync(AppUtils.ImageSharpFormats);
+        if (file is null) return;
         update.NewPath = file.Path;
     }
 
