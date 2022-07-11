@@ -6,6 +6,10 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+      <DebugType>none</DebugType>
+    </PropertyGroup>
+
     <ItemGroup>
         <PackageReference Include="libphonenumber-csharp" Version="8.12.50" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />

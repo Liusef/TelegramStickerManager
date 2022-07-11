@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReunionApp", "ReunionApp\Re
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InstallDependencies", "InstallDependencies\InstallDependencies.csproj", "{26C2ED79-CE37-48BD-BF0F-2A3F3491A160}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TgApi.Test", "TgApi.Test\TgApi.Test.csproj", "{D2482CBB-4E79-4479-AAB8-6FC10614FB0F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TgApi.Test", "TgApi.Test\TgApi.Test.csproj", "{D2482CBB-4E79-4479-AAB8-6FC10614FB0F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Launch", "Launch\Launch.csproj", "{54E21098-35CB-404B-B737-4C4A48CC51D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -113,6 +115,22 @@ Global
 		{D2482CBB-4E79-4479-AAB8-6FC10614FB0F}.Release|x64.Build.0 = Release|Any CPU
 		{D2482CBB-4E79-4479-AAB8-6FC10614FB0F}.Release|x86.ActiveCfg = Release|Any CPU
 		{D2482CBB-4E79-4479-AAB8-6FC10614FB0F}.Release|x86.Build.0 = Release|Any CPU
+		{54E21098-35CB-404B-B737-4C4A48CC51D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54E21098-35CB-404B-B737-4C4A48CC51D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54E21098-35CB-404B-B737-4C4A48CC51D1}.Debug|arm64.ActiveCfg = Debug|Any CPU
+		{54E21098-35CB-404B-B737-4C4A48CC51D1}.Debug|arm64.Build.0 = Debug|Any CPU
+		{54E21098-35CB-404B-B737-4C4A48CC51D1}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{54E21098-35CB-404B-B737-4C4A48CC51D1}.Debug|x64.Build.0 = Debug|Any CPU
+		{54E21098-35CB-404B-B737-4C4A48CC51D1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{54E21098-35CB-404B-B737-4C4A48CC51D1}.Debug|x86.Build.0 = Debug|Any CPU
+		{54E21098-35CB-404B-B737-4C4A48CC51D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54E21098-35CB-404B-B737-4C4A48CC51D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54E21098-35CB-404B-B737-4C4A48CC51D1}.Release|arm64.ActiveCfg = Release|Any CPU
+		{54E21098-35CB-404B-B737-4C4A48CC51D1}.Release|arm64.Build.0 = Release|Any CPU
+		{54E21098-35CB-404B-B737-4C4A48CC51D1}.Release|x64.ActiveCfg = Release|Any CPU
+		{54E21098-35CB-404B-B737-4C4A48CC51D1}.Release|x64.Build.0 = Release|Any CPU
+		{54E21098-35CB-404B-B737-4C4A48CC51D1}.Release|x86.ActiveCfg = Release|Any CPU
+		{54E21098-35CB-404B-B737-4C4A48CC51D1}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
