@@ -2,6 +2,7 @@
     x:Class="ReunionApp.Pages.CommandPages.AddSticker"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:ReunionApp.Controls"
     xmlns:local="using:ReunionApp.Pages.CommandPages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -69,7 +70,7 @@
                                              DecodePixelWidth="150" />
                             </Image.Source>
                         </Image>
-                        <TextBox Text="{Binding Path=Emojis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        <TextBox Text="{x:Bind Emojis, Mode=TwoWay}"
                                  IsTabStop="True"
                                  TextChanged="Emojis_TextChanged" />
                     </StackPanel>
@@ -108,7 +109,7 @@
                 Options
                 <Button.Flyout>
                     <Flyout>
-                        <StackPanel Margin="12">
+                        <StackPanel Margin="12" Spacing="16">
                             <TextBlock HorizontalTextAlignment="Center"
                                        HorizontalAlignment="Center"
                                        FontWeight="Bold">
@@ -118,16 +119,34 @@
                                         Orientation="Horizontal"
                                         Spacing="6">
                                 <CheckBox x:Name="ScaleImages"
-                                          IsChecked="True">
+                                          IsChecked="False">
                                     <RichTextBlock>
                                         <Paragraph>
                                             <Run>Upscale Images to Maximum Possible Size</Run>
 
-                                            <LineBreak/><Run FontSize="12" FontWeight="Light" CharacterSpacing="25">Stickers will appear larger, but blurrier</Run>
+                                            <LineBreak/>
+                                            <Run FontSize="12" FontWeight="Light" CharacterSpacing="25">Stickers will appear larger, but may be blurrier</Run>
                                         </Paragraph>
-                                        
+
                                     </RichTextBlock>
                                 </CheckBox>
+                            </StackPanel>
+                            <controls:StackDivider Width="auto"/>
+                            <StackPanel Spacing="6">
+                                <TextBlock>
+                                    Append Emoji To All Stickers
+                                </TextBlock>
+                                <Grid>
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="12"/>
+                                        <ColumnDefinition Width="80"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <TextBox x:Name="AppendBox" TextChanged="Emojis_TextChanged" Grid.Column="0" KeyDown="TextBox_KeyDown"/>
+                                    <Button Content="Append" Width="80" Grid.Column="2" Click="Button_Click"/>
+                                </Grid>
                             </StackPanel>
                         </StackPanel>
                     </Flyout>
