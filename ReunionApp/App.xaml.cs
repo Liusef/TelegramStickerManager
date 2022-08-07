@@ -6,16 +6,16 @@ using TdLib;
 using TgApi;
 using TgApi.Telegram;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
-
 namespace ReunionApp;
 
 /// <summary>
-/// Provides application-specific behavior to supplement the default Application class.
+/// The main Application class associated with this project
 /// </summary>
 public partial class App : Application
 {
+    /// <summary>
+    /// The amount of threads on the user's system (at a maxmimum of 6)
+    /// </summary>
     public static int Threads { get; } = Environment.ProcessorCount < 6 ? Environment.ProcessorCount : 6;
 
     internal bool IsCdOpen = false;
@@ -62,6 +62,11 @@ public partial class App : Application
         await this.HandleAuth();
     }
 
+    /// <summary>
+    /// An event handler that is run when the app hits an unhandled exception
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private async void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
     {
         e.Handled = true;

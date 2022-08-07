@@ -3,8 +3,17 @@ using TgApi.Types;
 
 namespace ReunionApp.Runners.RunnerDependencies;
 
+/// <summary>
+/// Sorts stickers according to a specified order 
+/// </summary>
 public static class OrderStickerRunnerSorter
 {
+    /// <summary>
+    /// Whether or not the pack is already sorted to how the user wants
+    /// </summary>
+    /// <param name="pack">The StickerPack in question</param>
+    /// <param name="order">The order desired by the user</param>
+    /// <returns>Whether or not the pack is already sorted</returns>
     public static bool IsSorted(StickerPack pack, Sticker[] order)
     {
         for (int i = 0; i < pack.Count - 1; i++)
@@ -14,6 +23,12 @@ public static class OrderStickerRunnerSorter
         return true;
     }
 
+    /// <summary>
+    /// Gets the swaps needed to order the sticker pack to how the user wants it. Uses insertion sort.
+    /// </summary>
+    /// <param name="pack">The sticker pack that needs to be sorted</param>
+    /// <param name="order">The order that the user wants</param>
+    /// <returns>A list of (Sticker, Sticker) tuples that indicate swaps on @Stickers</returns>
     public static (Sticker, Sticker)[] GetSwaps(StickerPack pack, IEnumerable<Sticker> order)
     {
         List<(Sticker, Sticker)> r = new List<(Sticker, Sticker)>();
@@ -35,7 +50,7 @@ public static class OrderStickerRunnerSorter
             }
             s[j + 1] = item;
 
-            if (j != i - 1) // TODO This hasn't been tested yet
+            if (j != i - 1)
             {       
                 if (j < 0)                               
                 {                                       // To move something to the first index, move sticker to the right of the first

@@ -96,12 +96,7 @@ public class Sticker
 		var inputEmojis = await inputEmojisTask;
 		s.Emojis = string.Join("", inputEmojis.Emojis_);
 		s.Filename = (await filenameTask).Text_;
-
-		if (input.IsMask) s.Type = StickerType.Mask;
-		else if (input.IsAnimated) s.Type = StickerType.Animated;
-		else if (Path.GetExtension(s.Filename).Equals(".webm")) s.Type = StickerType.Video;
-		else s.Type = StickerType.Standard;
-
+        s.Type = GetStickerType(input.Type);
 		return s;
 	}
 
@@ -158,4 +153,19 @@ public class Sticker
 		return await DecodeSticker();
 	}
 
+    /// <summary>
+    /// Converts a StickerType object to a StickerType Enum
+    /// </summary>
+    /// <param name="dataType"></param>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
+    public static StickerType GetStickerType(TdApi.StickerType stickerType) =>
+        stickerType.DataType switch
+        {
+            "stickerTypeAnimated"   => StickerType.Animated,
+            "stickerTypeMask"       => StickerType.Mask,
+            "stickerTypeStatic"     => StickerType.Standard,
+            "stickerTypeVideo"      => StickerType.Video,
+            _ => throw new NotImplementedException($"The application received a sticker of type {stickerType.DataType}, and idk I didn't implement it.")
+        };
 }

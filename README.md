@@ -6,6 +6,9 @@ This program can automate:
 - Adding stickers
 - Deleting stickers
 - Re-ordering stickers
+- Editing Stickers
+- Replacing Stickers
+- Updating Thumbnails
 - More on the way!
 
 all with a simple drag-and-drop user interface which allows you to save time and avoid having to send hundreds of messages to Sticker bot.

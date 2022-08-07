@@ -27,18 +27,34 @@ public abstract class CommandRunner : INotifyPropertyChanged
             OnProgressChanged();
         }
     }
+
+    /// <summary>
+    /// This method is called when the value of progress is updated
+    /// </summary>
     protected void OnProgressChanged()
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Progress)));
     }
 
+    /// <summary>
+    /// Runs the commands queued in the runner
+    /// </summary>
+    /// <returns>An awaitable task</returns>
     public abstract Task RunCommandsAsync();
 
+    /// <summary>
+    /// Actions to perform before the execution of queued commands
+    /// </summary>
+    /// <returns>An awaitable task</returns>
     public virtual async Task PreTasksAsync()
     {
         await Task.Run (async () => await Task.Delay(0)); // This is a placeholder
     }
 
+    /// <summary>
+    /// Actions to perform after the execution of queued commands
+    /// </summary>
+    /// <returns>An awaitable task</returns>
     public virtual async Task PostTasksAsync()
     {
         var client = App.GetInstance().Client;
@@ -47,9 +63,19 @@ public abstract class CommandRunner : INotifyPropertyChanged
         if (pack != null) pack.IsCachedCopy = true;
     }
 
+    /// <summary>
+    /// Adds a TDLib string message to the reply
+    /// </summary>
+    /// <param name="msg">The Message object to add the outputs list</param>
     protected virtual void AddReplyToOutputs(Message msg) =>
         Outputs.Add(new CommandOutput(msg.GetMessageString(), null, false));
 
+    /// <summary>
+    /// Send a specified message to a Telegram user (specified within the MessageWaiter) and adds the reply to the outputs list
+    /// </summary>
+    /// <param name="waiter">The MessageWaiter object in question</param>
+    /// <param name="message">The message (as a string) to send</param>
+    /// <returns>The reply as a string</returns>
     protected virtual async Task<string> SendAndAddToOutputsAsync(MessageWaiter waiter, string message)
     {
         Outputs.Add(new CommandOutput(message, null, true));
@@ -58,6 +84,12 @@ public abstract class CommandRunner : INotifyPropertyChanged
         return reply.GetMessageString();
     }
 
+    /// <summary>
+    /// Sends an image and add the reply to the outputs
+    /// </summary>
+    /// <param name="waiter">The MessageWaiter in question</param>
+    /// <param name="path">The image input path to send to telegram</param>
+    /// <returns>The reply as a string</returns>
     protected virtual async Task<string> SendImageAndAddToOutputsAsync(MessageWaiter waiter, string path)
     {
         Outputs.Add(new CommandOutput(null, path, true));
@@ -68,6 +100,13 @@ public abstract class CommandRunner : INotifyPropertyChanged
         return r.GetMessageString();
     }   
 
+    /// <summary>
+    /// Sends a document and adds the reply to the outputs
+    /// </summary>
+    /// <param name="waiter">The MessageWaiter in question</param>
+    /// <param name="input">The image input path to send to telegram</param>
+    /// <param name="display">The commandoutput to display to the user</param>
+    /// <returns>The reply as a string</returns>
     protected virtual async Task<string> SendDocumentAndAddToOutputsAsync(MessageWaiter waiter, InputFile input, CommandOutput display)
     {
         Outputs.Add(display);

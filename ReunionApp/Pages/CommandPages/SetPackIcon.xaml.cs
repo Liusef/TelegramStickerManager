@@ -13,6 +13,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 using ReunionApp.Runners;
+using TgApi;
 using TgApi.Types;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -51,7 +52,8 @@ public sealed partial class SetPackIcon : Page
 
         Load.Visibility = Visibility.Visible;
         var path = await Task.Run(async()=>await StickerLogic.ResizeToThumbAsync(file.Path));
-
+        ImgUtils.CollectImageSharpLater(5000);
+        Load.Visibility = Visibility.Collapsed;
         await AreYouSure(() => Continue(path));
     }
 

@@ -73,7 +73,7 @@ public sealed partial class AddSticker : Page
         processing.Visibility = Visibility.Visible;
 
         await Task.Run(() => Utils.ClearTemp());
-        await Task.Run(async () => await StickerLogic.ResizeAllToStickerParallelAsync(stickers.ToArray(), ScaleImages.IsChecked ?? false));
+        await StickerLogic.ResizeAllToStickerParallelAsync(stickers.ToArray(), ScaleImages.IsChecked ?? false);
 
 
         CommandRunner runner;
@@ -84,7 +84,7 @@ public sealed partial class AddSticker : Page
                 ((NewPackThumb)pack.Thumb).Path = await Task.Run( async () => await StickerLogic.ResizeToThumbAsync(pack.Thumb.BestPath));
         }
         else runner = new AddStickerRunner(pack, stickers.ToArray());
-
+        ImgUtils.CollectImageSharpLater(5000);
         Frame.Navigate(typeof(ProcessingCommand), runner, new DrillInNavigationTransitionInfo());
     }
     

@@ -80,7 +80,7 @@ public class StickerPack
 			Id = input.Id,
 			Title = input.Title,
 			Name = input.Name,
-			Thumb = await StickerPackThumb.Generate(client, input.Thumbnail, input.IsAnimated)
+			Thumb = await StickerPackThumb.Generate(client, input.Thumbnail, input.StickerType)
 		};
 		var sList = new List<Sticker>();
 		foreach (var task in taskList)
@@ -88,13 +88,8 @@ public class StickerPack
 			sList.Add(await task);
 		}
 		s.Stickers = sList.ToArray();
-
-		if (input.IsMasks) s.Type = StickerType.Mask;
-		else if (input.IsAnimated) s.Type = StickerType.Animated;
-		else if (Path.GetExtension(s.Stickers[0].Filename).Equals(".webm")) s.Type = StickerType.Video;
-		else s.Type = StickerType.Standard;
-
-		s.Cache();
+        s.Type = Sticker.GetStickerType(input.StickerType);
+        s.Cache();
 		return s;
 	}
 

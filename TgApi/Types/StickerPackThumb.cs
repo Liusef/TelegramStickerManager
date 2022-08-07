@@ -69,7 +69,7 @@ public class StickerPackThumb
 	/// <param name="input">The TdApi.Thumbnail object from telegram</param>
 	/// <param name="isAnimated">Whether or not the thumbnail is animated using TGS</param>
 	/// <returns>A StickerPackThumb object derived from a TdApi.Thumbnail object</returns>
-	public static async Task<StickerPackThumb?> Generate(TdClient client, TdApi.Thumbnail? input, bool isAnimated)
+	public static async Task<StickerPackThumb?> Generate(TdClient client, TdApi.Thumbnail? input, TdApi.StickerType type)
 	{
 		if (input is null) return null;
 		var filenameTask = client.GetSuggestedFileNameAsync(input.File.Id);
@@ -82,11 +82,7 @@ public class StickerPackThumb
 			IsDesignatedThumb = true,
 			Filename = (await filenameTask).Text_
 		};
-		
-		if (isAnimated) t.Type = StickerType.Animated;
-		else if (Path.GetExtension(t.Filename).Equals(".webm")) t.Type = StickerType.Video;
-		else t.Type = StickerType.Standard;
-
+		t.Type = Sticker.GetStickerType(type);
 		return t;
 	}
 
