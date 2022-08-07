@@ -122,10 +122,30 @@ public abstract class CommandRunner : INotifyPropertyChanged
 /// <param name="Content">String content of the message. Make null if not applicable</param>
 /// <param name="ImgPath">The path to the image to be displayed. Make null if not applicable</param>
 /// <param name="Right">Whether or not the image displays on the right of the display</param>
-public record CommandOutput(string Content, string ImgPath, bool Right)
+public record CommandOutput(string Content, string ImgPath, bool Right) : INotifyPropertyChanged
 {
+
     public HorizontalAlignment Align => Right ? HorizontalAlignment.Right : HorizontalAlignment.Left;
     public bool HasImg => !string.IsNullOrEmpty(ImgPath);
     public bool HasText => !string.IsNullOrEmpty(Content);
     public string EnsuredImg => HasImg ? ImgPath : " ";
+
+    private FileUpload _upload;
+    public FileUpload Upload
+    {
+        get => _upload;
+        set
+        {
+            _upload = value;
+            value.PropertyChanged += ProgressChanged;
+        }
+    }
+    public double Progress { get; private set; } = 0;
+    public bool HasUpload => Upload is not null;
+    public event PropertyChangedEventHandler? PropertyChanged;
+    public void ProgressChanged(object sender, PropertyChangedEventArgs args)
+    {
+        Progress = _upload.Progress;
+        App.GetInstance().queue.TryEnqueue(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Progress))));
+    }
 }

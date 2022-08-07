@@ -29,9 +29,16 @@
                 <ItemsRepeater.ItemTemplate>
                     <DataTemplate x:DataType="runners:CommandOutput">
                         <Grid HorizontalAlignment="{x:Bind Align}">
-                            <Image Source="{x:Bind EnsuredImg}"
+                            <StackPanel>
+                                <Image Source="{x:Bind EnsuredImg}"
                                    MaxWidth="200"
                                    MaxHeight="200" />
+                                <ProgressBar x:Name="UploadProgress"
+                                             IsIndeterminate="false" 
+                                             Width="auto" 
+                                             x:Load="{x:Bind HasUpload}"
+                                             Value="{x:Bind Progress, Mode=OneWay}" />
+                            </StackPanel>
                             <Grid Background="{ThemeResource SystemAccentColor}"
                                   x:Name="jank"
                                   x:Load="{x:Bind HasText}"

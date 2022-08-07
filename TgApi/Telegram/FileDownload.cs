@@ -1,16 +1,23 @@
-﻿using TdLib;
+﻿using System.ComponentModel;
+using TdLib;
 
 namespace TgApi.Telegram;
 
-public class FileDownload
+public class FileDownload : INotifyPropertyChanged
 {
 	private TdApi.File latestFile;
 	private EventHandler<TdApi.Update> handler;
+    public event PropertyChangedEventHandler? PropertyChanged;
 
-	/// <summary>
-	/// A double between 0 and 1 of the download progress
-	/// </summary>
-	public double Progress => (latestFile.Local.DownloadedSize + 0.0) / latestFile.ExpectedSize;
+    public void OnProgressChanged()
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Progress)));
+    }
+
+    /// <summary>
+    /// A double between 0 and 1 of the download progress
+    /// </summary>
+    public double Progress => (latestFile.Local.DownloadedSize + 0.0) / latestFile.ExpectedSize;
 	/// <summary>
 	/// Gets the local id of the file to be downloaded
 	/// </summary>
@@ -46,6 +53,7 @@ public class FileDownload
 		{
 			if (update is not TdApi.Update.UpdateFile fileUpdate || fileUpdate.File.Id != r.LocalId) return;
 			r.latestFile = fileUpdate.File;
+            r.OnProgressChanged();
 			if (r.latestFile.Local.IsDownloadingCompleted) client.UpdateReceived -= r.handler;
 			r.handler = null;
 		};

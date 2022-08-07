@@ -65,9 +65,9 @@ public class NewPackRunner : CommandRunner
         for (Index = 0; Index < newStickers.Length; Index++)
         {
             var upload = await FileUpload.StartUpload(client, newStickers[Index].EnsuredPath);
+            Outputs.Add(new CommandOutput(null, newStickers[Index].ImgPath, true) { Upload = upload });
             await upload.WaitForCompletion();
-            Outputs.Add(new CommandOutput(null, newStickers[Index].ImgPath, true));
-            var cmsg = await client.SendBasicDocumentAsync(botId, new InputFileId { Id = upload.LocalId }); // TODO Could use InputFileLocal instead of a FileUpload
+            var cmsg = await client.SendBasicDocumentAsync(botId, new InputFileId { Id = upload.LocalId });
             var reply = await waiter.WaitNextMsgAsync(cmsg.Id);
             AddReplyToOutputs(reply);
 
@@ -79,9 +79,9 @@ public class NewPackRunner : CommandRunner
         if (File.Exists(pack.Thumb.LocalPath))
         {
             var upload = await FileUpload.StartUpload(client, pack.Thumb.LocalPath);
-            await upload.WaitForCompletion();
             Outputs.Add(new CommandOutput(null, pack.Thumb.LocalPath, true));
-            var cmsg = await client.SendBasicDocumentAsync(botId, new InputFileId { Id = upload.LocalId }); // TODO Could use InputFileLocal instead of a FileUpload
+            await upload.WaitForCompletion();
+            var cmsg = await client.SendBasicDocumentAsync(botId, new InputFileId { Id = upload.LocalId });
             var reply = await waiter.WaitNextMsgAsync(cmsg.Id);
             AddReplyToOutputs(reply);
         }
