@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -116,7 +117,22 @@ public sealed partial class AddSticker : Page
     
 
     private void SplitButton_Click(SplitButton sender, SplitButtonClickEventArgs args) => Add(sender, default);
-    
+
+    private void TextBox_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
+    {
+        if (e.Key == Windows.System.VirtualKey.Enter) Append(AppendBox.Text);
+    }
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+        Append(AppendBox.Text);
+    }
+
+    private void Append(string s)
+    {
+        foreach (var ns in stickers) ns.Emojis += s;
+        AppendBox.Text = string.Empty;
+    }
 
     private void Emojis_TextChanged(object sender, RoutedEventArgs args)
     {
@@ -124,13 +140,26 @@ public sealed partial class AddSticker : Page
         send.Text = GEmojiSharp.Emoji.Emojify(send.Text);
         send.Select(send.Text.Length, send.Text.Length);
     }
+
+
 }
 
-public class NewSticker
+public class NewSticker : INotifyPropertyChanged
 {
     public string ImgPath { get; set; }
     public string TempPath { get; set; }
-    public string Emojis { get; set; } = "😳"; // TODO Clear this default value, this is only so i can quickly test things
+    private string _emojis = "";
+    public string Emojis
+    {
+        get => _emojis;
+        set
+        {
+            _emojis = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Emojis)));
+        }
+    }
 
     public string EnsuredPath => File.Exists(TempPath) ? TempPath : ImgPath;
+
+    public event PropertyChangedEventHandler PropertyChanged;
 }
