@@ -17,8 +17,9 @@
                     <Flyout>
                         <TextBlock Width="400"
                                    TextWrapping="WrapWholeWords">
-                            Haven't written instructions here yet.
-                            <LineBreak /><LineBreak />This app will automatically downscale your images to meet the image size requirements of telegram.
+                            Select the sticker(s) you would like to move, and then just drag and drop as you please!
+                            <LineBreak /><LineBreak />If you need to reset to the original order, just press "Reset Order"
+                            <LineBreak /><LineBreak />If there are any errors, the app will let you know when you hit "Finish"!
                         </TextBlock>
                     </Flyout>
                 </Button.Flyout>

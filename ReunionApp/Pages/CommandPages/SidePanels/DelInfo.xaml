@@ -17,8 +17,9 @@
                     <Flyout>
                         <TextBlock Width="400"
                                    TextWrapping="WrapWholeWords">
-                            Haven't written instructions here yet.
-                            <LineBreak /><LineBreak />This app will automatically downscale your images to meet the image size requirements of telegram.
+                            Select all stickers you want to remove from the pack. 
+                            
+                            <LineBreak /><LineBreak />If there are any errors, the app will let you know when you hit "Finish"!
                         </TextBlock>
                     </Flyout>
                 </Button.Flyout>
