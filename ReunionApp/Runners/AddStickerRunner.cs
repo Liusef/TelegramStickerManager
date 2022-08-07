@@ -39,9 +39,9 @@ public class AddStickerRunner : CommandRunner
         for (Index = 0; Index < stickers.Length; Index++)
         {
             var upload = await FileUpload.StartUpload(client, stickers[Index].EnsuredPath);
+            Outputs.Add(new CommandOutput(null, stickers[Index].ImgPath, true) { Upload = upload });
             await upload.WaitForCompletion();
-            Outputs.Add(new CommandOutput(null, stickers[Index].ImgPath, true));
-            var cmsg = await client.SendBasicDocumentAsync(botId, new InputFileId { Id = upload.LocalId }); // TODO Could use InputFileLocal instead of a FileUpload
+            var cmsg = await client.SendBasicDocumentAsync(botId, new InputFileId { Id = upload.LocalId });
             var reply = await waiter.WaitNextMsgAsync(cmsg.Id);
             AddReplyToOutputs(reply);
 

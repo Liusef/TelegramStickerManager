@@ -41,9 +41,16 @@ public class ReplaceStickerRunner : CommandRunner
             var r = await SendDocumentAndAddToOutputsAsync(waiter, new InputFileRemote { Id = updates[Index].Sticker.RemoteFileId },
                 new CommandOutput(null, updates[Index].Sticker.BestPath, true));
 
+
             if (r[..7] != "Alright") continue;
 
-            r = await SendImageAndAddToOutputsAsync(waiter, updates[Index].NewPath);
+            var upload = await FileUpload.StartUpload(client, updates[Index].NewPath);
+            Outputs.Add(new CommandOutput(null, updates[Index].NewPath, true) { Upload = upload });
+            await upload.WaitForCompletion();
+            var cmsg = await client.SendBasicDocumentAsync(botId, new InputFileId { Id = upload.LocalId });
+            var reply = await waiter.WaitNextMsgAsync(cmsg.Id);
+            AddReplyToOutputs(reply);
+            r = reply.GetMessageString();
 
             if (r[..10] != "I replaced")
             {

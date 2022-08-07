@@ -1,16 +1,24 @@
-﻿using TdLib;
+﻿using System.ComponentModel;
+using TdLib;
 
 namespace TgApi.Telegram;
 
-public class FileUpload
+public class FileUpload : INotifyPropertyChanged
 {
 	private TdApi.File latestFile;
 	private EventHandler<TdApi.Update> handler;
+    public event PropertyChangedEventHandler? PropertyChanged;
 
-	/// <summary>
-	/// A double between 0 and 1 of the upload progress
-	/// </summary>
-	public double Progress => (latestFile.Remote.UploadedSize + 0.0) / latestFile.ExpectedSize;
+    /// <summary>
+    /// A double between 0 and 100 of the upload progress
+    /// </summary>
+    public double Progress => 100 * (latestFile.Remote.UploadedSize + 0.0) / latestFile.ExpectedSize;
+
+    public void OnProgressChanged()
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Progress)));
+    }
+
 	/// <summary>
 	/// Gets the local id of the file to be uploaded
 	/// </summary>
@@ -24,15 +32,17 @@ public class FileUpload
 	/// </summary>
 	public bool IsComplete => latestFile.Remote is not null && latestFile.Remote.IsUploadingCompleted;
 
-	/// <summary>
-	/// Begins an upload
-	/// </summary>
-	/// <param name="client">An active TdClient</param>
-	/// <param name="path">The path on the local system to upload</param>
-	/// <param name="priority">The upload priority from 1 to 32</param>
-	/// <param name="type">The file type on telegram (not the file format or extension)</param>
-	/// <returns>A FileUpload Object</returns>
-	public static async Task<FileUpload> StartUpload(TdClient client, string path, int priority = 1, TdApi.FileType? type = null)
+    
+
+    /// <summary>
+    /// Begins an upload
+    /// </summary>
+    /// <param name="client">An active TdClient</param>
+    /// <param name="path">The path on the local system to upload</param>
+    /// <param name="priority">The upload priority from 1 to 32</param>
+    /// <param name="type">The file type on telegram (not the file format or extension)</param>
+    /// <returns>A FileUpload Object</returns>
+    public static async Task<FileUpload> StartUpload(TdClient client, string path, int priority = 1, TdApi.FileType? type = null)
 	{
 		type ??= new TdApi.FileType.FileTypeDocument();
 
@@ -45,6 +55,7 @@ public class FileUpload
 		{
 			if (update is not TdApi.Update.UpdateFile fileUpdate || fileUpdate.File.Id != r.LocalId) return;
 			r.latestFile = fileUpdate.File;
+            r.OnProgressChanged();
 			if (r.latestFile.Remote.IsUploadingCompleted) client.UpdateReceived -= r.handler;
 		};
 

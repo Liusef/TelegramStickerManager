@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using TdLib;
@@ -24,6 +25,7 @@ public partial class App : Application
     public AuthHandler.AuthState AuthState;
     
     public MainWindow MainWindow { get; private set; }
+    public DispatcherQueue queue;
 
     public Frame RootFrame => MainWindow.ContentFrame;
 
@@ -52,6 +54,7 @@ public partial class App : Application
     {
         MainWindow = new MainWindow();
         Auth = new AuthHandler(Client);
+        queue = DispatcherQueue.GetForCurrentThread();
         Client.Bindings.SetLogVerbosityLevel(1);
         GlobalVars.EnsureDirectories();
         App.Current.UnhandledException += App_UnhandledException;

@@ -36,8 +36,8 @@ public class SetPackIconRunner : CommandRunner
         } 
         else
         {
-            Outputs.Add(new CommandOutput(null, path, true));
             var upload = await FileUpload.StartUpload(client, path);
+            Outputs.Add(new CommandOutput(null, path, true) { Upload = upload });
             await upload.WaitForCompletion();
             var reply = await waiter.SendDocumentAndAwaitNext(new InputFileId { Id = upload.LocalId });
             AddReplyToOutputs(reply);
