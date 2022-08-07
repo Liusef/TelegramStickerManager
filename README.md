@@ -11,16 +11,14 @@ This program can automate:
 - Updating Thumbnails
 - More on the way!
 
-all with a simple drag-and-drop user interface which allows you to save time and avoid having to send hundreds of messages to Sticker bot.
+all with a simple drag-and-drop user interface which lets you to save time and avoid having to send hundreds of messages to Sticker bot.
 
 If you find this useful, please star the repository!
 
 ## To run as a user:
-Check the [releases](https://github.com/Liusef/TelegramStickerManager/releases) page for binaries and run `InstallDependencies.exe` before using!.
+Check the [releases](https://github.com/Liusef/TelegramStickerManager/releases) page for binaries, extract the zip file, and run `TgStickers.exe`! 
 
-To run this application as an end user, you must have at least the [.NET 6 Desktop Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/6.0/runtime) and the [Windows App Runtime](https://aka.ms/windowsappsdk/1.0-stable/msix-installer) installed on your machine.
-
-`InstallDependencies.exe` will automatically check and install all dependencies to run.
+The app will prompt you to download dependencies if needed.
 
 ## Setting up the project
 To download the code, compile, and run on your local machine do the following:
