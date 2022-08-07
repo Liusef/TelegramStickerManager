@@ -17,8 +17,10 @@
                     <Flyout>
                         <TextBlock Width="400"
                                    TextWrapping="WrapWholeWords">
-                            Haven't written instructions here yet.
+                            Click "+ Add Files" to add new files to the list! The text boxes under each image are for emojis! Make sure to check options for relevant options.
+                            <LineBreak /><LineBreak />"Delete Files" (under the drop down) will remove files all selected files from this list (not from your computer). 
                             <LineBreak /><LineBreak />This app will automatically downscale your images to meet the image size requirements of telegram.
+                            <LineBreak /><LineBreak />If there are any errors or mistakes, the app will let you know when you click "Finish"
                         </TextBlock>
                     </Flyout>
                 </Button.Flyout>
@@ -29,7 +31,7 @@
                     <Flyout>
                         <TextBlock Width="400"
                                    TextWrapping="WrapWholeWords">
-                            To move between text boxes, press tab 2 times!
+                            To move between text boxes, just hit the tab key!
                             <LineBreak /><LineBreak />You can use emoji shortcodes here! While there aren't suggestions, typing :fox_face: will yield 🦊
                             <LineBreak /><LineBreak />This app uses Github emoji shortcodes which differ slightly from other platforms, like discord.
                         </TextBlock>
